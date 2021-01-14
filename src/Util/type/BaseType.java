@@ -4,10 +4,10 @@ import Util.error.ErrorMessage;
 
 import javax.swing.text.Position;
 
-public class StringType implements Type{
+public class BaseType implements Type{
     @Override
     public String getType() {
-        return "string";
+        return null;
     }
 
     @Override
@@ -17,13 +17,11 @@ public class StringType implements Type{
 
     @Override
     public void checkAssignment(Type t, Position pos) {
-        if(t.getType().equals("string") || t.getType().equals("null")) return;
-        else throw new ErrorMessage("StringType Assignment Error", pos);
+        throw new ErrorMessage("BaseType Assignment Error", pos);
     }
 
     @Override
     public void checkEquality(Type t, Position pos) {
-        if(t.getType().equals("string") || t.getType().equals("null")) return;
-        else throw new ErrorMessage("StringType Equality Error", pos);
+        throw new ErrorMessage("BaseType Equality Error", pos);
     }
 }

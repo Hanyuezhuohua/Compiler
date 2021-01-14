@@ -2,19 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/ast/ASTNODE.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.g4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.interp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.tokens" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxBaseListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxBaseVisitor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.interp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.tokens" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxParser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxVisitor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/gen.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Compiler.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Compiler.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ASTNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ASTVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ASTVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/ArrayType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/ArrayType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/BoolType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/BoolType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/ClassType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/FunctionType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/IntType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/IntType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/NullType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/NullType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/StringType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/StringType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/Type.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/VoidType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/VoidType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/ASTbuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/ASTbuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.g4" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Mymx.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Mymx.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Mymx.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxBaseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxBaseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxBaseVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxLexer.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxLexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxLexer.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxVisitor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +44,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/Hanyuezhuohua/compiler" />
+      </set>
+    </option>
+  </component>
   <component name="ProjectId" id="1mxqrEH4mOGcUal2I5lBnUyCOf6" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -41,10 +60,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/AST" />
-    <property name="last_opened_file_path" value="C:/Yx-main" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Compiler-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -75,5 +95,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

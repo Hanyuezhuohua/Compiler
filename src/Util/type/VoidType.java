@@ -1,12 +1,27 @@
 package Util.type;
 
-public class VoidType extends Type{
-    public VoidType(){super("void");}
+import Util.error.ErrorMessage;
+
+import javax.swing.text.Position;
+
+public class VoidType implements Type{
     @Override
-    public boolean isequal(Type t){
-        return this.type.equals(t.type);
+    public String getType() {
+        return "void";
     }
-    public String tostring(){
-        return this.type;
+
+    @Override
+    public int getDim() {
+        return 0;
+    }
+
+    @Override
+    public void checkAssignment(Type t, Position pos) {
+        throw new ErrorMessage("VoidType Assignment Error", pos);
+    }
+
+    @Override
+    public void checkEquality(Type t, Position pos) {
+        throw new ErrorMessage("VoidType Equality Error", pos);
     }
 }

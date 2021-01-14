@@ -1,9 +1,13 @@
-package parser;// Generated from D:/Compiler/src\Mymx.g4 by ANTLR 4.9
+// Generated from D:/Compiler/src/parser\Mymx.g4 by ANTLR 4.9
+package parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class MymxParser extends Parser {
@@ -13,14 +17,16 @@ public class MymxParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
-		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
-		T__31=32, INT=33, BOOL=34, STRING=35, NULL=36, VOID=37, TRUE=38, FALSE=39, 
-		IF=40, ELSE=41, FOR=42, WHILE=43, BREAK=44, CONTINUE=45, RETURN=46, NEW=47, 
-		CLASS=48, THIS=49, IDENTIFIER=50, BOOL_LITERAL=51, INTEGER_LITERAL=52, 
-		STRING_LITERAL=53, NULL_LITERAL=54, WHITESPACE=55, LINECOMMENT=56, BLOCKCOMMENT=57;
+		INT=1, BOOL=2, STRING=3, NULL=4, VOID=5, TRUE=6, FALSE=7, IF=8, ELSE=9, 
+		FOR=10, WHILE=11, BREAK=12, CONTINUE=13, RETURN=14, NEW=15, CLASS=16, 
+		THIS=17, IDENTIFIER=18, BOOL_LITERAL=19, INTEGER_LITERAL=20, STRING_LITERAL=21, 
+		NULL_LITERAL=22, SPACE=23, COMMA=24, SEMICOLON=25, DOT=26, LEFT_PARENTNESS=27, 
+		RIGHT_PARENTNESS=28, LEFT_BRACKET=29, RIGHT_BRACKET=30, LEFT_BRACE=31, 
+		RIGHT_BRACE=32, LESS=33, LESS_EQUAL=34, GREATER=35, GREATER_EQUAL=36, 
+		EQUAL=37, NOT_EQUAL=38, LEFT_SHIFT=39, RIGHT_SHIFT=40, ASSIGN=41, ADD_ADD=42, 
+		MINUS_MINUS=43, ADD=44, MINUS=45, MUL=46, DIV=47, MOD=48, AND_ARI=49, 
+		OR_ARI=50, AND_LOGIC=51, OR_LOGIC=52, XOR_ARI=53, NOT_LOGIC=54, NOT_ARI=55, 
+		WHITESPACE=56, LINECOMMENT=57, BLOCKCOMMENT=58;
 	public static final int
 		RULE_complication_code = 0, RULE_function_def_unit = 1, RULE_class_def_unit = 2, 
 		RULE_constructor_def_unit = 3, RULE_var_def_unit = 4, RULE_expression_list = 5, 
@@ -38,24 +44,27 @@ public class MymxParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "';'", "'('", "')'", "'{'", "'}'", "','", "'='", "'++'", "'--'", 
-			"'.'", "'['", "']'", "'+'", "'-'", "'!'", "'~'", "'*'", "'/'", "'%'", 
-			"'<<'", "'>>'", "'<'", "'>'", "'<='", "'>='", "'=='", "'!='", "'&'", 
-			"'^'", "'|'", "'&&'", "'||'", "'int'", "'bool'", "'string'", "'null'", 
-			"'void'", "'true'", "'false'", "'if'", "'else'", "'for'", "'while'", 
-			"'break'", "'continue'", "'return'", "'new'", "'class'", "'this'"
+			null, "'int'", "'bool'", "'string'", "'null'", "'void'", "'true'", "'false'", 
+			"'if'", "'else'", "'for'", "'while'", "'break'", "'continue'", "'return'", 
+			"'new'", "'class'", "'this'", null, null, null, null, null, "' '", "','", 
+			"';'", "'.'", "'('", "')'", "'['", "']'", "'{'", "'}'", "'<'", "'<='", 
+			"'>'", "'>='", "'=='", "'!='", "'<<'", "'>>'", "'='", "'++'", "'--'", 
+			"'+'", "'-'", "'*'", "'/'", "'%'", "'&'", "'|'", "'&&'", "'||'", "'^'", 
+			"'!'", "'~'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, null, "INT", "BOOL", 
-			"STRING", "NULL", "VOID", "TRUE", "FALSE", "IF", "ELSE", "FOR", "WHILE", 
-			"BREAK", "CONTINUE", "RETURN", "NEW", "CLASS", "THIS", "IDENTIFIER", 
-			"BOOL_LITERAL", "INTEGER_LITERAL", "STRING_LITERAL", "NULL_LITERAL", 
-			"WHITESPACE", "LINECOMMENT", "BLOCKCOMMENT"
+			null, "INT", "BOOL", "STRING", "NULL", "VOID", "TRUE", "FALSE", "IF", 
+			"ELSE", "FOR", "WHILE", "BREAK", "CONTINUE", "RETURN", "NEW", "CLASS", 
+			"THIS", "IDENTIFIER", "BOOL_LITERAL", "INTEGER_LITERAL", "STRING_LITERAL", 
+			"NULL_LITERAL", "SPACE", "COMMA", "SEMICOLON", "DOT", "LEFT_PARENTNESS", 
+			"RIGHT_PARENTNESS", "LEFT_BRACKET", "RIGHT_BRACKET", "LEFT_BRACE", "RIGHT_BRACE", 
+			"LESS", "LESS_EQUAL", "GREATER", "GREATER_EQUAL", "EQUAL", "NOT_EQUAL", 
+			"LEFT_SHIFT", "RIGHT_SHIFT", "ASSIGN", "ADD_ADD", "MINUS_MINUS", "ADD", 
+			"MINUS", "MUL", "DIV", "MOD", "AND_ARI", "OR_ARI", "AND_LOGIC", "OR_LOGIC", 
+			"XOR_ARI", "NOT_LOGIC", "NOT_ARI", "WHITESPACE", "LINECOMMENT", "BLOCKCOMMENT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -93,7 +102,7 @@ public class MymxParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "parser/Mymx.g4"; }
+	public String getGrammarFileName() { return "Mymx.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -128,6 +137,10 @@ public class MymxParser extends Parser {
 		public Var_def_unitContext var_def_unit(int i) {
 			return getRuleContext(Var_def_unitContext.class,i);
 		}
+		public List<TerminalNode> SEMICOLON() { return getTokens(MymxParser.SEMICOLON); }
+		public TerminalNode SEMICOLON(int i) {
+			return getToken(MymxParser.SEMICOLON, i);
+		}
 		public Complication_codeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -157,7 +170,7 @@ public class MymxParser extends Parser {
 			setState(34);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << INT) | (1L << BOOL) | (1L << STRING) | (1L << VOID) | (1L << CLASS) | (1L << IDENTIFIER))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << STRING) | (1L << VOID) | (1L << CLASS) | (1L << IDENTIFIER) | (1L << SEMICOLON))) != 0)) {
 				{
 				setState(32);
 				_errHandler.sync(this);
@@ -183,7 +196,7 @@ public class MymxParser extends Parser {
 				case 4:
 					{
 					setState(31);
-					match(T__0);
+					match(SEMICOLON);
 					}
 					break;
 				}
@@ -207,6 +220,8 @@ public class MymxParser extends Parser {
 
 	public static class Function_def_unitContext extends ParserRuleContext {
 		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public TerminalNode LEFT_PARENTNESS() { return getToken(MymxParser.LEFT_PARENTNESS, 0); }
+		public TerminalNode RIGHT_PARENTNESS() { return getToken(MymxParser.RIGHT_PARENTNESS, 0); }
 		public SuiteContext suite() {
 			return getRuleContext(SuiteContext.class,0);
 		}
@@ -267,7 +282,7 @@ public class MymxParser extends Parser {
 			setState(41);
 			match(IDENTIFIER);
 			setState(42);
-			match(T__1);
+			match(LEFT_PARENTNESS);
 			setState(44);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -279,7 +294,7 @@ public class MymxParser extends Parser {
 			}
 
 			setState(46);
-			match(T__2);
+			match(RIGHT_PARENTNESS);
 			setState(47);
 			suite();
 			}
@@ -298,6 +313,9 @@ public class MymxParser extends Parser {
 	public static class Class_def_unitContext extends ParserRuleContext {
 		public TerminalNode CLASS() { return getToken(MymxParser.CLASS, 0); }
 		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public TerminalNode LEFT_BRACE() { return getToken(MymxParser.LEFT_BRACE, 0); }
+		public TerminalNode RIGHT_BRACE() { return getToken(MymxParser.RIGHT_BRACE, 0); }
+		public TerminalNode SEMICOLON() { return getToken(MymxParser.SEMICOLON, 0); }
 		public List<Var_def_unitContext> var_def_unit() {
 			return getRuleContexts(Var_def_unitContext.class);
 		}
@@ -347,7 +365,7 @@ public class MymxParser extends Parser {
 			setState(50);
 			match(IDENTIFIER);
 			setState(51);
-			match(T__3);
+			match(LEFT_BRACE);
 			setState(57);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -381,9 +399,9 @@ public class MymxParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(60);
-			match(T__4);
+			match(RIGHT_BRACE);
 			setState(61);
-			match(T__0);
+			match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -399,6 +417,8 @@ public class MymxParser extends Parser {
 
 	public static class Constructor_def_unitContext extends ParserRuleContext {
 		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public TerminalNode LEFT_PARENTNESS() { return getToken(MymxParser.LEFT_PARENTNESS, 0); }
+		public TerminalNode RIGHT_PARENTNESS() { return getToken(MymxParser.RIGHT_PARENTNESS, 0); }
 		public SuiteContext suite() {
 			return getRuleContext(SuiteContext.class,0);
 		}
@@ -434,7 +454,7 @@ public class MymxParser extends Parser {
 			setState(63);
 			match(IDENTIFIER);
 			setState(64);
-			match(T__1);
+			match(LEFT_PARENTNESS);
 			setState(66);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -446,7 +466,7 @@ public class MymxParser extends Parser {
 			}
 
 			setState(68);
-			match(T__2);
+			match(RIGHT_PARENTNESS);
 			setState(69);
 			suite();
 			}
@@ -466,6 +486,7 @@ public class MymxParser extends Parser {
 		public Variable_listContext variable_list() {
 			return getRuleContext(Variable_listContext.class,0);
 		}
+		public TerminalNode SEMICOLON() { return getToken(MymxParser.SEMICOLON, 0); }
 		public Var_def_unitContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -494,7 +515,7 @@ public class MymxParser extends Parser {
 			setState(71);
 			variable_list();
 			setState(72);
-			match(T__0);
+			match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -514,6 +535,10 @@ public class MymxParser extends Parser {
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MymxParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MymxParser.COMMA, i);
 		}
 		public Expression_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -546,11 +571,11 @@ public class MymxParser extends Parser {
 			setState(79);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__5) {
+			while (_la==COMMA) {
 				{
 				{
 				setState(75);
-				match(T__5);
+				match(COMMA);
 				setState(76);
 				expression(0);
 				}
@@ -582,6 +607,10 @@ public class MymxParser extends Parser {
 		public List<TerminalNode> IDENTIFIER() { return getTokens(MymxParser.IDENTIFIER); }
 		public TerminalNode IDENTIFIER(int i) {
 			return getToken(MymxParser.IDENTIFIER, i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MymxParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MymxParser.COMMA, i);
 		}
 		public Parameter_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -616,11 +645,11 @@ public class MymxParser extends Parser {
 			setState(90);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__5) {
+			while (_la==COMMA) {
 				{
 				{
 				setState(84);
-				match(T__5);
+				match(COMMA);
 				setState(85);
 				type(0);
 				setState(86);
@@ -653,6 +682,10 @@ public class MymxParser extends Parser {
 		}
 		public Variable_declContext variable_decl(int i) {
 			return getRuleContext(Variable_declContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MymxParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MymxParser.COMMA, i);
 		}
 		public Variable_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -687,11 +720,11 @@ public class MymxParser extends Parser {
 			setState(99);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__5) {
+			while (_la==COMMA) {
 				{
 				{
 				setState(95);
-				match(T__5);
+				match(COMMA);
 				setState(96);
 				variable_decl();
 				}
@@ -715,6 +748,7 @@ public class MymxParser extends Parser {
 
 	public static class Variable_declContext extends ParserRuleContext {
 		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public TerminalNode ASSIGN() { return getToken(MymxParser.ASSIGN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -749,10 +783,10 @@ public class MymxParser extends Parser {
 			setState(105);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__6) {
+			if (_la==ASSIGN) {
 				{
 				setState(103);
-				match(T__6);
+				match(ASSIGN);
 				setState(104);
 				expression(0);
 				}
@@ -772,6 +806,8 @@ public class MymxParser extends Parser {
 	}
 
 	public static class SuiteContext extends ParserRuleContext {
+		public TerminalNode LEFT_BRACE() { return getToken(MymxParser.LEFT_BRACE, 0); }
+		public TerminalNode RIGHT_BRACE() { return getToken(MymxParser.RIGHT_BRACE, 0); }
 		public List<StatementContext> statement() {
 			return getRuleContexts(StatementContext.class);
 		}
@@ -805,11 +841,11 @@ public class MymxParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(107);
-			match(T__3);
+			match(LEFT_BRACE);
 			setState(111);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__3) | (1L << T__7) | (1L << T__8) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << INT) | (1L << BOOL) | (1L << STRING) | (1L << IF) | (1L << FOR) | (1L << WHILE) | (1L << BREAK) | (1L << CONTINUE) | (1L << RETURN) | (1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << STRING) | (1L << IF) | (1L << FOR) | (1L << WHILE) | (1L << BREAK) | (1L << CONTINUE) | (1L << RETURN) | (1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL) | (1L << SEMICOLON) | (1L << LEFT_PARENTNESS) | (1L << LEFT_BRACE) | (1L << ADD_ADD) | (1L << MINUS_MINUS) | (1L << ADD) | (1L << MINUS) | (1L << NOT_LOGIC) | (1L << NOT_ARI))) != 0)) {
 				{
 				{
 				setState(108);
@@ -821,7 +857,7 @@ public class MymxParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(114);
-			match(T__4);
+			match(RIGHT_BRACE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -836,19 +872,23 @@ public class MymxParser extends Parser {
 	}
 
 	public static class StatementContext extends ParserRuleContext {
-		public SuiteContext suite() {
-			return getRuleContext(SuiteContext.class,0);
+		public StatementContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
 		}
-		public Var_def_unitContext var_def_unit() {
-			return getRuleContext(Var_def_unitContext.class,0);
+		@Override public int getRuleIndex() { return RULE_statement; }
+	 
+		public StatementContext() { }
+		public void copyFrom(StatementContext ctx) {
+			super.copyFrom(ctx);
 		}
+	}
+	public static class IfStatContext extends StatementContext {
 		public TerminalNode IF() { return getToken(MymxParser.IF, 0); }
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
+		public TerminalNode LEFT_PARENTNESS() { return getToken(MymxParser.LEFT_PARENTNESS, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
 		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
+		public TerminalNode RIGHT_PARENTNESS() { return getToken(MymxParser.RIGHT_PARENTNESS, 0); }
 		public List<StatementContext> statement() {
 			return getRuleContexts(StatementContext.class);
 		}
@@ -856,29 +896,193 @@ public class MymxParser extends Parser {
 			return getRuleContext(StatementContext.class,i);
 		}
 		public TerminalNode ELSE() { return getToken(MymxParser.ELSE, 0); }
-		public TerminalNode WHILE() { return getToken(MymxParser.WHILE, 0); }
-		public TerminalNode FOR() { return getToken(MymxParser.FOR, 0); }
-		public Variable_listContext variable_list() {
-			return getRuleContext(Variable_listContext.class,0);
-		}
-		public TerminalNode CONTINUE() { return getToken(MymxParser.CONTINUE, 0); }
-		public TerminalNode BREAK() { return getToken(MymxParser.BREAK, 0); }
-		public TerminalNode RETURN() { return getToken(MymxParser.RETURN, 0); }
-		public StatementContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_statement; }
+		public IfStatContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterStatement(this);
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterIfStat(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitStatement(this);
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitIfStat(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitStatement(this);
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitIfStat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BlockStatContext extends StatementContext {
+		public SuiteContext suite() {
+			return getRuleContext(SuiteContext.class,0);
+		}
+		public BlockStatContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterBlockStat(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitBlockStat(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitBlockStat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ExprStatContext extends StatementContext {
+		public TerminalNode SEMICOLON() { return getToken(MymxParser.SEMICOLON, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public ExprStatContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterExprStat(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitExprStat(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitExprStat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ReturnStatContext extends StatementContext {
+		public TerminalNode RETURN() { return getToken(MymxParser.RETURN, 0); }
+		public TerminalNode SEMICOLON() { return getToken(MymxParser.SEMICOLON, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public ReturnStatContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterReturnStat(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitReturnStat(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitReturnStat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ContinueStatContext extends StatementContext {
+		public TerminalNode CONTINUE() { return getToken(MymxParser.CONTINUE, 0); }
+		public TerminalNode SEMICOLON() { return getToken(MymxParser.SEMICOLON, 0); }
+		public ContinueStatContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterContinueStat(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitContinueStat(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitContinueStat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class VardefStatContext extends StatementContext {
+		public Var_def_unitContext var_def_unit() {
+			return getRuleContext(Var_def_unitContext.class,0);
+		}
+		public VardefStatContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterVardefStat(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitVardefStat(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitVardefStat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BreakStatContext extends StatementContext {
+		public TerminalNode BREAK() { return getToken(MymxParser.BREAK, 0); }
+		public TerminalNode SEMICOLON() { return getToken(MymxParser.SEMICOLON, 0); }
+		public BreakStatContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterBreakStat(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitBreakStat(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitBreakStat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ForStatContext extends StatementContext {
+		public TerminalNode FOR() { return getToken(MymxParser.FOR, 0); }
+		public TerminalNode LEFT_PARENTNESS() { return getToken(MymxParser.LEFT_PARENTNESS, 0); }
+		public List<TerminalNode> SEMICOLON() { return getTokens(MymxParser.SEMICOLON); }
+		public TerminalNode SEMICOLON(int i) {
+			return getToken(MymxParser.SEMICOLON, i);
+		}
+		public TerminalNode RIGHT_PARENTNESS() { return getToken(MymxParser.RIGHT_PARENTNESS, 0); }
+		public StatementContext statement() {
+			return getRuleContext(StatementContext.class,0);
+		}
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public Variable_listContext variable_list() {
+			return getRuleContext(Variable_listContext.class,0);
+		}
+		public ForStatContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterForStat(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitForStat(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitForStat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class WhileStatContext extends StatementContext {
+		public TerminalNode WHILE() { return getToken(MymxParser.WHILE, 0); }
+		public TerminalNode LEFT_PARENTNESS() { return getToken(MymxParser.LEFT_PARENTNESS, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode RIGHT_PARENTNESS() { return getToken(MymxParser.RIGHT_PARENTNESS, 0); }
+		public StatementContext statement() {
+			return getRuleContext(StatementContext.class,0);
+		}
+		public WhileStatContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterWhileStat(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitWhileStat(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitWhileStat(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -892,6 +1096,7 @@ public class MymxParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
 			case 1:
+				_localctx = new BlockStatContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(116);
@@ -899,6 +1104,7 @@ public class MymxParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new VardefStatContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(117);
@@ -906,16 +1112,17 @@ public class MymxParser extends Parser {
 				}
 				break;
 			case 3:
+				_localctx = new IfStatContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(118);
 				match(IF);
 				setState(119);
-				match(T__1);
+				match(LEFT_PARENTNESS);
 				setState(120);
 				expression(0);
 				setState(121);
-				match(T__2);
+				match(RIGHT_PARENTNESS);
 				setState(122);
 				statement();
 				setState(125);
@@ -933,27 +1140,29 @@ public class MymxParser extends Parser {
 				}
 				break;
 			case 4:
+				_localctx = new WhileStatContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(127);
 				match(WHILE);
 				setState(128);
-				match(T__1);
+				match(LEFT_PARENTNESS);
 				setState(129);
 				expression(0);
 				setState(130);
-				match(T__2);
+				match(RIGHT_PARENTNESS);
 				setState(131);
 				statement();
 				}
 				break;
 			case 5:
+				_localctx = new ForStatContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(133);
 				match(FOR);
 				setState(134);
-				match(T__1);
+				match(LEFT_PARENTNESS);
 				setState(137);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
@@ -971,11 +1180,11 @@ public class MymxParser extends Parser {
 					break;
 				}
 				setState(139);
-				match(T__0);
+				match(SEMICOLON);
 				setState(141);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__7) | (1L << T__8) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL) | (1L << LEFT_PARENTNESS) | (1L << ADD_ADD) | (1L << MINUS_MINUS) | (1L << ADD) | (1L << MINUS) | (1L << NOT_LOGIC) | (1L << NOT_ARI))) != 0)) {
 					{
 					setState(140);
 					expression(0);
@@ -983,11 +1192,11 @@ public class MymxParser extends Parser {
 				}
 
 				setState(143);
-				match(T__0);
+				match(SEMICOLON);
 				setState(145);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__7) | (1L << T__8) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL) | (1L << LEFT_PARENTNESS) | (1L << ADD_ADD) | (1L << MINUS_MINUS) | (1L << ADD) | (1L << MINUS) | (1L << NOT_LOGIC) | (1L << NOT_ARI))) != 0)) {
 					{
 					setState(144);
 					expression(0);
@@ -995,30 +1204,33 @@ public class MymxParser extends Parser {
 				}
 
 				setState(147);
-				match(T__2);
+				match(RIGHT_PARENTNESS);
 				setState(148);
 				statement();
 				}
 				break;
 			case 6:
+				_localctx = new ContinueStatContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(149);
 				match(CONTINUE);
 				setState(150);
-				match(T__0);
+				match(SEMICOLON);
 				}
 				break;
 			case 7:
+				_localctx = new BreakStatContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
 				setState(151);
 				match(BREAK);
 				setState(152);
-				match(T__0);
+				match(SEMICOLON);
 				}
 				break;
 			case 8:
+				_localctx = new ReturnStatContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
 				setState(153);
@@ -1026,7 +1238,7 @@ public class MymxParser extends Parser {
 				setState(155);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__7) | (1L << T__8) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL) | (1L << LEFT_PARENTNESS) | (1L << ADD_ADD) | (1L << MINUS_MINUS) | (1L << ADD) | (1L << MINUS) | (1L << NOT_LOGIC) | (1L << NOT_ARI))) != 0)) {
 					{
 					setState(154);
 					expression(0);
@@ -1034,16 +1246,17 @@ public class MymxParser extends Parser {
 				}
 
 				setState(157);
-				match(T__0);
+				match(SEMICOLON);
 				}
 				break;
 			case 9:
+				_localctx = new ExprStatContext(_localctx);
 				enterOuterAlt(_localctx, 9);
 				{
 				setState(159);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__7) | (1L << T__8) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL) | (1L << LEFT_PARENTNESS) | (1L << ADD_ADD) | (1L << MINUS_MINUS) | (1L << ADD) | (1L << MINUS) | (1L << NOT_LOGIC) | (1L << NOT_ARI))) != 0)) {
 					{
 					setState(158);
 					expression(0);
@@ -1051,7 +1264,7 @@ public class MymxParser extends Parser {
 				}
 
 				setState(161);
-				match(T__0);
+				match(SEMICOLON);
 				}
 				break;
 			}
@@ -1068,40 +1281,241 @@ public class MymxParser extends Parser {
 	}
 
 	public static class ExpressionContext extends ParserRuleContext {
-		public TerminalNode THIS() { return getToken(MymxParser.THIS, 0); }
-		public TerminalNode BOOL_LITERAL() { return getToken(MymxParser.BOOL_LITERAL, 0); }
-		public TerminalNode INTEGER_LITERAL() { return getToken(MymxParser.INTEGER_LITERAL, 0); }
-		public TerminalNode STRING_LITERAL() { return getToken(MymxParser.STRING_LITERAL, 0); }
-		public TerminalNode NULL_LITERAL() { return getToken(MymxParser.NULL_LITERAL, 0); }
-		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public ExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_expression; }
+	 
+		public ExpressionContext() { }
+		public void copyFrom(ExpressionContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class NewExprContext extends ExpressionContext {
+		public TerminalNode NEW() { return getToken(MymxParser.NEW, 0); }
+		public NewtypeContext newtype() {
+			return getRuleContext(NewtypeContext.class,0);
+		}
+		public NewExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterNewExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitNewExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitNewExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class PrefixExprContext extends ExpressionContext {
+		public Token op;
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode ADD_ADD() { return getToken(MymxParser.ADD_ADD, 0); }
+		public TerminalNode MINUS_MINUS() { return getToken(MymxParser.MINUS_MINUS, 0); }
+		public TerminalNode ADD() { return getToken(MymxParser.ADD, 0); }
+		public TerminalNode MINUS() { return getToken(MymxParser.MINUS, 0); }
+		public TerminalNode NOT_LOGIC() { return getToken(MymxParser.NOT_LOGIC, 0); }
+		public TerminalNode NOT_ARI() { return getToken(MymxParser.NOT_ARI, 0); }
+		public PrefixExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterPrefixExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitPrefixExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitPrefixExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class FuncExprContext extends ExpressionContext {
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode LEFT_PARENTNESS() { return getToken(MymxParser.LEFT_PARENTNESS, 0); }
+		public TerminalNode RIGHT_PARENTNESS() { return getToken(MymxParser.RIGHT_PARENTNESS, 0); }
+		public Expression_listContext expression_list() {
+			return getRuleContext(Expression_listContext.class,0);
+		}
+		public FuncExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterFuncExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitFuncExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitFuncExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class SubarrayExprContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public TerminalNode NEW() { return getToken(MymxParser.NEW, 0); }
-		public NewtypeContext newtype() {
-			return getRuleContext(NewtypeContext.class,0);
-		}
-		public Expression_listContext expression_list() {
-			return getRuleContext(Expression_listContext.class,0);
-		}
-		public ExpressionContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_expression; }
+		public TerminalNode LEFT_BRACKET() { return getToken(MymxParser.LEFT_BRACKET, 0); }
+		public TerminalNode RIGHT_BRACKET() { return getToken(MymxParser.RIGHT_BRACKET, 0); }
+		public SubarrayExprContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterExpression(this);
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterSubarrayExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitExpression(this);
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitSubarrayExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitExpression(this);
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitSubarrayExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class SuffixExprContext extends ExpressionContext {
+		public Token op;
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode ADD_ADD() { return getToken(MymxParser.ADD_ADD, 0); }
+		public TerminalNode MINUS_MINUS() { return getToken(MymxParser.MINUS_MINUS, 0); }
+		public SuffixExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterSuffixExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitSuffixExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitSuffixExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MemberExprContext extends ExpressionContext {
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode DOT() { return getToken(MymxParser.DOT, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public MemberExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterMemberExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitMemberExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitMemberExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AtomExprContext extends ExpressionContext {
+		public TerminalNode THIS() { return getToken(MymxParser.THIS, 0); }
+		public TerminalNode BOOL_LITERAL() { return getToken(MymxParser.BOOL_LITERAL, 0); }
+		public TerminalNode INTEGER_LITERAL() { return getToken(MymxParser.INTEGER_LITERAL, 0); }
+		public TerminalNode STRING_LITERAL() { return getToken(MymxParser.STRING_LITERAL, 0); }
+		public TerminalNode NULL_LITERAL() { return getToken(MymxParser.NULL_LITERAL, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public TerminalNode LEFT_PARENTNESS() { return getToken(MymxParser.LEFT_PARENTNESS, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode RIGHT_PARENTNESS() { return getToken(MymxParser.RIGHT_PARENTNESS, 0); }
+		public AtomExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterAtomExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitAtomExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitAtomExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BinaryExprContext extends ExpressionContext {
+		public Token op;
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode ADD() { return getToken(MymxParser.ADD, 0); }
+		public TerminalNode MINUS() { return getToken(MymxParser.MINUS, 0); }
+		public TerminalNode MUL() { return getToken(MymxParser.MUL, 0); }
+		public TerminalNode DIV() { return getToken(MymxParser.DIV, 0); }
+		public TerminalNode MOD() { return getToken(MymxParser.MOD, 0); }
+		public TerminalNode LEFT_SHIFT() { return getToken(MymxParser.LEFT_SHIFT, 0); }
+		public TerminalNode RIGHT_SHIFT() { return getToken(MymxParser.RIGHT_SHIFT, 0); }
+		public TerminalNode LESS() { return getToken(MymxParser.LESS, 0); }
+		public TerminalNode GREATER() { return getToken(MymxParser.GREATER, 0); }
+		public TerminalNode LESS_EQUAL() { return getToken(MymxParser.LESS_EQUAL, 0); }
+		public TerminalNode GREATER_EQUAL() { return getToken(MymxParser.GREATER_EQUAL, 0); }
+		public TerminalNode EQUAL() { return getToken(MymxParser.EQUAL, 0); }
+		public TerminalNode NOT_EQUAL() { return getToken(MymxParser.NOT_EQUAL, 0); }
+		public TerminalNode AND_ARI() { return getToken(MymxParser.AND_ARI, 0); }
+		public TerminalNode XOR_ARI() { return getToken(MymxParser.XOR_ARI, 0); }
+		public TerminalNode OR_ARI() { return getToken(MymxParser.OR_ARI, 0); }
+		public TerminalNode AND_LOGIC() { return getToken(MymxParser.AND_LOGIC, 0); }
+		public TerminalNode OR_LOGIC() { return getToken(MymxParser.OR_LOGIC, 0); }
+		public BinaryExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitBinaryExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitBinaryExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AssignExprContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode ASSIGN() { return getToken(MymxParser.ASSIGN, 0); }
+		public AssignExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterAssignExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitAssignExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitAssignExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1122,111 +1536,132 @@ public class MymxParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(183);
+			setState(180);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case THIS:
 				{
+				_localctx = new AtomExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+
 				setState(165);
 				match(THIS);
 				}
 				break;
 			case BOOL_LITERAL:
-				{
-				setState(166);
-				match(BOOL_LITERAL);
-				}
-				break;
 			case INTEGER_LITERAL:
-				{
-				setState(167);
-				match(INTEGER_LITERAL);
-				}
-				break;
 			case STRING_LITERAL:
-				{
-				setState(168);
-				match(STRING_LITERAL);
-				}
-				break;
 			case NULL_LITERAL:
 				{
-				setState(169);
-				match(NULL_LITERAL);
+				_localctx = new AtomExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(166);
+				_la = _input.LA(1);
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL))) != 0)) ) {
+				_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
 				}
 				break;
 			case IDENTIFIER:
 				{
-				setState(170);
+				_localctx = new AtomExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(167);
 				match(IDENTIFIER);
 				}
 				break;
-			case T__7:
-			case T__8:
+			case ADD_ADD:
+			case MINUS_MINUS:
 				{
-				setState(171);
+				_localctx = new PrefixExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(168);
+				((PrefixExprContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
-				if ( !(_la==T__7 || _la==T__8) ) {
-				_errHandler.recoverInline(this);
+				if ( !(_la==ADD_ADD || _la==MINUS_MINUS) ) {
+					((PrefixExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(172);
+				setState(169);
 				expression(11);
 				}
 				break;
-			case T__12:
-			case T__13:
+			case ADD:
+			case MINUS:
 				{
-				setState(173);
+				_localctx = new PrefixExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(170);
+				((PrefixExprContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
-				if ( !(_la==T__12 || _la==T__13) ) {
-				_errHandler.recoverInline(this);
+				if ( !(_la==ADD || _la==MINUS) ) {
+					((PrefixExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(174);
+				setState(171);
 				expression(10);
 				}
 				break;
-			case T__14:
-			case T__15:
+			case NOT_LOGIC:
+			case NOT_ARI:
 				{
-				setState(175);
+				_localctx = new PrefixExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(172);
+				((PrefixExprContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
-				if ( !(_la==T__14 || _la==T__15) ) {
-				_errHandler.recoverInline(this);
+				if ( !(_la==NOT_LOGIC || _la==NOT_ARI) ) {
+					((PrefixExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(176);
+				setState(173);
 				expression(9);
 				}
 				break;
-			case T__1:
+			case LEFT_PARENTNESS:
 				{
-				setState(177);
-				match(T__1);
-				setState(178);
+				_localctx = new AtomExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(174);
+				match(LEFT_PARENTNESS);
+				setState(175);
 				expression(0);
-				setState(179);
-				match(T__2);
+				setState(176);
+				match(RIGHT_PARENTNESS);
 				}
 				break;
 			case NEW:
 				{
-				setState(181);
+				_localctx = new NewExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(178);
 				match(NEW);
-				setState(182);
+				setState(179);
 				newtype();
 				}
 				break;
@@ -1234,7 +1669,7 @@ public class MymxParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(221);
+			setState(218);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,22,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -1242,19 +1677,41 @@ public class MymxParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(219);
+					setState(216);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
 					case 1:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new BinaryExprContext(new ExpressionContext(_parentctx, _parentState));
+						pushNewRecursionContext(_localctx, _startState, RULE_expression);
+						setState(182);
+						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
+						setState(183);
+						((BinaryExprContext)_localctx).op = _input.LT(1);
+						_la = _input.LA(1);
+						if ( !(_la==ADD || _la==MINUS) ) {
+							((BinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
+							consume();
+						}
+						setState(184);
+						expression(9);
+						}
+						break;
+					case 2:
+						{
+						_localctx = new BinaryExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(185);
-						if (!(precpred(_ctx, 8))) throw new FailedPredicateException(this, "precpred(_ctx, 8)");
+						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
 						setState(186);
+						((BinaryExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__12 || _la==T__13) ) {
-						_errHandler.recoverInline(this);
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MUL) | (1L << DIV) | (1L << MOD))) != 0)) ) {
+							((BinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1262,19 +1719,20 @@ public class MymxParser extends Parser {
 							consume();
 						}
 						setState(187);
-						expression(9);
+						expression(8);
 						}
 						break;
-					case 2:
+					case 3:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new BinaryExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(188);
-						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
+						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
 						setState(189);
+						((BinaryExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__16) | (1L << T__17) | (1L << T__18))) != 0)) ) {
-						_errHandler.recoverInline(this);
+						if ( !(_la==LEFT_SHIFT || _la==RIGHT_SHIFT) ) {
+							((BinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1282,19 +1740,20 @@ public class MymxParser extends Parser {
 							consume();
 						}
 						setState(190);
-						expression(8);
+						expression(7);
 						}
 						break;
-					case 3:
+					case 4:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new BinaryExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(191);
-						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
+						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 						setState(192);
+						((BinaryExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__19 || _la==T__20) ) {
-						_errHandler.recoverInline(this);
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LESS) | (1L << LESS_EQUAL) | (1L << GREATER) | (1L << GREATER_EQUAL) | (1L << EQUAL) | (1L << NOT_EQUAL))) != 0)) ) {
+							((BinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1302,19 +1761,20 @@ public class MymxParser extends Parser {
 							consume();
 						}
 						setState(193);
-						expression(7);
+						expression(6);
 						}
 						break;
-					case 4:
+					case 5:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new BinaryExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(194);
-						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
 						setState(195);
+						((BinaryExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__21) | (1L << T__22) | (1L << T__23) | (1L << T__24) | (1L << T__25) | (1L << T__26))) != 0)) ) {
-						_errHandler.recoverInline(this);
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << AND_ARI) | (1L << OR_ARI) | (1L << AND_LOGIC) | (1L << OR_LOGIC) | (1L << XOR_ARI))) != 0)) ) {
+							((BinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1322,51 +1782,32 @@ public class MymxParser extends Parser {
 							consume();
 						}
 						setState(196);
-						expression(6);
-						}
-						break;
-					case 5:
-						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
-						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(197);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(198);
-						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__27) | (1L << T__28) | (1L << T__29) | (1L << T__30) | (1L << T__31))) != 0)) ) {
-						_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
-							consume();
-						}
-						setState(199);
 						expression(5);
 						}
 						break;
 					case 6:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new AssignExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(200);
+						setState(197);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(201);
-						match(T__6);
-						setState(202);
+						setState(198);
+						match(ASSIGN);
+						setState(199);
 						expression(3);
 						}
 						break;
 					case 7:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new SuffixExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(203);
+						setState(200);
 						if (!(precpred(_ctx, 15))) throw new FailedPredicateException(this, "precpred(_ctx, 15)");
-						setState(204);
+						setState(201);
+						((SuffixExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==T__7 || _la==T__8) ) {
-						_errHandler.recoverInline(this);
+						if ( !(_la==ADD_ADD || _la==MINUS_MINUS) ) {
+							((SuffixExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1377,56 +1818,56 @@ public class MymxParser extends Parser {
 						break;
 					case 8:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new MemberExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(205);
+						setState(202);
 						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
-						setState(206);
-						match(T__9);
-						setState(207);
+						setState(203);
+						match(DOT);
+						setState(204);
 						match(IDENTIFIER);
 						}
 						break;
 					case 9:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new FuncExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(208);
+						setState(205);
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
-						setState(209);
-						match(T__1);
-						setState(211);
+						setState(206);
+						match(LEFT_PARENTNESS);
+						setState(208);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__7) | (1L << T__8) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL))) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NEW) | (1L << THIS) | (1L << IDENTIFIER) | (1L << BOOL_LITERAL) | (1L << INTEGER_LITERAL) | (1L << STRING_LITERAL) | (1L << NULL_LITERAL) | (1L << LEFT_PARENTNESS) | (1L << ADD_ADD) | (1L << MINUS_MINUS) | (1L << ADD) | (1L << MINUS) | (1L << NOT_LOGIC) | (1L << NOT_ARI))) != 0)) {
 							{
-							setState(210);
+							setState(207);
 							expression_list();
 							}
 						}
 
-						setState(213);
-						match(T__2);
+						setState(210);
+						match(RIGHT_PARENTNESS);
 						}
 						break;
 					case 10:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new SubarrayExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(214);
+						setState(211);
 						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
-						setState(215);
-						match(T__10);
-						setState(216);
+						setState(212);
+						match(LEFT_BRACKET);
+						setState(213);
 						expression(0);
-						setState(217);
-						match(T__11);
+						setState(214);
+						match(RIGHT_BRACKET);
 						}
 						break;
 					}
 					} 
 				}
-				setState(223);
+				setState(220);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,22,_ctx);
 			}
@@ -1451,6 +1892,8 @@ public class MymxParser extends Parser {
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
 		}
+		public TerminalNode LEFT_BRACKET() { return getToken(MymxParser.LEFT_BRACKET, 0); }
+		public TerminalNode RIGHT_BRACKET() { return getToken(MymxParser.RIGHT_BRACKET, 0); }
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1485,30 +1928,30 @@ public class MymxParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(229);
+			setState(226);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case INT:
 				{
-				setState(225);
+				setState(222);
 				match(INT);
 				}
 				break;
 			case BOOL:
 				{
-				setState(226);
+				setState(223);
 				match(BOOL);
 				}
 				break;
 			case STRING:
 				{
-				setState(227);
+				setState(224);
 				match(STRING);
 				}
 				break;
 			case IDENTIFIER:
 				{
-				setState(228);
+				setState(225);
 				match(IDENTIFIER);
 				}
 				break;
@@ -1516,7 +1959,7 @@ public class MymxParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(236);
+			setState(233);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -1527,16 +1970,16 @@ public class MymxParser extends Parser {
 					{
 					_localctx = new TypeContext(_parentctx, _parentState);
 					pushNewRecursionContext(_localctx, _startState, RULE_type);
-					setState(231);
+					setState(228);
 					if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-					setState(232);
-					match(T__10);
-					setState(233);
-					match(T__11);
+					setState(229);
+					match(LEFT_BRACKET);
+					setState(230);
+					match(RIGHT_BRACKET);
 					}
 					} 
 				}
-				setState(238);
+				setState(235);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
 			}
@@ -1554,31 +1997,123 @@ public class MymxParser extends Parser {
 	}
 
 	public static class NewtypeContext extends ParserRuleContext {
+		public NewtypeContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_newtype; }
+	 
+		public NewtypeContext() { }
+		public void copyFrom(NewtypeContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class BasicNewtypeContext extends NewtypeContext {
 		public TerminalNode INT() { return getToken(MymxParser.INT, 0); }
 		public TerminalNode BOOL() { return getToken(MymxParser.BOOL, 0); }
 		public TerminalNode STRING() { return getToken(MymxParser.STRING, 0); }
 		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public BasicNewtypeContext(NewtypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterBasicNewtype(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitBasicNewtype(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitBasicNewtype(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ErrorNewtypeContext extends NewtypeContext {
+		public TerminalNode INT() { return getToken(MymxParser.INT, 0); }
+		public TerminalNode BOOL() { return getToken(MymxParser.BOOL, 0); }
+		public TerminalNode STRING() { return getToken(MymxParser.STRING, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public List<TerminalNode> LEFT_BRACKET() { return getTokens(MymxParser.LEFT_BRACKET); }
+		public TerminalNode LEFT_BRACKET(int i) {
+			return getToken(MymxParser.LEFT_BRACKET, i);
+		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public NewtypeContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
+		public List<TerminalNode> RIGHT_BRACKET() { return getTokens(MymxParser.RIGHT_BRACKET); }
+		public TerminalNode RIGHT_BRACKET(int i) {
+			return getToken(MymxParser.RIGHT_BRACKET, i);
 		}
-		@Override public int getRuleIndex() { return RULE_newtype; }
+		public ErrorNewtypeContext(NewtypeContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterNewtype(this);
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterErrorNewtype(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitNewtype(this);
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitErrorNewtype(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitNewtype(this);
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitErrorNewtype(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ClassNewtypeContext extends NewtypeContext {
+		public TerminalNode LEFT_PARENTNESS() { return getToken(MymxParser.LEFT_PARENTNESS, 0); }
+		public TerminalNode RIGHT_PARENTNESS() { return getToken(MymxParser.RIGHT_PARENTNESS, 0); }
+		public TerminalNode INT() { return getToken(MymxParser.INT, 0); }
+		public TerminalNode BOOL() { return getToken(MymxParser.BOOL, 0); }
+		public TerminalNode STRING() { return getToken(MymxParser.STRING, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public ClassNewtypeContext(NewtypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterClassNewtype(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitClassNewtype(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitClassNewtype(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ArrayNewtypeContext extends NewtypeContext {
+		public TerminalNode INT() { return getToken(MymxParser.INT, 0); }
+		public TerminalNode BOOL() { return getToken(MymxParser.BOOL, 0); }
+		public TerminalNode STRING() { return getToken(MymxParser.STRING, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(MymxParser.IDENTIFIER, 0); }
+		public List<TerminalNode> LEFT_BRACKET() { return getTokens(MymxParser.LEFT_BRACKET); }
+		public TerminalNode LEFT_BRACKET(int i) {
+			return getToken(MymxParser.LEFT_BRACKET, i);
+		}
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public List<TerminalNode> RIGHT_BRACKET() { return getTokens(MymxParser.RIGHT_BRACKET); }
+		public TerminalNode RIGHT_BRACKET(int i) {
+			return getToken(MymxParser.RIGHT_BRACKET, i);
+		}
+		public ArrayNewtypeContext(NewtypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).enterArrayNewtype(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MymxListener ) ((MymxListener)listener).exitArrayNewtype(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MymxVisitor ) return ((MymxVisitor<? extends T>)visitor).visitArrayNewtype(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1589,41 +2124,50 @@ public class MymxParser extends Parser {
 		int _la;
 		try {
 			int _alt;
-			setState(285);
+			setState(279);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,30,_ctx) ) {
 			case 1:
+				_localctx = new BasicNewtypeContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(239);
-				match(INT);
+				setState(236);
+				_la = _input.LA(1);
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << STRING) | (1L << IDENTIFIER))) != 0)) ) {
+				_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
 				}
 				break;
 			case 2:
+				_localctx = new ClassNewtypeContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(240);
-				match(BOOL);
+				setState(237);
+				_la = _input.LA(1);
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << STRING) | (1L << IDENTIFIER))) != 0)) ) {
+				_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
+				setState(238);
+				match(LEFT_PARENTNESS);
+				setState(239);
+				match(RIGHT_PARENTNESS);
 				}
 				break;
 			case 3:
+				_localctx = new ArrayNewtypeContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(241);
-				match(STRING);
-				}
-				break;
-			case 4:
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(242);
-				match(IDENTIFIER);
-				}
-				break;
-			case 5:
-				enterOuterAlt(_localctx, 5);
-				{
-				setState(243);
+				setState(240);
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << STRING) | (1L << IDENTIFIER))) != 0)) ) {
 				_errHandler.recoverInline(this);
@@ -1633,26 +2177,7 @@ public class MymxParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				setState(244);
-				match(T__1);
-				setState(245);
-				match(T__2);
-				}
-				break;
-			case 6:
-				enterOuterAlt(_localctx, 6);
-				{
-				setState(246);
-				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << STRING) | (1L << IDENTIFIER))) != 0)) ) {
-				_errHandler.recoverInline(this);
-				}
-				else {
-					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-					_errHandler.reportMatch(this);
-					consume();
-				}
-				setState(251); 
+				setState(245); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -1660,46 +2185,47 @@ public class MymxParser extends Parser {
 					case 1:
 						{
 						{
-						setState(247);
-						match(T__10);
-						setState(248);
+						setState(241);
+						match(LEFT_BRACKET);
+						setState(242);
 						expression(0);
-						setState(249);
-						match(T__11);
+						setState(243);
+						match(RIGHT_BRACKET);
 						}
 						}
 						break;
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(253); 
+					setState(247); 
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,25,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				setState(259);
+				setState(253);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
 				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(255);
-						match(T__10);
-						setState(256);
-						match(T__11);
+						setState(249);
+						match(LEFT_BRACKET);
+						setState(250);
+						match(RIGHT_BRACKET);
 						}
 						} 
 					}
-					setState(261);
+					setState(255);
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
 				}
 				}
 				break;
-			case 7:
-				enterOuterAlt(_localctx, 7);
+			case 4:
+				_localctx = new ErrorNewtypeContext(_localctx);
+				enterOuterAlt(_localctx, 4);
 				{
-				setState(262);
+				setState(256);
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << STRING) | (1L << IDENTIFIER))) != 0)) ) {
 				_errHandler.recoverInline(this);
@@ -1709,6 +2235,30 @@ public class MymxParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
+				setState(261); 
+				_errHandler.sync(this);
+				_alt = 1;
+				do {
+					switch (_alt) {
+					case 1:
+						{
+						{
+						setState(257);
+						match(LEFT_BRACKET);
+						setState(258);
+						expression(0);
+						setState(259);
+						match(RIGHT_BRACKET);
+						}
+						}
+						break;
+					default:
+						throw new NoViableAltException(this);
+					}
+					setState(263); 
+					_errHandler.sync(this);
+					_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
+				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				setState(267); 
 				_errHandler.sync(this);
 				_alt = 1;
@@ -1717,12 +2267,10 @@ public class MymxParser extends Parser {
 					case 1:
 						{
 						{
-						setState(263);
-						match(T__10);
-						setState(264);
-						expression(0);
 						setState(265);
-						match(T__11);
+						match(LEFT_BRACKET);
+						setState(266);
+						match(RIGHT_BRACKET);
 						}
 						}
 						break;
@@ -1731,9 +2279,9 @@ public class MymxParser extends Parser {
 					}
 					setState(269); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				setState(273); 
+				setState(275); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -1742,40 +2290,18 @@ public class MymxParser extends Parser {
 						{
 						{
 						setState(271);
-						match(T__10);
+						match(LEFT_BRACKET);
 						setState(272);
-						match(T__11);
-						}
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
-					}
-					setState(275); 
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
-				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				setState(281); 
-				_errHandler.sync(this);
-				_alt = 1;
-				do {
-					switch (_alt) {
-					case 1:
-						{
-						{
-						setState(277);
-						match(T__10);
-						setState(278);
 						expression(0);
-						setState(279);
-						match(T__11);
+						setState(273);
+						match(RIGHT_BRACKET);
 						}
 						}
 						break;
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(283); 
+					setState(277); 
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,29,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
@@ -1837,7 +2363,7 @@ public class MymxParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3;\u0122\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3<\u011c\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\3\2\3\2\3\2\7\2#\n\2\f\2\16"+
 		"\2&\13\2\3\3\3\3\5\3*\n\3\3\3\3\3\3\3\5\3/\n\3\3\3\3\3\3\3\3\4\3\4\3\4"+
@@ -1849,100 +2375,96 @@ public class MymxParser extends Parser {
 		"\3\f\3\f\3\f\3\f\3\f\3\f\3\f\5\f\u008c\n\f\3\f\3\f\5\f\u0090\n\f\3\f\3"+
 		"\f\5\f\u0094\n\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\5\f\u009e\n\f\3\f\3\f"+
 		"\5\f\u00a2\n\f\3\f\5\f\u00a5\n\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3"+
-		"\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00ba\n\r\3\r\3\r\3\r\3\r\3"+
+		"\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00b7\n\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3"+
 		"\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r"+
-		"\3\r\3\r\3\r\3\r\5\r\u00d6\n\r\3\r\3\r\3\r\3\r\3\r\3\r\7\r\u00de\n\r\f"+
-		"\r\16\r\u00e1\13\r\3\16\3\16\3\16\3\16\3\16\5\16\u00e8\n\16\3\16\3\16"+
-		"\3\16\7\16\u00ed\n\16\f\16\16\16\u00f0\13\16\3\17\3\17\3\17\3\17\3\17"+
-		"\3\17\3\17\3\17\3\17\3\17\3\17\3\17\6\17\u00fe\n\17\r\17\16\17\u00ff\3"+
-		"\17\3\17\7\17\u0104\n\17\f\17\16\17\u0107\13\17\3\17\3\17\3\17\3\17\3"+
-		"\17\6\17\u010e\n\17\r\17\16\17\u010f\3\17\3\17\6\17\u0114\n\17\r\17\16"+
-		"\17\u0115\3\17\3\17\3\17\3\17\6\17\u011c\n\17\r\17\16\17\u011d\5\17\u0120"+
-		"\n\17\3\17\2\4\30\32\20\2\4\6\b\n\f\16\20\22\24\26\30\32\34\2\n\3\2\n"+
-		"\13\3\2\17\20\3\2\21\22\3\2\23\25\3\2\26\27\3\2\30\35\3\2\36\"\4\2#%\64"+
-		"\64\2\u0155\2$\3\2\2\2\4)\3\2\2\2\6\63\3\2\2\2\bA\3\2\2\2\nI\3\2\2\2\f"+
-		"L\3\2\2\2\16T\3\2\2\2\20_\3\2\2\2\22h\3\2\2\2\24m\3\2\2\2\26\u00a4\3\2"+
-		"\2\2\30\u00b9\3\2\2\2\32\u00e7\3\2\2\2\34\u011f\3\2\2\2\36#\5\4\3\2\37"+
-		"#\5\6\4\2 #\5\n\6\2!#\7\3\2\2\"\36\3\2\2\2\"\37\3\2\2\2\" \3\2\2\2\"!"+
-		"\3\2\2\2#&\3\2\2\2$\"\3\2\2\2$%\3\2\2\2%\3\3\2\2\2&$\3\2\2\2\'*\7\'\2"+
-		"\2(*\5\32\16\2)\'\3\2\2\2)(\3\2\2\2*+\3\2\2\2+,\7\64\2\2,.\7\4\2\2-/\5"+
-		"\16\b\2.-\3\2\2\2./\3\2\2\2/\60\3\2\2\2\60\61\7\5\2\2\61\62\5\24\13\2"+
-		"\62\5\3\2\2\2\63\64\7\62\2\2\64\65\7\64\2\2\65;\7\6\2\2\66:\5\n\6\2\67"+
-		":\5\4\3\28:\5\b\5\29\66\3\2\2\29\67\3\2\2\298\3\2\2\2:=\3\2\2\2;9\3\2"+
-		"\2\2;<\3\2\2\2<>\3\2\2\2=;\3\2\2\2>?\7\7\2\2?@\7\3\2\2@\7\3\2\2\2AB\7"+
-		"\64\2\2BD\7\4\2\2CE\5\16\b\2DC\3\2\2\2DE\3\2\2\2EF\3\2\2\2FG\7\5\2\2G"+
-		"H\5\24\13\2H\t\3\2\2\2IJ\5\20\t\2JK\7\3\2\2K\13\3\2\2\2LQ\5\30\r\2MN\7"+
-		"\b\2\2NP\5\30\r\2OM\3\2\2\2PS\3\2\2\2QO\3\2\2\2QR\3\2\2\2R\r\3\2\2\2S"+
-		"Q\3\2\2\2TU\5\32\16\2U\\\7\64\2\2VW\7\b\2\2WX\5\32\16\2XY\7\64\2\2Y[\3"+
-		"\2\2\2ZV\3\2\2\2[^\3\2\2\2\\Z\3\2\2\2\\]\3\2\2\2]\17\3\2\2\2^\\\3\2\2"+
-		"\2_`\5\32\16\2`e\5\22\n\2ab\7\b\2\2bd\5\22\n\2ca\3\2\2\2dg\3\2\2\2ec\3"+
-		"\2\2\2ef\3\2\2\2f\21\3\2\2\2ge\3\2\2\2hk\7\64\2\2ij\7\t\2\2jl\5\30\r\2"+
-		"ki\3\2\2\2kl\3\2\2\2l\23\3\2\2\2mq\7\6\2\2np\5\26\f\2on\3\2\2\2ps\3\2"+
-		"\2\2qo\3\2\2\2qr\3\2\2\2rt\3\2\2\2sq\3\2\2\2tu\7\7\2\2u\25\3\2\2\2v\u00a5"+
-		"\5\24\13\2w\u00a5\5\n\6\2xy\7*\2\2yz\7\4\2\2z{\5\30\r\2{|\7\5\2\2|\177"+
-		"\5\26\f\2}~\7+\2\2~\u0080\5\26\f\2\177}\3\2\2\2\177\u0080\3\2\2\2\u0080"+
-		"\u00a5\3\2\2\2\u0081\u0082\7-\2\2\u0082\u0083\7\4\2\2\u0083\u0084\5\30"+
-		"\r\2\u0084\u0085\7\5\2\2\u0085\u0086\5\26\f\2\u0086\u00a5\3\2\2\2\u0087"+
-		"\u0088\7,\2\2\u0088\u008b\7\4\2\2\u0089\u008c\5\30\r\2\u008a\u008c\5\20"+
-		"\t\2\u008b\u0089\3\2\2\2\u008b\u008a\3\2\2\2\u008b\u008c\3\2\2\2\u008c"+
-		"\u008d\3\2\2\2\u008d\u008f\7\3\2\2\u008e\u0090\5\30\r\2\u008f\u008e\3"+
-		"\2\2\2\u008f\u0090\3\2\2\2\u0090\u0091\3\2\2\2\u0091\u0093\7\3\2\2\u0092"+
-		"\u0094\5\30\r\2\u0093\u0092\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u0095\3"+
-		"\2\2\2\u0095\u0096\7\5\2\2\u0096\u00a5\5\26\f\2\u0097\u0098\7/\2\2\u0098"+
-		"\u00a5\7\3\2\2\u0099\u009a\7.\2\2\u009a\u00a5\7\3\2\2\u009b\u009d\7\60"+
-		"\2\2\u009c\u009e\5\30\r\2\u009d\u009c\3\2\2\2\u009d\u009e\3\2\2\2\u009e"+
-		"\u009f\3\2\2\2\u009f\u00a5\7\3\2\2\u00a0\u00a2\5\30\r\2\u00a1\u00a0\3"+
-		"\2\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a3\3\2\2\2\u00a3\u00a5\7\3\2\2\u00a4"+
-		"v\3\2\2\2\u00a4w\3\2\2\2\u00a4x\3\2\2\2\u00a4\u0081\3\2\2\2\u00a4\u0087"+
-		"\3\2\2\2\u00a4\u0097\3\2\2\2\u00a4\u0099\3\2\2\2\u00a4\u009b\3\2\2\2\u00a4"+
-		"\u00a1\3\2\2\2\u00a5\27\3\2\2\2\u00a6\u00a7\b\r\1\2\u00a7\u00ba\7\63\2"+
-		"\2\u00a8\u00ba\7\65\2\2\u00a9\u00ba\7\66\2\2\u00aa\u00ba\7\67\2\2\u00ab"+
-		"\u00ba\78\2\2\u00ac\u00ba\7\64\2\2\u00ad\u00ae\t\2\2\2\u00ae\u00ba\5\30"+
-		"\r\r\u00af\u00b0\t\3\2\2\u00b0\u00ba\5\30\r\f\u00b1\u00b2\t\4\2\2\u00b2"+
-		"\u00ba\5\30\r\13\u00b3\u00b4\7\4\2\2\u00b4\u00b5\5\30\r\2\u00b5\u00b6"+
-		"\7\5\2\2\u00b6\u00ba\3\2\2\2\u00b7\u00b8\7\61\2\2\u00b8\u00ba\5\34\17"+
-		"\2\u00b9\u00a6\3\2\2\2\u00b9\u00a8\3\2\2\2\u00b9\u00a9\3\2\2\2\u00b9\u00aa"+
-		"\3\2\2\2\u00b9\u00ab\3\2\2\2\u00b9\u00ac\3\2\2\2\u00b9\u00ad\3\2\2\2\u00b9"+
-		"\u00af\3\2\2\2\u00b9\u00b1\3\2\2\2\u00b9\u00b3\3\2\2\2\u00b9\u00b7\3\2"+
-		"\2\2\u00ba\u00df\3\2\2\2\u00bb\u00bc\f\n\2\2\u00bc\u00bd\t\3\2\2\u00bd"+
-		"\u00de\5\30\r\13\u00be\u00bf\f\t\2\2\u00bf\u00c0\t\5\2\2\u00c0\u00de\5"+
-		"\30\r\n\u00c1\u00c2\f\b\2\2\u00c2\u00c3\t\6\2\2\u00c3\u00de\5\30\r\t\u00c4"+
-		"\u00c5\f\7\2\2\u00c5\u00c6\t\7\2\2\u00c6\u00de\5\30\r\b\u00c7\u00c8\f"+
-		"\6\2\2\u00c8\u00c9\t\b\2\2\u00c9\u00de\5\30\r\7\u00ca\u00cb\f\5\2\2\u00cb"+
-		"\u00cc\7\t\2\2\u00cc\u00de\5\30\r\5\u00cd\u00ce\f\21\2\2\u00ce\u00de\t"+
-		"\2\2\2\u00cf\u00d0\f\20\2\2\u00d0\u00d1\7\f\2\2\u00d1\u00de\7\64\2\2\u00d2"+
-		"\u00d3\f\17\2\2\u00d3\u00d5\7\4\2\2\u00d4\u00d6\5\f\7\2\u00d5\u00d4\3"+
-		"\2\2\2\u00d5\u00d6\3\2\2\2\u00d6\u00d7\3\2\2\2\u00d7\u00de\7\5\2\2\u00d8"+
-		"\u00d9\f\16\2\2\u00d9\u00da\7\r\2\2\u00da\u00db\5\30\r\2\u00db\u00dc\7"+
-		"\16\2\2\u00dc\u00de\3\2\2\2\u00dd\u00bb\3\2\2\2\u00dd\u00be\3\2\2\2\u00dd"+
-		"\u00c1\3\2\2\2\u00dd\u00c4\3\2\2\2\u00dd\u00c7\3\2\2\2\u00dd\u00ca\3\2"+
-		"\2\2\u00dd\u00cd\3\2\2\2\u00dd\u00cf\3\2\2\2\u00dd\u00d2\3\2\2\2\u00dd"+
-		"\u00d8\3\2\2\2\u00de\u00e1\3\2\2\2\u00df\u00dd\3\2\2\2\u00df\u00e0\3\2"+
-		"\2\2\u00e0\31\3\2\2\2\u00e1\u00df\3\2\2\2\u00e2\u00e3\b\16\1\2\u00e3\u00e8"+
-		"\7#\2\2\u00e4\u00e8\7$\2\2\u00e5\u00e8\7%\2\2\u00e6\u00e8\7\64\2\2\u00e7"+
-		"\u00e2\3\2\2\2\u00e7\u00e4\3\2\2\2\u00e7\u00e5\3\2\2\2\u00e7\u00e6\3\2"+
-		"\2\2\u00e8\u00ee\3\2\2\2\u00e9\u00ea\f\7\2\2\u00ea\u00eb\7\r\2\2\u00eb"+
-		"\u00ed\7\16\2\2\u00ec\u00e9\3\2\2\2\u00ed\u00f0\3\2\2\2\u00ee\u00ec\3"+
-		"\2\2\2\u00ee\u00ef\3\2\2\2\u00ef\33\3\2\2\2\u00f0\u00ee\3\2\2\2\u00f1"+
-		"\u0120\7#\2\2\u00f2\u0120\7$\2\2\u00f3\u0120\7%\2\2\u00f4\u0120\7\64\2"+
-		"\2\u00f5\u00f6\t\t\2\2\u00f6\u00f7\7\4\2\2\u00f7\u0120\7\5\2\2\u00f8\u00fd"+
-		"\t\t\2\2\u00f9\u00fa\7\r\2\2\u00fa\u00fb\5\30\r\2\u00fb\u00fc\7\16\2\2"+
-		"\u00fc\u00fe\3\2\2\2\u00fd\u00f9\3\2\2\2\u00fe\u00ff\3\2\2\2\u00ff\u00fd"+
-		"\3\2\2\2\u00ff\u0100\3\2\2\2\u0100\u0105\3\2\2\2\u0101\u0102\7\r\2\2\u0102"+
-		"\u0104\7\16\2\2\u0103\u0101\3\2\2\2\u0104\u0107\3\2\2\2\u0105\u0103\3"+
-		"\2\2\2\u0105\u0106\3\2\2\2\u0106\u0120\3\2\2\2\u0107\u0105\3\2\2\2\u0108"+
-		"\u010d\t\t\2\2\u0109\u010a\7\r\2\2\u010a\u010b\5\30\r\2\u010b\u010c\7"+
-		"\16\2\2\u010c\u010e\3\2\2\2\u010d\u0109\3\2\2\2\u010e\u010f\3\2\2\2\u010f"+
-		"\u010d\3\2\2\2\u010f\u0110\3\2\2\2\u0110\u0113\3\2\2\2\u0111\u0112\7\r"+
-		"\2\2\u0112\u0114\7\16\2\2\u0113\u0111\3\2\2\2\u0114\u0115\3\2\2\2\u0115"+
-		"\u0113\3\2\2\2\u0115\u0116\3\2\2\2\u0116\u011b\3\2\2\2\u0117\u0118\7\r"+
-		"\2\2\u0118\u0119\5\30\r\2\u0119\u011a\7\16\2\2\u011a\u011c\3\2\2\2\u011b"+
-		"\u0117\3\2\2\2\u011c\u011d\3\2\2\2\u011d\u011b\3\2\2\2\u011d\u011e\3\2"+
-		"\2\2\u011e\u0120\3\2\2\2\u011f\u00f1\3\2\2\2\u011f\u00f2\3\2\2\2\u011f"+
-		"\u00f3\3\2\2\2\u011f\u00f4\3\2\2\2\u011f\u00f5\3\2\2\2\u011f\u00f8\3\2"+
-		"\2\2\u011f\u0108\3\2\2\2\u0120\35\3\2\2\2!\"$).9;DQ\\ekq\177\u008b\u008f"+
-		"\u0093\u009d\u00a1\u00a4\u00b9\u00d5\u00dd\u00df\u00e7\u00ee\u00ff\u0105"+
-		"\u010f\u0115\u011d\u011f";
+		"\3\r\5\r\u00d3\n\r\3\r\3\r\3\r\3\r\3\r\3\r\7\r\u00db\n\r\f\r\16\r\u00de"+
+		"\13\r\3\16\3\16\3\16\3\16\3\16\5\16\u00e5\n\16\3\16\3\16\3\16\7\16\u00ea"+
+		"\n\16\f\16\16\16\u00ed\13\16\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3"+
+		"\17\6\17\u00f8\n\17\r\17\16\17\u00f9\3\17\3\17\7\17\u00fe\n\17\f\17\16"+
+		"\17\u0101\13\17\3\17\3\17\3\17\3\17\3\17\6\17\u0108\n\17\r\17\16\17\u0109"+
+		"\3\17\3\17\6\17\u010e\n\17\r\17\16\17\u010f\3\17\3\17\3\17\3\17\6\17\u0116"+
+		"\n\17\r\17\16\17\u0117\5\17\u011a\n\17\3\17\2\4\30\32\20\2\4\6\b\n\f\16"+
+		"\20\22\24\26\30\32\34\2\13\3\2\25\30\3\2,-\3\2./\3\289\3\2\60\62\3\2)"+
+		"*\3\2#(\3\2\63\67\4\2\3\5\24\24\2\u0149\2$\3\2\2\2\4)\3\2\2\2\6\63\3\2"+
+		"\2\2\bA\3\2\2\2\nI\3\2\2\2\fL\3\2\2\2\16T\3\2\2\2\20_\3\2\2\2\22h\3\2"+
+		"\2\2\24m\3\2\2\2\26\u00a4\3\2\2\2\30\u00b6\3\2\2\2\32\u00e4\3\2\2\2\34"+
+		"\u0119\3\2\2\2\36#\5\4\3\2\37#\5\6\4\2 #\5\n\6\2!#\7\33\2\2\"\36\3\2\2"+
+		"\2\"\37\3\2\2\2\" \3\2\2\2\"!\3\2\2\2#&\3\2\2\2$\"\3\2\2\2$%\3\2\2\2%"+
+		"\3\3\2\2\2&$\3\2\2\2\'*\7\7\2\2(*\5\32\16\2)\'\3\2\2\2)(\3\2\2\2*+\3\2"+
+		"\2\2+,\7\24\2\2,.\7\35\2\2-/\5\16\b\2.-\3\2\2\2./\3\2\2\2/\60\3\2\2\2"+
+		"\60\61\7\36\2\2\61\62\5\24\13\2\62\5\3\2\2\2\63\64\7\22\2\2\64\65\7\24"+
+		"\2\2\65;\7!\2\2\66:\5\n\6\2\67:\5\4\3\28:\5\b\5\29\66\3\2\2\29\67\3\2"+
+		"\2\298\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<\3\2\2\2<>\3\2\2\2=;\3\2\2\2>?\7\""+
+		"\2\2?@\7\33\2\2@\7\3\2\2\2AB\7\24\2\2BD\7\35\2\2CE\5\16\b\2DC\3\2\2\2"+
+		"DE\3\2\2\2EF\3\2\2\2FG\7\36\2\2GH\5\24\13\2H\t\3\2\2\2IJ\5\20\t\2JK\7"+
+		"\33\2\2K\13\3\2\2\2LQ\5\30\r\2MN\7\32\2\2NP\5\30\r\2OM\3\2\2\2PS\3\2\2"+
+		"\2QO\3\2\2\2QR\3\2\2\2R\r\3\2\2\2SQ\3\2\2\2TU\5\32\16\2U\\\7\24\2\2VW"+
+		"\7\32\2\2WX\5\32\16\2XY\7\24\2\2Y[\3\2\2\2ZV\3\2\2\2[^\3\2\2\2\\Z\3\2"+
+		"\2\2\\]\3\2\2\2]\17\3\2\2\2^\\\3\2\2\2_`\5\32\16\2`e\5\22\n\2ab\7\32\2"+
+		"\2bd\5\22\n\2ca\3\2\2\2dg\3\2\2\2ec\3\2\2\2ef\3\2\2\2f\21\3\2\2\2ge\3"+
+		"\2\2\2hk\7\24\2\2ij\7+\2\2jl\5\30\r\2ki\3\2\2\2kl\3\2\2\2l\23\3\2\2\2"+
+		"mq\7!\2\2np\5\26\f\2on\3\2\2\2ps\3\2\2\2qo\3\2\2\2qr\3\2\2\2rt\3\2\2\2"+
+		"sq\3\2\2\2tu\7\"\2\2u\25\3\2\2\2v\u00a5\5\24\13\2w\u00a5\5\n\6\2xy\7\n"+
+		"\2\2yz\7\35\2\2z{\5\30\r\2{|\7\36\2\2|\177\5\26\f\2}~\7\13\2\2~\u0080"+
+		"\5\26\f\2\177}\3\2\2\2\177\u0080\3\2\2\2\u0080\u00a5\3\2\2\2\u0081\u0082"+
+		"\7\r\2\2\u0082\u0083\7\35\2\2\u0083\u0084\5\30\r\2\u0084\u0085\7\36\2"+
+		"\2\u0085\u0086\5\26\f\2\u0086\u00a5\3\2\2\2\u0087\u0088\7\f\2\2\u0088"+
+		"\u008b\7\35\2\2\u0089\u008c\5\30\r\2\u008a\u008c\5\20\t\2\u008b\u0089"+
+		"\3\2\2\2\u008b\u008a\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u008d\3\2\2\2\u008d"+
+		"\u008f\7\33\2\2\u008e\u0090\5\30\r\2\u008f\u008e\3\2\2\2\u008f\u0090\3"+
+		"\2\2\2\u0090\u0091\3\2\2\2\u0091\u0093\7\33\2\2\u0092\u0094\5\30\r\2\u0093"+
+		"\u0092\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u0096\7\36"+
+		"\2\2\u0096\u00a5\5\26\f\2\u0097\u0098\7\17\2\2\u0098\u00a5\7\33\2\2\u0099"+
+		"\u009a\7\16\2\2\u009a\u00a5\7\33\2\2\u009b\u009d\7\20\2\2\u009c\u009e"+
+		"\5\30\r\2\u009d\u009c\3\2\2\2\u009d\u009e\3\2\2\2\u009e\u009f\3\2\2\2"+
+		"\u009f\u00a5\7\33\2\2\u00a0\u00a2\5\30\r\2\u00a1\u00a0\3\2\2\2\u00a1\u00a2"+
+		"\3\2\2\2\u00a2\u00a3\3\2\2\2\u00a3\u00a5\7\33\2\2\u00a4v\3\2\2\2\u00a4"+
+		"w\3\2\2\2\u00a4x\3\2\2\2\u00a4\u0081\3\2\2\2\u00a4\u0087\3\2\2\2\u00a4"+
+		"\u0097\3\2\2\2\u00a4\u0099\3\2\2\2\u00a4\u009b\3\2\2\2\u00a4\u00a1\3\2"+
+		"\2\2\u00a5\27\3\2\2\2\u00a6\u00a7\b\r\1\2\u00a7\u00b7\7\23\2\2\u00a8\u00b7"+
+		"\t\2\2\2\u00a9\u00b7\7\24\2\2\u00aa\u00ab\t\3\2\2\u00ab\u00b7\5\30\r\r"+
+		"\u00ac\u00ad\t\4\2\2\u00ad\u00b7\5\30\r\f\u00ae\u00af\t\5\2\2\u00af\u00b7"+
+		"\5\30\r\13\u00b0\u00b1\7\35\2\2\u00b1\u00b2\5\30\r\2\u00b2\u00b3\7\36"+
+		"\2\2\u00b3\u00b7\3\2\2\2\u00b4\u00b5\7\21\2\2\u00b5\u00b7\5\34\17\2\u00b6"+
+		"\u00a6\3\2\2\2\u00b6\u00a8\3\2\2\2\u00b6\u00a9\3\2\2\2\u00b6\u00aa\3\2"+
+		"\2\2\u00b6\u00ac\3\2\2\2\u00b6\u00ae\3\2\2\2\u00b6\u00b0\3\2\2\2\u00b6"+
+		"\u00b4\3\2\2\2\u00b7\u00dc\3\2\2\2\u00b8\u00b9\f\n\2\2\u00b9\u00ba\t\4"+
+		"\2\2\u00ba\u00db\5\30\r\13\u00bb\u00bc\f\t\2\2\u00bc\u00bd\t\6\2\2\u00bd"+
+		"\u00db\5\30\r\n\u00be\u00bf\f\b\2\2\u00bf\u00c0\t\7\2\2\u00c0\u00db\5"+
+		"\30\r\t\u00c1\u00c2\f\7\2\2\u00c2\u00c3\t\b\2\2\u00c3\u00db\5\30\r\b\u00c4"+
+		"\u00c5\f\6\2\2\u00c5\u00c6\t\t\2\2\u00c6\u00db\5\30\r\7\u00c7\u00c8\f"+
+		"\5\2\2\u00c8\u00c9\7+\2\2\u00c9\u00db\5\30\r\5\u00ca\u00cb\f\21\2\2\u00cb"+
+		"\u00db\t\3\2\2\u00cc\u00cd\f\20\2\2\u00cd\u00ce\7\34\2\2\u00ce\u00db\7"+
+		"\24\2\2\u00cf\u00d0\f\17\2\2\u00d0\u00d2\7\35\2\2\u00d1\u00d3\5\f\7\2"+
+		"\u00d2\u00d1\3\2\2\2\u00d2\u00d3\3\2\2\2\u00d3\u00d4\3\2\2\2\u00d4\u00db"+
+		"\7\36\2\2\u00d5\u00d6\f\16\2\2\u00d6\u00d7\7\37\2\2\u00d7\u00d8\5\30\r"+
+		"\2\u00d8\u00d9\7 \2\2\u00d9\u00db\3\2\2\2\u00da\u00b8\3\2\2\2\u00da\u00bb"+
+		"\3\2\2\2\u00da\u00be\3\2\2\2\u00da\u00c1\3\2\2\2\u00da\u00c4\3\2\2\2\u00da"+
+		"\u00c7\3\2\2\2\u00da\u00ca\3\2\2\2\u00da\u00cc\3\2\2\2\u00da\u00cf\3\2"+
+		"\2\2\u00da\u00d5\3\2\2\2\u00db\u00de\3\2\2\2\u00dc\u00da\3\2\2\2\u00dc"+
+		"\u00dd\3\2\2\2\u00dd\31\3\2\2\2\u00de\u00dc\3\2\2\2\u00df\u00e0\b\16\1"+
+		"\2\u00e0\u00e5\7\3\2\2\u00e1\u00e5\7\4\2\2\u00e2\u00e5\7\5\2\2\u00e3\u00e5"+
+		"\7\24\2\2\u00e4\u00df\3\2\2\2\u00e4\u00e1\3\2\2\2\u00e4\u00e2\3\2\2\2"+
+		"\u00e4\u00e3\3\2\2\2\u00e5\u00eb\3\2\2\2\u00e6\u00e7\f\7\2\2\u00e7\u00e8"+
+		"\7\37\2\2\u00e8\u00ea\7 \2\2\u00e9\u00e6\3\2\2\2\u00ea\u00ed\3\2\2\2\u00eb"+
+		"\u00e9\3\2\2\2\u00eb\u00ec\3\2\2\2\u00ec\33\3\2\2\2\u00ed\u00eb\3\2\2"+
+		"\2\u00ee\u011a\t\n\2\2\u00ef\u00f0\t\n\2\2\u00f0\u00f1\7\35\2\2\u00f1"+
+		"\u011a\7\36\2\2\u00f2\u00f7\t\n\2\2\u00f3\u00f4\7\37\2\2\u00f4\u00f5\5"+
+		"\30\r\2\u00f5\u00f6\7 \2\2\u00f6\u00f8\3\2\2\2\u00f7\u00f3\3\2\2\2\u00f8"+
+		"\u00f9\3\2\2\2\u00f9\u00f7\3\2\2\2\u00f9\u00fa\3\2\2\2\u00fa\u00ff\3\2"+
+		"\2\2\u00fb\u00fc\7\37\2\2\u00fc\u00fe\7 \2\2\u00fd\u00fb\3\2\2\2\u00fe"+
+		"\u0101\3\2\2\2\u00ff\u00fd\3\2\2\2\u00ff\u0100\3\2\2\2\u0100\u011a\3\2"+
+		"\2\2\u0101\u00ff\3\2\2\2\u0102\u0107\t\n\2\2\u0103\u0104\7\37\2\2\u0104"+
+		"\u0105\5\30\r\2\u0105\u0106\7 \2\2\u0106\u0108\3\2\2\2\u0107\u0103\3\2"+
+		"\2\2\u0108\u0109\3\2\2\2\u0109\u0107\3\2\2\2\u0109\u010a\3\2\2\2\u010a"+
+		"\u010d\3\2\2\2\u010b\u010c\7\37\2\2\u010c\u010e\7 \2\2\u010d\u010b\3\2"+
+		"\2\2\u010e\u010f\3\2\2\2\u010f\u010d\3\2\2\2\u010f\u0110\3\2\2\2\u0110"+
+		"\u0115\3\2\2\2\u0111\u0112\7\37\2\2\u0112\u0113\5\30\r\2\u0113\u0114\7"+
+		" \2\2\u0114\u0116\3\2\2\2\u0115\u0111\3\2\2\2\u0116\u0117\3\2\2\2\u0117"+
+		"\u0115\3\2\2\2\u0117\u0118\3\2\2\2\u0118\u011a\3\2\2\2\u0119\u00ee\3\2"+
+		"\2\2\u0119\u00ef\3\2\2\2\u0119\u00f2\3\2\2\2\u0119\u0102\3\2\2\2\u011a"+
+		"\35\3\2\2\2!\"$).9;DQ\\ekq\177\u008b\u008f\u0093\u009d\u00a1\u00a4\u00b6"+
+		"\u00d2\u00da\u00dc\u00e4\u00eb\u00f9\u00ff\u0109\u010f\u0117\u0119";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
