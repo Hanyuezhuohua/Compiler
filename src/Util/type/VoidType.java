@@ -1,8 +1,7 @@
 package Util.type;
 
 import Util.error.ErrorMessage;
-
-import javax.swing.text.Position;
+import Util.position;
 
 public class VoidType implements Type{
     @Override
@@ -16,12 +15,12 @@ public class VoidType implements Type{
     }
 
     @Override
-    public void checkAssignment(Type t, Position pos) {
+    public void checkAssignment(Type t, position pos) {
         throw new ErrorMessage("VoidType Assignment Error", pos);
     }
 
     @Override
-    public void checkEquality(Type t, Position pos) {
+    public void checkEquality(Type t, position pos) {
         throw new ErrorMessage("VoidType Equality Error", pos);
     }
 }

@@ -6,9 +6,19 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AST/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ASTNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AST/ASTVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ASTVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ExprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ExprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/TypeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/TypeNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/VardefListNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/VardefListNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/VardefNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/VardefNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/error/ErrorMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/error/ErrorMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/scope/GlobalScope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/scope/GlobalScope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/scope/LocalScope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/scope/LocalScope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/scope/Scope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/scope/Scope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/symbol/Symbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/symbol/Symbol.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Util/type/ArrayType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/ArrayType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/BaseType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/BaseType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Util/type/BoolType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/BoolType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/type/ClassType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/ClassType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/ClassType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Util/type/FunctionType.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Util/type/IntType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/IntType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Util/type/NullType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/NullType.java" afterDir="false" />

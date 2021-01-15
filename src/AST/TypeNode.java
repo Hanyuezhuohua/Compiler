@@ -7,7 +7,7 @@ public class TypeNode extends ASTNode{
     public int dim;
     public TypeNode(position pos){
         super(pos);
-        type = "";
+        type = null;
         dim = 0;
     }
     public TypeNode(position pos, String type, int dim){

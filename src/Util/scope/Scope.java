@@ -4,8 +4,7 @@ import Util.symbol.ClassSymbol;
 import Util.symbol.FuncSymbol;
 import Util.symbol.Symbol;
 import Util.symbol.VarSymbol;
-
-import javax.swing.text.Position;
+import Util.position;
 
 public interface Scope {
     Scope getParent();
@@ -15,5 +14,5 @@ public interface Scope {
     void registerVar(VarSymbol v);
     void registerFunc(FuncSymbol f);
     void registerClass(ClassSymbol c);
-    Symbol findSymbol(String identifier, Position pos);
+    Symbol findSymbol(String identifier, position pos);
 }

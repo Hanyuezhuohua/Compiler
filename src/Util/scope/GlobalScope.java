@@ -5,8 +5,8 @@ import Util.symbol.ClassSymbol;
 import Util.symbol.FuncSymbol;
 import Util.symbol.Symbol;
 import Util.symbol.VarSymbol;
+import Util.position;
 
-import javax.swing.text.Position;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -66,7 +66,7 @@ public class GlobalScope implements Scope{
     }
 
     @Override
-    public Symbol findSymbol(String identifier, Position pos) {
+    public Symbol findSymbol(String identifier, position pos) {
         Symbol res = symbolTable.get(identifier);
         if(res != null) return res;
         else throw new ErrorMessage("GlobalScope findSymbol Error", pos);

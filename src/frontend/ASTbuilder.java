@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import Util.type.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
     @Override
@@ -18,7 +19,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
                 ASTNode tmp = visit(child);
                 code.defination.add(tmp);
             }
-            else if(child instanceof  MymxParser.Class_def_unitContext){
+            else if(child instanceof MymxParser.Class_def_unitContext){
                 ASTNode tmp = visit(child);
                 code.defination.add(tmp);
             }
@@ -28,7 +29,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
                     code.defination.add(tmp);
                 }
                 else if(tmp instanceof VardefListNode){
-                //    code.defination.addAll(); to do
+                    code.defination.addAll(((VardefListNode) tmp).getVarList());
                 }
             }
         }
@@ -37,7 +38,17 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitFunction_def_unit(MymxParser.Function_def_unitContext ctx) {
-        return super.visitFunction_def_unit(ctx);
+        FundefNode res = new FundefNode(ctx.IDENTIFIER().toString(), (SuiteNode) visit(ctx.suite()), new position(ctx));
+        if(ctx.parameter_list() != null){
+            res.setParameterList(((VardefListNode) visit(ctx.parameter_list())).getVarList());
+        }
+        if(ctx.type() != null){
+            res.setReturnType((TypeNode) visit(ctx.type()));
+        }
+        else if(ctx.VOID() != null){
+            res.setReturnType(new TypeNode(new position(ctx.VOID()), ctx.VOID().toString(), 0));
+        }
+        return res;
     }
 
     @Override
@@ -47,12 +58,16 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitConstructor_def_unit(MymxParser.Constructor_def_unitContext ctx) {
-        return super.visitConstructor_def_unit(ctx);
+        FundefNode res = new FundefNode(ctx.IDENTIFIER().toString(), (SuiteNode) visit(ctx.suite()), new position(ctx));
+        if(ctx.parameter_list() != null){
+            res.setParameterList(((VardefListNode) visit(ctx.parameter_list())).getVarList());
+        }
+        return res;
     }
 
     @Override
     public ASTNode visitVar_def_unit(MymxParser.Var_def_unitContext ctx) {
-        return super.visitVar_def_unit(ctx);
+        return visit(ctx.variable_list());
     }
 
     @Override
@@ -62,17 +77,31 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitParameter_list(MymxParser.Parameter_listContext ctx) {
-        return super.visitParameter_list(ctx);
+        VardefListNode res = new VardefListNode(new position(ctx));
+        for(int i = 0; i < ctx.IDENTIFIER().size(); ++i){
+            res.addVar(new VardefNode(ctx.IDENTIFIER(i).toString(), (TypeNode) visit(ctx.type(i)), new position(ctx)));
+        }
+        return res;
     }
 
     @Override
     public ASTNode visitVariable_list(MymxParser.Variable_listContext ctx) {
-        return super.visitVariable_list(ctx);
+        TypeNode type = (TypeNode) visit(ctx.type());
+        VardefListNode res = new VardefListNode(new position(ctx));
+        if(!ctx.variable_decl().isEmpty()){
+            for(ParserRuleContext Variable :  ctx.variable_decl()){
+                res.addVar((VardefNode) visit(Variable));
+            }
+        }
+        res.setType(type);
+        return res;
     }
 
     @Override
     public ASTNode visitVariable_decl(MymxParser.Variable_declContext ctx) {
-        return super.visitVariable_decl(ctx);
+        VardefNode res = new VardefNode(ctx.IDENTIFIER().toString(), new position(ctx));
+        if(ctx.expression() != null) res.setExpression((ExprNode) visit(ctx.expression()));
+        return res;
     }
 
     @Override

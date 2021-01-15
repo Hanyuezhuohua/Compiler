@@ -8,4 +8,7 @@ public interface ASTVisitor {
     void visit(ExprNode node);
     void visit(NewtypeNode node);
     void visit(ClassNode node);
+    void visit(FundefNode node);
+    void visit(SuiteNode node);
+    void visit(StatementNode node);
 }

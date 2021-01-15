@@ -4,7 +4,7 @@ import Util.type.*;
 import Util.scope.Scope;
 import AST.ASTNode;
 
-public class Symbol {
+public class Symbol{
     private String identifier;
     private Type type;
     private Scope scope;

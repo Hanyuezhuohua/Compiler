@@ -1,8 +1,7 @@
 package Util.type;
 
 import Util.error.ErrorMessage;
-
-import javax.swing.text.Position;
+import Util.position;
 
 public class ArrayType implements Type{
     private Type elementType;
@@ -45,13 +44,13 @@ public class ArrayType implements Type{
     }
 
     @Override
-    public void checkAssignment(Type t, Position pos) {
+    public void checkAssignment(Type t, position pos) {
         if(t.getType().equals("null") || (t.getType().equals(getType()))) return;
         else throw new ErrorMessage("ArrayType Assignment Error", pos);
     }
 
     @Override
-    public void checkEquality(Type t, Position pos) {
+    public void checkEquality(Type t, position pos) {
         if(t.getType().equals("null")) return;
         else throw new ErrorMessage("ArrayType Equality Error", pos);
     }

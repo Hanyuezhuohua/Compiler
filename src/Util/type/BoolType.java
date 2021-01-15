@@ -1,8 +1,7 @@
 package Util.type;
 
 import Util.error.ErrorMessage;
-
-import javax.swing.text.Position;
+import Util.position;
 
 public class BoolType implements Type{
     @Override
@@ -16,13 +15,13 @@ public class BoolType implements Type{
     }
 
     @Override
-    public void checkAssignment(Type t, Position pos) {
+    public void checkAssignment(Type t, position pos) {
         if(t.getType().equals("bool")) return;
         else throw new ErrorMessage("BoolType Assignment Error", pos);
     }
 
     @Override
-    public void checkEquality(Type t, Position pos) {
+    public void checkEquality(Type t, position pos) {
         if(t.getType().equals("bool")) return;
         else throw new ErrorMessage("BoolType Equality Error", pos);
     }

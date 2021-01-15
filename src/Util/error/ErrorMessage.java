@@ -1,6 +1,6 @@
 package Util.error;
 
-import javax.swing.text.Position;
+import  Util.position;
 
 public class ErrorMessage extends RuntimeException{
     public String additional;
@@ -11,7 +11,7 @@ public class ErrorMessage extends RuntimeException{
         super(message);
         additional = null;
     }
-    public ErrorMessage(String error, Position pos){
+    public ErrorMessage(String error, position pos){
         super(error);
         additional = pos.toString();
     }

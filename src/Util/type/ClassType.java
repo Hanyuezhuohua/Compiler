@@ -2,7 +2,7 @@ package Util.type;
 
 import Util.error.ErrorMessage;
 
-import javax.swing.text.Position;
+import Util.position;
 
 public class ClassType implements Type{
     private String identifier;
@@ -22,13 +22,13 @@ public class ClassType implements Type{
     }
 
     @Override
-    public void checkAssignment(Type t, Position pos) {
+    public void checkAssignment(Type t, position pos) {
         if(t.getType().equals(identifier) || t.getType().equals("null")) return;
         else throw new ErrorMessage("ClassType Assignment Error", pos);
     }
 
     @Override
-    public void checkEquality(Type t, Position pos) {
+    public void checkEquality(Type t, position pos) {
         if (t.getType().equals(identifier) || t.getType().equals("null")) return;
         else throw new ErrorMessage("ClassType Equality Error", pos);
     }

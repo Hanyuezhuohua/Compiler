@@ -1,10 +1,10 @@
 package Util.type;
 
-import javax.swing.text.Position;
+import Util.position;
 
 public interface Type {
     String getType();
     int getDim();
-    void checkAssignment(Type t, Position pos);
-    void checkEquality(Type t, Position pos);
+    void checkAssignment(Type t, position pos);
+    void checkEquality(Type t, position pos);
 }
