@@ -134,6 +134,13 @@ public interface MymxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExprStat(MymxParser.ExprStatContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code emptyStat}
+	 * labeled alternative in {@link MymxParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyStat(MymxParser.EmptyStatContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code newExpr}
 	 * labeled alternative in {@link MymxParser#expression}.
 	 * @param ctx the parse tree

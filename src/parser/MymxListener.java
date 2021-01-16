@@ -216,6 +216,18 @@ public interface MymxListener extends ParseTreeListener {
 	 */
 	void exitExprStat(MymxParser.ExprStatContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code emptyStat}
+	 * labeled alternative in {@link MymxParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterEmptyStat(MymxParser.EmptyStatContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code emptyStat}
+	 * labeled alternative in {@link MymxParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitEmptyStat(MymxParser.EmptyStatContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code newExpr}
 	 * labeled alternative in {@link MymxParser#expression}.
 	 * @param ctx the parse tree

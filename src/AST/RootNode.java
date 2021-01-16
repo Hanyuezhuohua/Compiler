@@ -4,14 +4,14 @@ import Util.position;
 import java.util.ArrayList;
 
 public class RootNode extends ASTNode{
-    public ArrayList<ASTNode> defination;
+    public ArrayList<ASTNode> definition;
     public RootNode(position pos){
         super(pos);
-        defination = new ArrayList<>();
+        definition = new ArrayList<>();
     }
-    public RootNode(ArrayList<ASTNode> defination, position pos){
+    public RootNode(ArrayList<ASTNode> definition, position pos){
        super(pos);
-       this.defination = defination;
+       this.definition = definition;
     }
 
     @Override

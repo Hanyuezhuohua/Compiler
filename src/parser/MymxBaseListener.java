@@ -244,6 +244,18 @@ public class MymxBaseListener implements MymxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterEmptyStat(MymxParser.EmptyStatContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEmptyStat(MymxParser.EmptyStatContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNewExpr(MymxParser.NewExprContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -8,12 +8,12 @@ public class Symbol{
     private String identifier;
     private Type type;
     private Scope scope;
-    private ASTNode defination;
+    private ASTNode definition;
 
-    public Symbol(String identifier, Type type, ASTNode defination){
+    public Symbol(String identifier, Type type, ASTNode definition){
         this.identifier = identifier;
         this.type = type;
-        this.defination = defination;
+        this.definition = definition;
     }
 
     public void setScope(Scope scope){
@@ -32,7 +32,7 @@ public class Symbol{
         return scope;
     }
 
-    public ASTNode getDefination() {
-        return defination;
+    public ASTNode getDefinition() {
+        return definition;
     }
 }

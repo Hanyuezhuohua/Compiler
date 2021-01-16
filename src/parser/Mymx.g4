@@ -31,35 +31,36 @@ NEW: 'new';
 CLASS: 'class';
 THIS: 'this';
 IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]*;
-statement: suite                                                                                   #blockStat
-         | var_def_unit                                                                            #vardefStat
-         | IF '(' expression ')' statement (ELSE statement)?                                       #ifStat
-         | WHILE '(' expression ')' statement                                                      #whileStat
-         | FOR '(' (expression | variable_list)? ';' expression? ';' expression? ')' statement     #forStat
-         | CONTINUE ';'                                                                            #continueStat
-         | BREAK ';'                                                                               #breakStat
-         | RETURN expression? ';'                                                                  #returnStat
-         | expression? ';'                                                                         #exprStat
+statement: suite                                                                                                #blockStat
+         | var_def_unit                                                                                         #vardefStat
+         | IF '(' expression ')' ifstatement = statement (ELSE elsestatement = statement)?                                                    #ifStat
+         | WHILE '(' expression ')' statement                                                                   #whileStat
+         | FOR '(' (initexpr = expression | initvar = variable_list)? ';' condition = expression? ';' incr = expression? ')' statement     #forStat
+         | CONTINUE ';'                                                                                         #continueStat
+         | BREAK ';'                                                                                            #breakStat
+         | RETURN expression? ';'                                                                               #returnStat
+         | expression ';'                                                                                       #exprStat
+         | ';'                                                                                                  #emptyStat
          ;
 
-expression: THIS                                                               #atomExpr
-          | (BOOL_LITERAL | INTEGER_LITERAL | STRING_LITERAL | NULL_LITERAL)   #atomExpr
-          | IDENTIFIER                                                         #atomExpr
-          | expression op = ('++' | '--')                                      #suffixExpr
-          | expression '.' IDENTIFIER                                          #memberExpr
-          | expression '(' expression_list? ')'                                #funcExpr
-          | expression '[' expression ']'                                      #subarrayExpr
-          | <assoc=right> op = ('++' | '--') expression                        #prefixExpr
-          | <assoc=right> op = ('+' | '-') expression                          #prefixExpr
-          | <assoc=right> op = ('!' | '~') expression                          #prefixExpr
-          | expression op = ('+' | '-' ) expression                            #binaryExpr
-          | expression op = ('*' | '/' | '%') expression                       #binaryExpr
-          | expression op = ('<<' | '>>') expression                           #binaryExpr
-          | expression op = ('<' | '>' | '<=' | '>=' | '==' | '!=') expression #binaryExpr
-          | expression op = ('&' | '^' | '|' | '&&' | '||') expression         #binaryExpr
-          | <assoc=right> expression '=' expression                            #assignExpr
-          | '(' expression ')'                                                 #atomExpr
-          | NEW newtype                                                        #newExpr
+expression: THIS                                                                           #atomExpr
+          | (BOOL_LITERAL | INTEGER_LITERAL | STRING_LITERAL | NULL_LITERAL)               #atomExpr
+          | IDENTIFIER                                                                     #atomExpr
+          | expression op = ('++' | '--')                                                  #suffixExpr
+          | expression '.' IDENTIFIER                                                      #memberExpr
+          | expression '(' expression_list? ')'                                            #funcExpr
+          | identifier = expression '[' index = expression ']'                             #subarrayExpr
+          | <assoc=right> op = ('++' | '--') expression                                    #prefixExpr
+          | <assoc=right> op = ('+' | '-') expression                                      #prefixExpr
+          | <assoc=right> op = ('!' | '~') expression                                      #prefixExpr
+          | lhs = expression op = ('+' | '-' ) rhs = expression                            #binaryExpr
+          | lhs = expression op = ('*' | '/' | '%') rhs = expression                       #binaryExpr
+          | lhs = expression op = ('<<' | '>>') rhs = expression                           #binaryExpr
+          | lhs = expression op = ('<' | '>' | '<=' | '>=' | '==' | '!=') rhs = expression #binaryExpr
+          | lhs = expression op = ('&' | '^' | '|' | '&&' | '||') rhs = expression         #binaryExpr
+          | <assoc=right> lhs = expression op = '=' rhs = expression                       #assignExpr
+          | '(' expression ')'                                                             #atomExpr
+          | NEW newtype                                                                    #newExpr
           ;
 
 type: type '[' ']' | INT | BOOL | STRING | IDENTIFIER;

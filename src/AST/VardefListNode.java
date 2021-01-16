@@ -28,8 +28,8 @@ public class VardefListNode extends ASTNode{
         }
     }
 
-    public void addVar(VardefNode var){
-        varList.add(var);
+    public void addVar(VardefNode v){
+        varList.add(v);
     }
 
     @Override
