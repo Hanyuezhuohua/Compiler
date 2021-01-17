@@ -3,7 +3,7 @@ package AST;
 import Util.position;
 import java.util.ArrayList;
 
-public class NewtypeNode extends ExprNode{ //need to modify
+public class NewtypeNode extends ASTNode{
     public TypeNode basetype;
     public ArrayList<ExprNode> known;
     public NewtypeNode(position pos){

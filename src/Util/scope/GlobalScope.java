@@ -6,6 +6,7 @@ import Util.symbol.FuncSymbol;
 import Util.symbol.Symbol;
 import Util.symbol.VarSymbol;
 import Util.position;
+import Util.type.NullType;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,10 +14,18 @@ import java.util.Map;
 public class GlobalScope implements Scope{
     private Map<String, Symbol> symbolTable;
     private Scope upScope;
+    private NullType nullType; //maybe need to be modified
 
     public GlobalScope(Scope upScope){
         symbolTable = new LinkedHashMap<>();
         this.upScope = upScope;
+        nullType = new NullType();
+    }
+
+    public GlobalScope(){
+        symbolTable = new LinkedHashMap<>();
+        upScope = null;
+        nullType = new NullType();
     }
 
     @Override
@@ -27,7 +36,7 @@ public class GlobalScope implements Scope{
     @Override
     public void checkVarLocal(VarSymbol v) {
         if (symbolTable.containsKey(v.getIdentifier())){
-            throw new ErrorMessage("GlobalScope checkVarLocal Error"); //need pos
+            throw new ErrorMessage("GlobalScope checkVarLocal Error", v.getPos());
         }
         else return;
     }
@@ -35,7 +44,7 @@ public class GlobalScope implements Scope{
     @Override
     public void checkFuncLocal(FuncSymbol f) {
         if(symbolTable.containsKey(f.getIdentifier())){
-            throw new ErrorMessage("GlobalScope checkFuncLocal Error"); //need pos
+            throw new ErrorMessage("GlobalScope checkFuncLocal Error", f.getPos());
         }
         else return;
     }
@@ -43,7 +52,7 @@ public class GlobalScope implements Scope{
     @Override
     public void checkClassLocal(ClassSymbol c) {
         if(symbolTable.containsKey(c.getIdentifier())){
-            throw new ErrorMessage("GlobalScope checkClassLocal Error"); //need pos
+            throw new ErrorMessage("GlobalScope checkClassLocal Error", c.getPos());
         }
     }
 
