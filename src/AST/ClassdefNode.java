@@ -10,6 +10,7 @@ public class ClassdefNode extends ASTNode{
     String identifier;
     List<VardefNode> varList;
     List<FundefNode> funcList;
+    FundefNode constructor;
     Symbol symbol;
 
     public ClassdefNode(position pos, String identifier){
@@ -17,6 +18,7 @@ public class ClassdefNode extends ASTNode{
         this.identifier = identifier;
         varList = new ArrayList<>();
         funcList = new ArrayList<>();
+        constructor = null;
         symbol = null;
     }
 
@@ -58,6 +60,14 @@ public class ClassdefNode extends ASTNode{
 
     public void addFunc(FundefNode f){
         funcList.add(f);
+    }
+
+    public void setConstructor(FundefNode constructor) {
+        this.constructor = constructor;
+    }
+
+    public FundefNode getConstructor() {
+        return constructor;
     }
 
     public void addVarList(List<VardefNode> varList) {

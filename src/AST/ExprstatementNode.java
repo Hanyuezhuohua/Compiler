@@ -9,6 +9,10 @@ public class ExprstatementNode extends StatementNode{
         this.expression = expression;
     }
 
+    public ExprNode getExpression() {
+        return expression;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

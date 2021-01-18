@@ -15,6 +15,14 @@ public class PrefixexprNode extends ExprNode{
         this.expression = expression;
     }
 
+    public ExprNode getExpression() {
+        return expression;
+    }
+
+    public PrefixOpType getOp() {
+        return op;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

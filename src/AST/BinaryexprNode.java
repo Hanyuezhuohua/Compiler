@@ -19,6 +19,18 @@ public class BinaryexprNode extends ExprNode{
         this.op = op;
     }
 
+    public ExprNode getLhs() {
+        return lhs;
+    }
+
+    public ExprNode getRhs() {
+        return rhs;
+    }
+
+    public BinaryOpType getOp() {
+        return op;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

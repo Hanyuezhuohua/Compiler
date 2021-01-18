@@ -15,6 +15,10 @@ public class MemberexprNode extends ExprNode{
         this.symbol = null;
     }
 
+    public void setExpression(ExprNode expression) {
+        this.expression = expression;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

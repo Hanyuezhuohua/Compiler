@@ -21,7 +21,9 @@ public class NullType implements Type{
 
     @Override
     public void checkEquality(Type t, position pos) {
-        if(t.getType().equals("int") || t.getType().equals("bool")) return;
-        else throw new ErrorMessage("NullType Equality Error", pos);
+        if(t.getType().equals("int") || t.getType().equals("bool") || t.getType().equals("void")){
+            throw new ErrorMessage("NullType Equality Error", pos);
+        }
+        else return;
     }
 }

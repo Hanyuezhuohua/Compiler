@@ -16,8 +16,19 @@ public abstract class ExprNode extends ASTNode{
         exprType = null;
     }
 
-    @Override
-    public void accept(ASTVisitor visitor) {
-        visitor.visit(this);
+    public Type getType() {
+        return type;
+    }
+
+    public ExprType getExprType() {
+        return exprType;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public void setExprType(ExprType exprType) {
+        this.exprType = exprType;
     }
 }

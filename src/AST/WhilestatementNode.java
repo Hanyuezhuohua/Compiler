@@ -4,12 +4,20 @@ import Util.position;
 
 public class WhilestatementNode extends StatementNode{
     private ExprNode condition;
-    private StatementNode block;
+    private SuiteNode block;
 
-    public WhilestatementNode(position pos, ExprNode condition, StatementNode block){
+    public WhilestatementNode(position pos, ExprNode condition, SuiteNode block){
         super(pos);
         this.condition = condition;
         this.block = block;
+    }
+
+    public ExprNode getCondition() {
+        return condition;
+    }
+
+    public SuiteNode getBlock() {
+        return block;
     }
 
     @Override

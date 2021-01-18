@@ -13,6 +13,18 @@ public class IdentifierNode extends ExprNode{
         symbol = null;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setSymbol(Symbol symbol) {
+        this.symbol = symbol;
+    }
+
+    public Symbol getSymbol() {
+        return symbol;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

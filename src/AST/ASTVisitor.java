@@ -5,11 +5,9 @@ public interface ASTVisitor {
     void visit(VardefNode node);
     void visit(VardefListNode node);
     void visit(TypeNode node);
-    void visit(ExprNode node);
     void visit(NewtypeNode node);
     void visit(FundefNode node);
     void visit(SuiteNode node);
-    void visit(StatementNode node);
     void visit(ClassdefNode node);
     void visit(BreakstatementNode node);
     void visit(ContinuestatementNode node);
@@ -32,4 +30,5 @@ public interface ASTVisitor {
     void visit(FuncexprNode node);
     void visit(SubarrayexprNode node);
     void visit(NewexprNode node);
+    void visit(ThisexprNode node);
 }

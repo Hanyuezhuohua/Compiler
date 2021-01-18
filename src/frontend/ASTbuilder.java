@@ -18,19 +18,19 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
         for(var child : ctx.children){
             if(child instanceof MymxParser.Function_def_unitContext){
                 ASTNode tmp = visit(child);
-                code.definition.add(tmp);
+                code.AddNode(tmp);
             }
             else if(child instanceof MymxParser.Class_def_unitContext){
                 ASTNode tmp = visit(child);
-                code.definition.add(tmp);
+                code.AddNode(tmp);
             }
             else if(child instanceof MymxParser.Var_def_unitContext){
                 ASTNode tmp = visit(child);
                 if(tmp instanceof VardefNode){
-                    code.definition.add(tmp);
+                    code.AddNode(tmp);
                 }
                 else if(tmp instanceof VardefListNode){
-                    code.definition.addAll(((VardefListNode) tmp).getVarList());
+                    code.AddNode((((VardefListNode) tmp).getVarList()));
                 }
             }
         }
@@ -62,7 +62,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
             res.addFunc((FundefNode) visit(f));
         }
         for (var c : ctx.constructor_def_unit()){
-            res.addFunc((FundefNode) visit(c));
+            res.setConstructor((FundefNode) visit(c));
         }
         return res;
     }
@@ -146,27 +146,74 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
     @Override
     public ASTNode visitIfStat(MymxParser.IfStatContext ctx) {
         if(ctx.elsestatement != null) {
-            return new IfstatementNode(new position(ctx), (ExprNode) visit(ctx.expression()), (StatementNode) visit(ctx.ifstatement), (StatementNode) visit(ctx.elsestatement));
+            SuiteNode trueSuite;
+            SuiteNode falseSuite;
+            StatementNode trueStatementNode = (StatementNode) visit(ctx.ifstatement);
+            if(trueStatementNode instanceof SuiteNode){
+                trueSuite = (SuiteNode) trueStatementNode;
+            }
+            else{
+                trueSuite = new SuiteNode(trueStatementNode.getPos());
+                trueSuite.addStat(trueStatementNode);
+            }
+            StatementNode falseStatementNode = (StatementNode) visit(ctx.elsestatement);
+            if(falseStatementNode instanceof SuiteNode){
+                falseSuite = (SuiteNode) falseStatementNode;
+            }
+            else{
+                falseSuite = new SuiteNode(falseStatementNode.getPos());
+                falseSuite.addStat(falseStatementNode);
+            }
+            return new IfstatementNode(new position(ctx), (ExprNode) visit(ctx.expression()), trueSuite, falseSuite);
         }
-        else return new IfstatementNode(new position(ctx), (ExprNode) visit(ctx.expression()), (StatementNode) visit(ctx.ifstatement), null);
+        else{
+            SuiteNode trueSuite;
+            StatementNode trueStatementNode = (StatementNode) visit(ctx.ifstatement);
+            if(trueStatementNode instanceof SuiteNode){
+                trueSuite = (SuiteNode) trueStatementNode;
+            }
+            else{
+                trueSuite = new SuiteNode(trueStatementNode.getPos());
+                trueSuite.addStat(trueStatementNode);
+            }
+            return new IfstatementNode(new position(ctx), (ExprNode) visit(ctx.expression()), trueSuite, null);
+        }
     }
 
     @Override
     public ASTNode visitWhileStat(MymxParser.WhileStatContext ctx) {
-        return new WhilestatementNode(new position(ctx), (ExprNode) visit(ctx.expression()), (StatementNode) visit(ctx.statement()));
+        SuiteNode suite;
+        StatementNode statementNode = (StatementNode) visit(ctx.statement());
+        if(statementNode instanceof SuiteNode){
+            suite = (SuiteNode) statementNode;
+        }
+        else {
+            suite = new SuiteNode(statementNode.getPos());
+            suite.addStat(statementNode);
+        }
+        return new WhilestatementNode(new position(ctx), (ExprNode) visit(ctx.expression()), suite);
     }
 
     @Override
     public ASTNode visitForStat(MymxParser.ForStatContext ctx) {
         ExprNode condition = ctx.condition == null ? null : (ExprNode) visit(ctx.condition);
         ExprNode incr = ctx.incr == null ? null : (ExprNode) visit(ctx.incr);
+        SuiteNode suite;
+        StatementNode statementNode = (StatementNode) visit(ctx.statement());
+        if(statementNode instanceof SuiteNode){
+            suite = (SuiteNode) statementNode;
+        }
+        else {
+            suite = new SuiteNode(statementNode.getPos());
+            suite.addStat(statementNode);
+        }
         if(ctx.initexpr != null){
-            return new ForstatementNode(new position(ctx), (ExprNode) visit(ctx.initexpr), condition, incr, (StatementNode) visit(ctx.statement()));
+            return new ForstatementNode(new position(ctx), (ExprNode) visit(ctx.initexpr), condition, incr, suite);
         }
         else if(ctx.initvar != null){
-            return new ForstatementNode(new position(ctx), (VardefListNode) visit(ctx.initvar), condition, incr, (StatementNode) visit(ctx.statement()));
+            return new ForstatementNode(new position(ctx), (VardefListNode) visit(ctx.initvar), condition, incr, suite);
         }
-        else return new ForstatementNode(new position(ctx), condition, incr, (StatementNode) visit(ctx.statement()));
+        else return new ForstatementNode(new position(ctx), condition, incr, suite);
     }
 
     @Override

@@ -11,11 +11,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LocalScope implements Scope{
-    private Map<String, Symbol> symbolTable;
+    private Map<String, VarSymbol> VarSymbolTable;
+    private Map<String, FuncSymbol> FuncSymbolTable;
     private Scope upScope;
 
     public LocalScope(Scope upScope){
-        symbolTable = new LinkedHashMap<>();
+        VarSymbolTable = new LinkedHashMap<>();
+        FuncSymbolTable = new LinkedHashMap<>();
         this.upScope = upScope;
     }
 
@@ -25,49 +27,46 @@ public class LocalScope implements Scope{
     }
 
     @Override
-    public void checkVarLocal(VarSymbol v) {
-        if (symbolTable.containsKey(v.getIdentifier())){
-            throw new ErrorMessage("LocalScope checkVarLocal Error"); //need pos
+    public void check(String identifier) {
+        Scope globalScope = getParent();
+        while (globalScope != null){
+            globalScope = globalScope.getParent();
         }
-        else return;
-    }
-
-    @Override
-    public void checkFuncLocal(FuncSymbol f) {
-        if(symbolTable.containsKey(f.getIdentifier())){
-            throw new ErrorMessage("LocalScope checkFuncLocal Error"); //need pos
+        if(VarSymbolTable.containsKey(identifier) || FuncSymbolTable.containsKey(identifier) || (((GlobalScope) globalScope).getClassSymbolTable()).containsKey(identifier)){
+            throw new ErrorMessage("LocalScope check Error");
         }
-        else return;
-    }
-
-    @Override
-    public void checkClassLocal(ClassSymbol c) {
-        throw new ErrorMessage("LocalScope checkClassLocal Error"); //need pos
     }
 
     @Override
     public void registerVar(VarSymbol v) {
-        checkVarLocal(v);
-        symbolTable.put(v.getIdentifier(), v);
-        v.setScope(this);
+        check(v.getIdentifier());
+        VarSymbolTable.put(v.getIdentifier(), v);
     }
 
     @Override
     public void registerFunc(FuncSymbol f) {
-        checkFuncLocal(f);
-        symbolTable.put(f.getIdentifier(), f);
-        f.setScope(this);
+        check(f.getIdentifier());
+        FuncSymbolTable.put(f.getIdentifier(), f);
     }
 
     @Override
     public void registerClass(ClassSymbol c) {
-        throw new ErrorMessage("LocalScope registerClass Error"); //need pos
+        throw new ErrorMessage("LocalScope registerClass Error", c.getPos());
     }
 
     @Override
     public Symbol findSymbol(String identifier, position pos) {
-        Symbol res = symbolTable.get(identifier);
-        if(res != null) return res;
-        else return upScope.findSymbol(identifier, pos);
+        Symbol tmp = VarSymbolTable.get(identifier);
+        if(tmp != null) return tmp;
+        else{
+            tmp = FuncSymbolTable.get(identifier);
+            if(tmp != null) return tmp;
+            else return upScope.findSymbol(identifier, pos);
+        }
+    }
+
+    @Override
+    public ClassSymbol findClassSymbol(String identifier, position pos) {
+        return upScope.findClassSymbol(identifier, pos);
     }
 }

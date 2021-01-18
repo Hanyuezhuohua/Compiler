@@ -8,11 +8,10 @@ import Util.position;
 
 public interface Scope {
     Scope getParent();
-    void checkVarLocal(VarSymbol v);
-    void checkFuncLocal(FuncSymbol f);
-    void checkClassLocal(ClassSymbol c);
     void registerVar(VarSymbol v);
     void registerFunc(FuncSymbol f);
     void registerClass(ClassSymbol c);
+    void check(String identifier);
     Symbol findSymbol(String identifier, position pos);
+    ClassSymbol findClassSymbol(String identifier, position pos);
 }

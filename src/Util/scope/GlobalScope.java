@@ -12,72 +12,71 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class GlobalScope implements Scope{
-    private Map<String, Symbol> symbolTable;
-    private Scope upScope;
+    private Map<String, VarSymbol> VarSymbolTable;
+    private Map<String, FuncSymbol> FuncSymbolTable;
+    private Map<String, ClassSymbol> ClassSymbolTable;
     private NullType nullType; //maybe need to be modified
 
-    public GlobalScope(Scope upScope){
-        symbolTable = new LinkedHashMap<>();
-        this.upScope = upScope;
+    public GlobalScope(){
+        VarSymbolTable = new LinkedHashMap<>();
+        FuncSymbolTable = new LinkedHashMap<>();
+        ClassSymbolTable = new LinkedHashMap<>();
         nullType = new NullType();
     }
 
-    public GlobalScope(){
-        symbolTable = new LinkedHashMap<>();
-        upScope = null;
-        nullType = new NullType();
+    public Map<String, ClassSymbol> getClassSymbolTable() {
+        return ClassSymbolTable;
     }
 
     @Override
     public Scope getParent() {
-        return upScope;
+        return null;
     }
 
     @Override
-    public void checkVarLocal(VarSymbol v) {
-        if (symbolTable.containsKey(v.getIdentifier())){
-            throw new ErrorMessage("GlobalScope checkVarLocal Error", v.getPos());
-        }
-        else return;
-    }
-
-    @Override
-    public void checkFuncLocal(FuncSymbol f) {
-        if(symbolTable.containsKey(f.getIdentifier())){
-            throw new ErrorMessage("GlobalScope checkFuncLocal Error", f.getPos());
-        }
-        else return;
-    }
-
-    @Override
-    public void checkClassLocal(ClassSymbol c) {
-        if(symbolTable.containsKey(c.getIdentifier())){
-            throw new ErrorMessage("GlobalScope checkClassLocal Error", c.getPos());
+    public void check(String identifier) {
+        if(VarSymbolTable.containsKey(identifier) || FuncSymbolTable.containsKey(identifier) || ClassSymbolTable.containsKey(identifier)){
+            throw new ErrorMessage("GlobalScope check Error");
         }
     }
 
     @Override
     public void registerVar(VarSymbol v) {
-        checkVarLocal(v);
-        symbolTable.put(v.getIdentifier(), v);
+        check(v.getIdentifier());
+        VarSymbolTable.put(v.getIdentifier(), v);
     }
 
     @Override
     public void registerFunc(FuncSymbol f) {
-        checkFuncLocal(f);
-        symbolTable.put(f.getIdentifier(), f);
+        check(f.getIdentifier());
+        FuncSymbolTable.put(f.getIdentifier(), f);
     }
 
     @Override
     public void registerClass(ClassSymbol c) {
-        checkClassLocal(c);
-        symbolTable.put(c.getIdentifier(), c);
+        check(c.getIdentifier());
+        ClassSymbolTable.put(c.getIdentifier(), c);
     }
 
     @Override
     public Symbol findSymbol(String identifier, position pos) {
-        Symbol res = symbolTable.get(identifier);
-        if(res != null) return res;
-        else throw new ErrorMessage("GlobalScope findSymbol Error", pos);
+        Symbol tmp = VarSymbolTable.get(identifier);
+        if(tmp != null) return tmp;
+        else{
+            tmp = FuncSymbolTable.get(identifier);
+            if(tmp != null) return tmp;
+            else{
+                tmp = ClassSymbolTable.get(identifier);
+                if(tmp != null) return tmp;
+                else throw new ErrorMessage("GlobalScope findSymbol Error", pos);
+            }
+        }
+    }
+
+    @Override
+    public ClassSymbol findClassSymbol(String identifier, position pos) {
+        ClassSymbol tmp = ClassSymbolTable.get(identifier);
+        if(tmp != null) return tmp;
+        else throw new ErrorMessage("GlobalScope findClassSymbol Error", pos);
     }
 }

@@ -13,6 +13,14 @@ public class ReturnstatementNode extends StatementNode{
         symbol = null;
     }
 
+    public void setSymbol(Symbol symbol) {
+        this.symbol = symbol;
+    }
+
+    public ExprNode getReturnVal() {
+        return returnVal;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

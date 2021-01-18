@@ -7,9 +7,9 @@ public class ForstatementNode extends StatementNode{
     private ExprNode condition;
     private ExprNode incr;
     private VardefListNode initDef;
-    private StatementNode block;
+    private SuiteNode block;
 
-    public ForstatementNode(position pos, ExprNode init, ExprNode condition, ExprNode incr, StatementNode block){
+    public ForstatementNode(position pos, ExprNode init, ExprNode condition, ExprNode incr, SuiteNode block){
         super(pos);
         initExpr = init;
         this.condition = condition;
@@ -18,7 +18,7 @@ public class ForstatementNode extends StatementNode{
         this.block = block;
     }
 
-    public ForstatementNode(position pos, VardefListNode init, ExprNode condition, ExprNode incr, StatementNode block){
+    public ForstatementNode(position pos, VardefListNode init, ExprNode condition, ExprNode incr, SuiteNode block){
         super(pos);
         initExpr = null;
         this.condition = condition;
@@ -27,7 +27,7 @@ public class ForstatementNode extends StatementNode{
         this.block = block;
     }
 
-    public ForstatementNode(position pos, ExprNode condition, ExprNode incr, StatementNode block){
+    public ForstatementNode(position pos, ExprNode condition, ExprNode incr, SuiteNode block){
         super(pos);
         initExpr = null;
         this.condition = condition;

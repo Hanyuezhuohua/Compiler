@@ -10,6 +10,10 @@ public class VardefstatementNode extends StatementNode{
         this.varList = varList;
     }
 
+    public VardefListNode getVarList() {
+        return varList;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

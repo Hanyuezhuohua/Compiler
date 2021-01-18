@@ -1,13 +1,17 @@
 package AST;
 
-import Util.scope.Scope;
 import Util.position;
+import Util.symbol.Symbol;
 
 public class ThisexprNode extends ExprNode{
-    private Scope scope;
+    private Symbol symbol;
 
     public ThisexprNode(position pos){
         super(pos);
+    }
+
+    public void setSymbol(Symbol symbol) {
+        this.symbol = symbol;
     }
 
     @Override

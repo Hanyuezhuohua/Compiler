@@ -39,6 +39,10 @@ public class Symbol{
         this.scope = scope;
     }
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     public String getIdentifier() {
         return identifier;
     }

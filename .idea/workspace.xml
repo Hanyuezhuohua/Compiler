@@ -3,12 +3,35 @@
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/NewtypeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/NewtypeNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ASTNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ASTVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ASTVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/BinaryexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/BinaryexprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ClassdefNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ClassdefNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ExprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ExprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ExprstatementNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ExprstatementNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ForstatementNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ForstatementNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/FundefNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/FundefNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/IdentifierNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/IdentifierNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/IfstatementNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/IfstatementNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/MemberexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/MemberexprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/PrefixexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/PrefixexprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ReturnstatementNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ReturnstatementNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/RootNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/RootNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/StatementNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/StatementNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/SubarrayexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/SubarrayexprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/SuffixexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/SuffixexprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ThisexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ThisexprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/TypeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/TypeNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/VardefstatementNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/VardefstatementNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/WhilestatementNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/WhilestatementNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Util/scope/GlobalScope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/scope/GlobalScope.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/symbol/ClassSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/symbol/ClassSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/symbol/FuncSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/symbol/FuncSymbol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/scope/LocalScope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/scope/LocalScope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/scope/Scope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/scope/Scope.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Util/symbol/Symbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/symbol/Symbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/symbol/VarSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/symbol/VarSymbol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/ClassdefType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/type/NullType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/type/NullType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/ASTbuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/ASTbuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/ScopeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/ScopeBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

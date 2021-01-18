@@ -42,6 +42,30 @@ public class FundefNode extends ASTNode{
         this.returnType = returnType;
     }
 
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public TypeNode getReturnType() {
+        return returnType;
+    }
+
+    public List<VardefNode> getParameterList() {
+        return parameterList;
+    }
+
+    public Symbol getSymbol() {
+        return symbol;
+    }
+
+    public SuiteNode getSuite() {
+        return suite;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
