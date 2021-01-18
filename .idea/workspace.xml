@@ -3,16 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/ExprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ExprNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/ForstatementNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ForstatementNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/FuncexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/FuncexprNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/MemberexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/MemberexprNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/NewexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/NewexprNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/NewtypeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/NewtypeNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/FundefNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/FundefNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Util/scope/LocalScope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/scope/LocalScope.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/symbol/ClassSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/symbol/ClassSymbol.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/ScopeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/ScopeBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/SemanticChecker.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

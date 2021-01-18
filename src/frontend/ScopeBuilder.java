@@ -113,6 +113,9 @@ public class ScopeBuilder implements ASTVisitor {
         node.setScope(currentScope);
         for(ASTNode tmp: node.getDefinition()){
             if(tmp instanceof ClassdefNode){
+                if(((ClassdefNode) tmp).getIdentifier().equals("main")){
+                    throw new ErrorMessage("main cannot be the class name", node.getPos());
+                }
                 ClassSymbol classSymbol = new ClassSymbol(tmp.getPos(), ((ClassdefNode) tmp).getIdentifier(), new ClassType(((ClassdefNode) tmp).getIdentifier()), new LocalScope(currentScope));
                 currentScope.registerClass(classSymbol);
                 ((ClassdefNode) tmp).setSymbol(classSymbol);
@@ -184,6 +187,15 @@ public class ScopeBuilder implements ASTVisitor {
         currentScope = funcSymbol.getScope();
         node.getSuite().accept(this);
         currentScope = funcSymbol.getScope();
+        if(node.isConstructor() && node.ReturnExistence()){
+            throw new ErrorMessage("Constructor has no Return", node.getPos());
+        }
+        else if(node.getIdentifier().equals("main") && !(currentScope.getParent() instanceof GlobalScope)){
+            throw new ErrorMessage("Main cannot be a class function", node.getPos());
+        }
+        else if(!node.isConstructor() && !node.ReturnExistence() && !node.getIdentifier().equals("main")){
+            throw new ErrorMessage("simple function without Return ERROR", node.getPos());
+        }
     }
 
     @Override
@@ -274,6 +286,7 @@ public class ScopeBuilder implements ASTVisitor {
         }
         if (node.getConstructor() != null){
             FundefNode func = node.getConstructor();
+            func.setConstructor(true);
             if(!node.getConstructor().getIdentifier().equals(node.getIdentifier())){
                 throw new ErrorMessage("constructor name ERROR", node.getPos());
             }
@@ -290,7 +303,7 @@ public class ScopeBuilder implements ASTVisitor {
                 funcSymbol.setType(arrayType);
             }
             funcSymbol.setScope(new LocalScope(currentScope));
-            currentScope.registerFunc(funcSymbol);
+            ((LocalScope) currentScope).registerClassConstructor(funcSymbol);
             func.setSymbol(funcSymbol);
             func.setScope(funcSymbol.getScope());
             currentScope = func.getScope();
@@ -679,6 +692,7 @@ public class ScopeBuilder implements ASTVisitor {
             node.getReturnVal().accept(this);
             currentFunc.getType().checkAssignment(node.getReturnVal().getType(), node.getPos());
         }
+        ((FundefNode) currentFunc.getDefinition()).setReturnExistence(true);
     }
 
     @Override

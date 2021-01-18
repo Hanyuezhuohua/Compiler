@@ -60,6 +60,13 @@ public class LocalScope implements Scope{
         VarSymbolList.add(v);
     }
 
+    public void registerClassConstructor(FuncSymbol f){
+        if(VarSymbolTable.containsKey(f.getIdentifier()) || FuncSymbolTable.containsKey(f.getIdentifier())){
+            throw new ErrorMessage("LocalScope registerClassConstructor Error");
+        }
+        FuncSymbolTable.put(f.getIdentifier(), f);
+    }
+
     @Override
     public void registerFunc(FuncSymbol f) {
         check(f.getIdentifier());
