@@ -36,6 +36,30 @@ public class ForstatementNode extends StatementNode{
         this.block = block;
     }
 
+    public void setCondition(ExprNode condition) {
+        this.condition = condition;
+    }
+
+    public ExprNode getInitExpr() {
+        return initExpr;
+    }
+
+    public VardefListNode getInitDef() {
+        return initDef;
+    }
+
+    public ExprNode getCondition() {
+        return condition;
+    }
+
+    public ExprNode getIncr() {
+        return incr;
+    }
+
+    public SuiteNode getBlock() {
+        return block;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

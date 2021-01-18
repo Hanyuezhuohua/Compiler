@@ -7,18 +7,30 @@ import Util.symbol.Symbol;
 import Util.symbol.VarSymbol;
 import Util.position;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LocalScope implements Scope{
     private Map<String, VarSymbol> VarSymbolTable;
     private Map<String, FuncSymbol> FuncSymbolTable;
+    private List<VarSymbol> VarSymbolList;
     private Scope upScope;
 
     public LocalScope(Scope upScope){
         VarSymbolTable = new LinkedHashMap<>();
         FuncSymbolTable = new LinkedHashMap<>();
+        VarSymbolList = new ArrayList<>();
         this.upScope = upScope;
+    }
+
+    public Map<String, VarSymbol> getVarSymbolTable() {
+        return VarSymbolTable;
+    }
+
+    public List<VarSymbol> getVarSymbolList() {
+        return VarSymbolList;
     }
 
     @Override
@@ -41,6 +53,11 @@ public class LocalScope implements Scope{
     public void registerVar(VarSymbol v) {
         check(v.getIdentifier());
         VarSymbolTable.put(v.getIdentifier(), v);
+    }
+
+    public void registerPara(VarSymbol v){
+        registerVar(v);
+        VarSymbolList.add(v);
     }
 
     @Override

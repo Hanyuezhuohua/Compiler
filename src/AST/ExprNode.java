@@ -1,5 +1,6 @@
 package AST;
 
+import Util.error.ErrorMessage;
 import Util.position;
 import Util.type.Type;
 
@@ -22,6 +23,13 @@ public abstract class ExprNode extends ASTNode{
 
     public ExprType getExprType() {
         return exprType;
+    }
+
+    public void isValue(){
+        if(exprType != ExprType.LVALUE && exprType != ExprType.RVALUE){
+            throw new ErrorMessage("ExprNode isValue ERROR", getPos());
+        }
+        else return;
     }
 
     public void setType(Type type) {

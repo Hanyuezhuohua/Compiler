@@ -4,8 +4,8 @@ import Util.position;
 import java.util.ArrayList;
 
 public class NewtypeNode extends ASTNode{
-    public TypeNode basetype;
-    public ArrayList<ExprNode> known;
+    private TypeNode basetype;
+    private ArrayList<ExprNode> known;
     public NewtypeNode(position pos){
         super(pos);
         basetype = new TypeNode(pos);
@@ -21,6 +21,14 @@ public class NewtypeNode extends ASTNode{
         super(pos);
         basetype = type;
         this.known = known;
+    }
+
+    public ArrayList<ExprNode> getKnown() {
+        return known;
+    }
+
+    public TypeNode getBasetype() {
+        return basetype;
     }
 
     public void setBasetype(TypeNode type){

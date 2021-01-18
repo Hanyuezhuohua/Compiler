@@ -19,6 +19,22 @@ public class MemberexprNode extends ExprNode{
         this.expression = expression;
     }
 
+    public ExprNode getExpression() {
+        return expression;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setSymbol(Symbol symbol) {
+        this.symbol = symbol;
+    }
+
+    public Symbol getSymbol() {
+        return symbol;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

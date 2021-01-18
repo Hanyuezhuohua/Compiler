@@ -11,6 +11,14 @@ public class NewexprNode extends ExprNode{
         this.newtype = newtype;
     }
 
+    public NewtypeNode getNewtype() {
+        return newtype;
+    }
+
+    public void setFuncSymbol(FuncSymbol funcSymbol) {
+        this.funcSymbol = funcSymbol;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

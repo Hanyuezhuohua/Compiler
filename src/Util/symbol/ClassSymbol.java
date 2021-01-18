@@ -6,7 +6,7 @@ import Util.type.Type;
 import Util.position;
 
 public class ClassSymbol extends Symbol{
-    FuncSymbol constructor;
+    private FuncSymbol constructor;
     public ClassSymbol(position pos, String identifier, Type type, ClassdefNode definition){
         super(pos, identifier, type, definition);
         constructor = null;
@@ -20,5 +20,13 @@ public class ClassSymbol extends Symbol{
     public ClassSymbol(position pos, String identifier, Type type, Scope scope){
         super(pos, identifier, type, scope);
         constructor = null;
+    }
+
+    public void setConstructor(FuncSymbol constructor) {
+        this.constructor = constructor;
+    }
+
+    public FuncSymbol getConstructor() {
+        return constructor;
     }
 }
