@@ -21,7 +21,6 @@ public class ScopeBuilder implements ASTVisitor {
     private StatementNode currentLoop;
 
     public ScopeBuilder(){
-        System.out.println("ScopeBuilder");
         currentScope = new GlobalScope();
 
         ClassSymbol Int = new ClassSymbol(new position(-1, -1), "int", new IntType(), new LocalScope(currentScope));
@@ -33,18 +32,6 @@ public class ScopeBuilder implements ASTVisitor {
 
         FuncSymbol Substring = new FuncSymbol(new position(-1, -1), "substring", new StringType());
         LocalScope SubstringScope = new LocalScope(string.getScope());
-        if(string.getScope() == null){
-            System.out.println("Not String Scope");
-        }
-        else if(string.getScope() != null && string.getScope().getParent() == null){
-            System.out.println("No parent");
-        }
-        else if(string.getScope() != null && string.getScope().getParent() instanceof LocalScope){
-            System.out.println("Parent ERROR");
-        }
-        else if(string.getScope() != null && string.getScope().getParent() instanceof GlobalScope){
-            System.out.println("Correct");
-        }
         VarSymbol Left = new VarSymbol(Substring.getPos(), "left", new IntType(), SubstringScope);
         VarSymbol Right = new VarSymbol(Substring.getPos(), "right", new IntType(), SubstringScope);
         SubstringScope.registerPara(Left);
@@ -122,7 +109,6 @@ public class ScopeBuilder implements ASTVisitor {
 
     @Override
     public void visit(RootNode node) { //cope with forward reference first
-        System.out.println("ScopeBuilder visitRootNode");
         boolean CheckMain = false;
         node.setScope(currentScope);
         for(ASTNode tmp: node.getDefinition()){
@@ -199,7 +185,6 @@ public class ScopeBuilder implements ASTVisitor {
                 String baseType = ((FundefNode) tmp).getReturnType().getType();
                 int dim = ((FundefNode) tmp).getReturnType().getDim();
                 Type type = currentScope.findClassSymbol(baseType, tmp.getPos()).getType();
-                System.out.println(type.getType());
                 if(dim == 0){
                     funcSymbol.setType(type);
                 }
@@ -273,7 +258,6 @@ public class ScopeBuilder implements ASTVisitor {
     @Override
     public void visit(VardefNode node) {
         String baseType = node.getType().getType();
-        System.out.println(node.getIdentifier());
         Type type;
         int dim = node.getType().getDim();
         if(dim == 0){
@@ -315,16 +299,13 @@ public class ScopeBuilder implements ASTVisitor {
             node.setType(new ArrayType(type, dim));
         }
         node.setExprType(ExprNode.ExprType.RVALUE);
-        System.out.println("NewExprNode");
     }
 
     @Override
     public void visit(NewtypeNode node) {
-        System.out.println("NewtypeNode");
         node.setScope(currentScope);
         for (ExprNode exprNode : node.getKnown()){
             exprNode.accept(this);
-            System.out.println(exprNode.getType().getType()+"2333");
             IntType intType = new IntType();
             intType.checkAssignment(exprNode.getType(), node.getPos());
             exprNode.isValue();
@@ -502,7 +483,6 @@ public class ScopeBuilder implements ASTVisitor {
     @Override
     public void visit(IdentifierNode node) {
         node.setScope(currentScope);
-        System.out.println("IdentifierNode" + node.getIdentifier());
         Symbol symbol = currentScope.findSymbol(node.getIdentifier(), node.getPos());
         node.setSymbol(symbol);
         if(symbol instanceof VarSymbol){
@@ -689,7 +669,6 @@ public class ScopeBuilder implements ASTVisitor {
         node.getIndex().accept(this);
 
         if(!(node.getIdentifier().getType() instanceof ArrayType)){
-            System.out.println(node.getIdentifier().getType().getType());
             throw new ErrorMessage("SubArrayExprNode Identifier ERROR", node.getPos());
         }
         if(!(node.getIndex().getType() instanceof  IntType)){
@@ -761,7 +740,6 @@ public class ScopeBuilder implements ASTVisitor {
         }
         node.setSymbol(currentFunc);
         if(node.getReturnVal() == null){
-            System.out.println(currentFunc.getType().getType());
             if(!(currentFunc.getType() instanceof VoidType)){
                 throw new ErrorMessage("ReturnStatementNode Void ReturnType ERROR", node.getPos());
             }
