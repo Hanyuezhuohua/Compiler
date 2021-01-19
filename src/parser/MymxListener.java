@@ -346,29 +346,17 @@ public interface MymxListener extends ParseTreeListener {
 	 */
 	void exitType(MymxParser.TypeContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code basicNewtype}
+	 * Enter a parse tree produced by the {@code errorNewtype}
 	 * labeled alternative in {@link MymxParser#newtype}.
 	 * @param ctx the parse tree
 	 */
-	void enterBasicNewtype(MymxParser.BasicNewtypeContext ctx);
+	void enterErrorNewtype(MymxParser.ErrorNewtypeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code basicNewtype}
+	 * Exit a parse tree produced by the {@code errorNewtype}
 	 * labeled alternative in {@link MymxParser#newtype}.
 	 * @param ctx the parse tree
 	 */
-	void exitBasicNewtype(MymxParser.BasicNewtypeContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code classNewtype}
-	 * labeled alternative in {@link MymxParser#newtype}.
-	 * @param ctx the parse tree
-	 */
-	void enterClassNewtype(MymxParser.ClassNewtypeContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code classNewtype}
-	 * labeled alternative in {@link MymxParser#newtype}.
-	 * @param ctx the parse tree
-	 */
-	void exitClassNewtype(MymxParser.ClassNewtypeContext ctx);
+	void exitErrorNewtype(MymxParser.ErrorNewtypeContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code arrayNewtype}
 	 * labeled alternative in {@link MymxParser#newtype}.
@@ -382,15 +370,27 @@ public interface MymxListener extends ParseTreeListener {
 	 */
 	void exitArrayNewtype(MymxParser.ArrayNewtypeContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code errorNewtype}
+	 * Enter a parse tree produced by the {@code classNewtype}
 	 * labeled alternative in {@link MymxParser#newtype}.
 	 * @param ctx the parse tree
 	 */
-	void enterErrorNewtype(MymxParser.ErrorNewtypeContext ctx);
+	void enterClassNewtype(MymxParser.ClassNewtypeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code errorNewtype}
+	 * Exit a parse tree produced by the {@code classNewtype}
 	 * labeled alternative in {@link MymxParser#newtype}.
 	 * @param ctx the parse tree
 	 */
-	void exitErrorNewtype(MymxParser.ErrorNewtypeContext ctx);
+	void exitClassNewtype(MymxParser.ClassNewtypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code basicNewtype}
+	 * labeled alternative in {@link MymxParser#newtype}.
+	 * @param ctx the parse tree
+	 */
+	void enterBasicNewtype(MymxParser.BasicNewtypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code basicNewtype}
+	 * labeled alternative in {@link MymxParser#newtype}.
+	 * @param ctx the parse tree
+	 */
+	void exitBasicNewtype(MymxParser.BasicNewtypeContext ctx);
 }

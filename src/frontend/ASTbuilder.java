@@ -473,6 +473,9 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
         else if(ctx.IDENTIFIER() != null){
             res.setBasetype(new TypeNode(new position(ctx.IDENTIFIER()), ctx.IDENTIFIER().getText(), ctx.LEFT_BRACKET().size()));
         }
+        for(var expression : ctx.expression()){
+            res.add_known((ExprNode) visit(expression));
+        }
         return res;
     }
 

@@ -12,7 +12,7 @@ public class FundefNode extends ASTNode{
     private List<VardefNode> parameterList;
     private SuiteNode suite;
     private Symbol symbol;
-    private boolean returnExistence;
+    private int returnExistence;
     private boolean isConstructor;
 
     public FundefNode(TypeNode returnType, String identifier, List<VardefNode> parameterList, SuiteNode suite, position pos){
@@ -22,7 +22,7 @@ public class FundefNode extends ASTNode{
         if(parameterList == null) this.parameterList = new ArrayList<>();
         else this.parameterList = parameterList;
         this.suite = suite;
-        this.returnExistence = false;
+        this.returnExistence = 0;
         this.isConstructor = false;
     }
 
@@ -32,7 +32,7 @@ public class FundefNode extends ASTNode{
         this.identifier = identifier;
         this.parameterList = new ArrayList<>();
         this.suite = suite;
-        this.returnExistence = false;
+        this.returnExistence = 0;
         this.isConstructor = false;
     }
 
@@ -52,7 +52,7 @@ public class FundefNode extends ASTNode{
         this.identifier = identifier;
     }
 
-    public void setReturnExistence(boolean returnExistence) {
+    public void setReturnExistence(int returnExistence) {
         this.returnExistence = returnExistence;
     }
 
@@ -84,7 +84,7 @@ public class FundefNode extends ASTNode{
         return isConstructor;
     }
 
-    public boolean ReturnExistence() {
+    public int ReturnExistence() {
         return returnExistence;
     }
 

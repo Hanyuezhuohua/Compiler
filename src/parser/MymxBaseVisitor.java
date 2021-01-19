@@ -227,14 +227,7 @@ public class MymxBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBasicNewtype(MymxParser.BasicNewtypeContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitClassNewtype(MymxParser.ClassNewtypeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitErrorNewtype(MymxParser.ErrorNewtypeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -248,5 +241,12 @@ public class MymxBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitErrorNewtype(MymxParser.ErrorNewtypeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitClassNewtype(MymxParser.ClassNewtypeContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitBasicNewtype(MymxParser.BasicNewtypeContext ctx) { return visitChildren(ctx); }
 }

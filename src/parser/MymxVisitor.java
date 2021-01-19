@@ -210,19 +210,12 @@ public interface MymxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitType(MymxParser.TypeContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code basicNewtype}
+	 * Visit a parse tree produced by the {@code errorNewtype}
 	 * labeled alternative in {@link MymxParser#newtype}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBasicNewtype(MymxParser.BasicNewtypeContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code classNewtype}
-	 * labeled alternative in {@link MymxParser#newtype}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitClassNewtype(MymxParser.ClassNewtypeContext ctx);
+	T visitErrorNewtype(MymxParser.ErrorNewtypeContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code arrayNewtype}
 	 * labeled alternative in {@link MymxParser#newtype}.
@@ -231,10 +224,17 @@ public interface MymxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArrayNewtype(MymxParser.ArrayNewtypeContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code errorNewtype}
+	 * Visit a parse tree produced by the {@code classNewtype}
 	 * labeled alternative in {@link MymxParser#newtype}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitErrorNewtype(MymxParser.ErrorNewtypeContext ctx);
+	T visitClassNewtype(MymxParser.ClassNewtypeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code basicNewtype}
+	 * labeled alternative in {@link MymxParser#newtype}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBasicNewtype(MymxParser.BasicNewtypeContext ctx);
 }

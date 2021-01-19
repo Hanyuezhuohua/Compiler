@@ -35,6 +35,11 @@ variable_list: type variable_decl (',' variable_decl)*;
 variable_decl: IDENTIFIER ('=' expression)? ;
 suite: '{' statement* '}';
 
+BOOL_LITERAL: TRUE | FALSE;
+INTEGER_LITERAL: '0' | [1-9][0-9]*;
+STRING_LITERAL: '"' (~["\\\r\n]| '\\' ["n\\])* '"';
+NULL_LITERAL: NULL;
+
 //keyword
 INT:  'int';
 BOOL: 'bool';
@@ -53,12 +58,8 @@ RETURN: 'return';
 NEW: 'new';
 CLASS: 'class';
 THIS: 'this';
-IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]*;
 
-BOOL_LITERAL: TRUE | FALSE;
-INTEGER_LITERAL: '0' | [1-9][0-9]*;
-STRING_LITERAL: '"' (~["\\\r\n]| '\\' ["n\\])* '"';
-NULL_LITERAL: NULL;
+IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]*;
 
 statement: suite                                                                                                #blockStat
          | var_def_unit                                                                                         #vardefStat
@@ -78,6 +79,7 @@ expression: THIS                                                                
           | expression op = ('++' | '--')                                                  #suffixExpr
           | expression '.' IDENTIFIER                                                      #memberExpr
           | expression '(' expression_list? ')'                                            #funcExpr
+          | NEW newtype                                                                    #newExpr
           | identifier = expression '[' index = expression ']'                             #subarrayExpr
           | <assoc=right> op = ('++' | '--') expression                                    #prefixExpr
           | <assoc=right> op = ('+' | '-') expression                                      #prefixExpr
@@ -89,14 +91,13 @@ expression: THIS                                                                
           | lhs = expression op = ('&' | '^' | '|' | '&&' | '||') rhs = expression         #binaryExpr
           | <assoc=right> lhs = expression op = '=' rhs = expression                       #assignExpr
           | '(' expression ')'                                                             #atomExpr
-          | NEW newtype                                                                    #newExpr
           ;
 
 type: type '[' ']' | INT | BOOL | STRING | IDENTIFIER;
-newtype: (INT | BOOL | STRING | IDENTIFIER)                                                         #basicNewtype
-       | (INT | BOOL | STRING | IDENTIFIER) '(' ')'                                                 #classNewtype
+newtype: (INT | BOOL | STRING | IDENTIFIER) ('[' expression ']')+ ('[' ']')+ ('[' expression ']')+  #errorNewtype
        | (INT | BOOL | STRING | IDENTIFIER) ('[' expression ']')+ ('[' ']')*                        #arrayNewtype
-       | (INT | BOOL | STRING | IDENTIFIER) ('[' expression ']')+ ('[' ']')+ ('[' expression ']')+  #errorNewtype
+       | (INT | BOOL | STRING | IDENTIFIER) '(' ')'                                                 #classNewtype
+       | (INT | BOOL | STRING | IDENTIFIER)                                                         #basicNewtype
        ;
 
 //Token

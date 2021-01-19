@@ -89,7 +89,7 @@ public class ScopeBuilder implements ASTVisitor {
         LocalScope PrintIntScope = new LocalScope(currentScope);
         VarSymbol NPrintInt = new VarSymbol(PrintInt.getPos(), "n", new IntType(), PrintIntScope);
         PrintIntScope.registerPara(NPrintInt);
-        PrintInt.setScope(PrintlnScope);
+        PrintInt.setScope(PrintIntScope);
         currentScope.registerFunc(PrintInt);
 
         FuncSymbol PrintlnInt = new FuncSymbol(new position(-1, -1), "printlnInt", new VoidType());
@@ -134,6 +134,14 @@ public class ScopeBuilder implements ASTVisitor {
                 currentScope.registerClass(classSymbol);
                 ((ClassdefNode) tmp).setSymbol(classSymbol);
                 tmp.setScope(classSymbol.getScope());
+            }
+        }
+        for(ASTNode tmp: node.getDefinition()){
+            if(tmp instanceof ClassdefNode){
+                ClassSymbol classSymbol = (ClassSymbol) ((ClassdefNode)tmp).getSymbol();
+                currentScope = classSymbol.getScope();
+                ((ClassdefNode) tmp).getVarList().forEach(x-> x.accept(this));
+                currentScope = currentScope.getParent();
             }
         }
         for(ASTNode tmp: node.getDefinition()){
@@ -202,20 +210,21 @@ public class ScopeBuilder implements ASTVisitor {
         currentScope = funcSymbol.getScope();
         node.getSuite().accept(this);
         currentScope = funcSymbol.getScope();
-        if(node.isConstructor() && node.ReturnExistence()){
+        if(node.isConstructor() && node.ReturnExistence() == 2){
             throw new ErrorMessage("Constructor has no Return", node.getPos());
         }
         else if(node.getIdentifier().equals("main") && !(currentScope.getParent() instanceof GlobalScope)){
             throw new ErrorMessage("Main cannot be a class function", node.getPos());
         }
- /*       else if(!node.isConstructor() && !node.ReturnExistence() && !node.getIdentifier().equals("main")){
+        else if(!node.isConstructor() && node.ReturnExistence() == 0 && !node.getIdentifier().equals("main") && !(node.getSymbol().getType() instanceof VoidType)){
             throw new ErrorMessage("simple function without Return ERROR", node.getPos());
-        } */
+        }
     }
 
     @Override
     public void visit(VardefNode node) {
         String baseType = node.getType().getType();
+        System.out.println(node.getIdentifier());
         Type type;
         int dim = node.getType().getDim();
         if(dim == 0){
@@ -257,13 +266,16 @@ public class ScopeBuilder implements ASTVisitor {
             node.setType(new ArrayType(type, dim));
         }
         node.setExprType(ExprNode.ExprType.RVALUE);
+        System.out.println("NewExprNode");
     }
 
     @Override
     public void visit(NewtypeNode node) {
+        System.out.println("NewtypeNode");
         node.setScope(currentScope);
         for (ExprNode exprNode : node.getKnown()){
             exprNode.accept(this);
+            System.out.println(exprNode.getType().getType()+"2333");
             IntType intType = new IntType();
             intType.checkAssignment(exprNode.getType(), node.getPos());
             exprNode.isValue();
@@ -275,7 +287,7 @@ public class ScopeBuilder implements ASTVisitor {
         ClassSymbol classSymbol = (ClassSymbol) node.getSymbol();
         currentClass = classSymbol;
         currentScope = classSymbol.getScope();
-        node.getVarList().forEach(x-> x.accept(this));
+    //    node.getVarList().forEach(x-> x.accept(this));
         for (FundefNode func : node.getFuncList()){
             FuncSymbol funcSymbol = new FuncSymbol(func.getPos(), func.getIdentifier(), null, func);
             String baseType = func.getReturnType().getType();
@@ -432,7 +444,7 @@ public class ScopeBuilder implements ASTVisitor {
             else{
                 lhs.getType().checkAssignment(rhs.getType(), node.getPos());
                 node.setType(lhs.getType());
-                node.setExprType(ExprNode.ExprType.RVALUE);
+                node.setExprType(ExprNode.ExprType.LVALUE);
             }
         }
         else throw new ErrorMessage("BinaryExprNode Op ERROR", node.getPos());
@@ -441,6 +453,7 @@ public class ScopeBuilder implements ASTVisitor {
     @Override
     public void visit(IdentifierNode node) {
         node.setScope(currentScope);
+        System.out.println("IdentifierNode" + node.getIdentifier());
         Symbol symbol = currentScope.findSymbol(node.getIdentifier(), node.getPos());
         node.setSymbol(symbol);
         if(symbol instanceof VarSymbol){
@@ -463,9 +476,9 @@ public class ScopeBuilder implements ASTVisitor {
         node.setScope(currentScope);
         node.getExpression().accept(this);
         if((node.getExpression().getExprType() == ExprNode.ExprType.LVALUE || node.getExpression().getExprType() == ExprNode.ExprType.RVALUE)
-                && node.getExpression().getType() instanceof ClassType){
+                && (node.getExpression().getType() instanceof ClassType || node.getExpression().getType() instanceof StringType)){
             ClassSymbol classSymbol = currentScope.findClassSymbol(node.getExpression().getType().getType(), node.getPos());
-            Symbol symbol = classSymbol.getScope().findSymbol(node.getIdentifier(), node.getPos());
+            Symbol symbol = ((LocalScope)(classSymbol.getScope())).findSymbolLocal(node.getIdentifier(), node.getPos());
             if(symbol instanceof FuncSymbol){
                 node.setExprType(ExprNode.ExprType.FUNCTION);
                 node.setType(symbol.getType());
@@ -520,7 +533,7 @@ public class ScopeBuilder implements ASTVisitor {
             IntType intType = new IntType();
             intType.checkAssignment(node.getExpression().getType(), node.getPos());
             node.setType(intType);
-            node.setExprType(ExprNode.ExprType.RVALUE); // not sure
+            node.setExprType(ExprNode.ExprType.LVALUE); // not sure
         }
         else if(op == PrefixexprNode.PrefixOpType.NotLogic){
             BoolType boolType = new BoolType();
@@ -627,6 +640,7 @@ public class ScopeBuilder implements ASTVisitor {
         node.getIndex().accept(this);
 
         if(!(node.getIdentifier().getType() instanceof ArrayType)){
+            System.out.println(node.getIdentifier().getType().getType());
             throw new ErrorMessage("SubArrayExprNode Identifier ERROR", node.getPos());
         }
         if(!(node.getIndex().getType() instanceof  IntType)){
@@ -668,7 +682,7 @@ public class ScopeBuilder implements ASTVisitor {
 
     @Override
     public void visit(EmptystatementNode node) {
-        throw new ErrorMessage("cannot reach EmptyStatementNode", node.getPos());
+        node.setScope(currentScope);
     }
 
     @Override
@@ -702,6 +716,7 @@ public class ScopeBuilder implements ASTVisitor {
             if(!(currentFunc.getType() instanceof VoidType)){
                 throw new ErrorMessage("ReturnStatementNode Void ReturnType ERROR", node.getPos());
             }
+            ((FundefNode) currentFunc.getDefinition()).setReturnExistence(1);
         }
         else{
             if(currentFunc.getType() instanceof VoidType){
@@ -709,8 +724,8 @@ public class ScopeBuilder implements ASTVisitor {
             }
             node.getReturnVal().accept(this);
             currentFunc.getType().checkAssignment(node.getReturnVal().getType(), node.getPos());
+            ((FundefNode) currentFunc.getDefinition()).setReturnExistence(2);
         }
-        ((FundefNode) currentFunc.getDefinition()).setReturnExistence(true);
     }
 
     @Override

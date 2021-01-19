@@ -35,6 +35,10 @@ public class NewtypeNode extends ASTNode{
         basetype = type;
     }
 
+    public void add_known(ExprNode expression){
+        known.add(expression);
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

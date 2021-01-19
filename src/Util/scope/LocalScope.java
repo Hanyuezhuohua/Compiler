@@ -89,6 +89,16 @@ public class LocalScope implements Scope{
         }
     }
 
+    public Symbol findSymbolLocal(String identifier, position pos){
+        Symbol tmp = VarSymbolTable.get(identifier);
+        if(tmp != null) return tmp;
+        else{
+            tmp = FuncSymbolTable.get(identifier);
+            if(tmp != null) return tmp;
+            else throw new ErrorMessage("LocalSymbol finSymbolLocal ERROR", pos);
+        }
+    }
+
     @Override
     public ClassSymbol findClassSymbol(String identifier, position pos) {
         return upScope.findClassSymbol(identifier, pos);

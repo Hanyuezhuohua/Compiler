@@ -376,25 +376,13 @@ public class MymxBaseListener implements MymxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBasicNewtype(MymxParser.BasicNewtypeContext ctx) { }
+	@Override public void enterErrorNewtype(MymxParser.ErrorNewtypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBasicNewtype(MymxParser.BasicNewtypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterClassNewtype(MymxParser.ClassNewtypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClassNewtype(MymxParser.ClassNewtypeContext ctx) { }
+	@Override public void exitErrorNewtype(MymxParser.ErrorNewtypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -412,13 +400,25 @@ public class MymxBaseListener implements MymxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterErrorNewtype(MymxParser.ErrorNewtypeContext ctx) { }
+	@Override public void enterClassNewtype(MymxParser.ClassNewtypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitErrorNewtype(MymxParser.ErrorNewtypeContext ctx) { }
+	@Override public void exitClassNewtype(MymxParser.ClassNewtypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBasicNewtype(MymxParser.BasicNewtypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBasicNewtype(MymxParser.BasicNewtypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
