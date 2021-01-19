@@ -41,7 +41,7 @@ public class LocalScope implements Scope{
     @Override
     public void check(String identifier) {
         Scope globalScope = getParent();
-        while (globalScope != null){
+        while (globalScope instanceof LocalScope){
             globalScope = globalScope.getParent();
         }
         if(VarSymbolTable.containsKey(identifier) || FuncSymbolTable.containsKey(identifier) || (((GlobalScope) globalScope).getClassSymbolTable()).containsKey(identifier)){

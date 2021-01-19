@@ -12,12 +12,13 @@ import java.io.InputStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String fileName;
+/*        String fileName;
         if (args.length > 0) {
             fileName = args[0];
         } else {
             fileName = "test.mx";
-        }
+        }*/
+        String fileName = "./testcase/sema/basic-package/basic-15.mx";
         try {
             InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);

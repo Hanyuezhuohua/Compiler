@@ -2,11 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/antlr_4_9_1_complete.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Compiler.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Compiler.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/FundefNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/FundefNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Util/scope/LocalScope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/scope/LocalScope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/ASTbuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/ASTbuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/ScopeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/ScopeBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/SemanticChecker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.g4" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Mymx.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Mymx.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Mymx.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxLexer.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxLexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxLexer.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/MymxParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,9 +49,10 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/AST" />
-    <property name="last_opened_file_path" value="C:/Python_Assignment-master1" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
@@ -52,6 +63,20 @@
       <recent name="D:\Compiler\src" />
       <recent name="D:\Compiler\src\parser\parser" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="Compiler" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -75,6 +100,16 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.RuntimeException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

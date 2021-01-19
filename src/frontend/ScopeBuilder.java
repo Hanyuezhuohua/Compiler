@@ -12,7 +12,7 @@ import Util.symbol.Symbol;
 import Util.symbol.VarSymbol;
 import Util.type.*;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class ScopeBuilder implements ASTVisitor {
     private Scope currentScope;
@@ -21,17 +21,30 @@ public class ScopeBuilder implements ASTVisitor {
     private StatementNode currentLoop;
 
     public ScopeBuilder(){
+        System.out.println("ScopeBuilder");
         currentScope = new GlobalScope();
 
         ClassSymbol Int = new ClassSymbol(new position(-1, -1), "int", new IntType(), new LocalScope(currentScope));
         ClassSymbol Bool = new ClassSymbol(new position(-1, -1), "bool", new BoolType(), new LocalScope(currentScope));
-        ClassSymbol string = new ClassSymbol(new position(-1, -1), "string", new StringType());
+        ClassSymbol string = new ClassSymbol(new position(-1, -1), "string", new StringType(), new LocalScope(currentScope));
         ClassSymbol Void = new ClassSymbol(new position(-1, -1), "void", new VoidType(), new LocalScope(currentScope));
 
         FuncSymbol Length = new FuncSymbol(new position(-1, -1), "length", new IntType(), new LocalScope(string.getScope()));
 
         FuncSymbol Substring = new FuncSymbol(new position(-1, -1), "substring", new StringType());
         LocalScope SubstringScope = new LocalScope(string.getScope());
+        if(string.getScope() == null){
+            System.out.println("Not String Scope");
+        }
+        else if(string.getScope() != null && string.getScope().getParent() == null){
+            System.out.println("No parent");
+        }
+        else if(string.getScope() != null && string.getScope().getParent() instanceof LocalScope){
+            System.out.println("Parent ERROR");
+        }
+        else if(string.getScope() != null && string.getScope().getParent() instanceof GlobalScope){
+            System.out.println("Correct");
+        }
         VarSymbol Left = new VarSymbol(Substring.getPos(), "left", new IntType(), SubstringScope);
         VarSymbol Right = new VarSymbol(Substring.getPos(), "right", new IntType(), SubstringScope);
         SubstringScope.registerPara(Left);
@@ -109,6 +122,7 @@ public class ScopeBuilder implements ASTVisitor {
 
     @Override
     public void visit(RootNode node) { //cope with forward reference first
+        System.out.println("ScopeBuilder visitRootNode");
         boolean CheckMain = false;
         node.setScope(currentScope);
         for(ASTNode tmp: node.getDefinition()){
@@ -128,6 +142,7 @@ public class ScopeBuilder implements ASTVisitor {
                 String baseType = ((FundefNode) tmp).getReturnType().getType();
                 int dim = ((FundefNode) tmp).getReturnType().getDim();
                 Type type = currentScope.findClassSymbol(baseType, tmp.getPos()).getType();
+                System.out.println(type.getType());
                 if(dim == 0){
                     funcSymbol.setType(type);
                 }
@@ -139,10 +154,10 @@ public class ScopeBuilder implements ASTVisitor {
                 currentScope.registerFunc(funcSymbol);
                 ((FundefNode) tmp).setSymbol(funcSymbol);
                 if(((FundefNode) tmp).getIdentifier().equals("main")){
-                    if(!funcSymbol.getType().equals(new IntType())){
+                    if(!(funcSymbol.getType() instanceof IntType)){
                         throw new ErrorMessage("Main Func Type ERROR", node.getPos());
                     }
-                    if(((FundefNode) tmp).getParameterList() != null){
+                    if(!(((FundefNode) tmp).getParameterList().isEmpty())){
                         throw new ErrorMessage("Main Func Para ERROR", node.getPos());
                     }
                     CheckMain = true;
@@ -193,9 +208,9 @@ public class ScopeBuilder implements ASTVisitor {
         else if(node.getIdentifier().equals("main") && !(currentScope.getParent() instanceof GlobalScope)){
             throw new ErrorMessage("Main cannot be a class function", node.getPos());
         }
-        else if(!node.isConstructor() && !node.ReturnExistence() && !node.getIdentifier().equals("main")){
+ /*       else if(!node.isConstructor() && !node.ReturnExistence() && !node.getIdentifier().equals("main")){
             throw new ErrorMessage("simple function without Return ERROR", node.getPos());
-        }
+        } */
     }
 
     @Override
@@ -315,9 +330,11 @@ public class ScopeBuilder implements ASTVisitor {
             currentScope = func.getScope().getParent();
             currentFunc = null;
         }
-        node.getConstructor().accept(this);
-        currentScope = node.getConstructor().getScope().getParent();
-        currentFunc = null;
+        if(node.getConstructor() != null) {
+            node.getConstructor().accept(this);
+            currentScope = node.getConstructor().getScope().getParent();
+            currentFunc = null;
+        }
     }
 
     @Override
@@ -608,6 +625,7 @@ public class ScopeBuilder implements ASTVisitor {
         node.setScope(currentScope);
         node.getIdentifier().accept(this);
         node.getIndex().accept(this);
+
         if(!(node.getIdentifier().getType() instanceof ArrayType)){
             throw new ErrorMessage("SubArrayExprNode Identifier ERROR", node.getPos());
         }
@@ -679,14 +697,14 @@ public class ScopeBuilder implements ASTVisitor {
             throw new ErrorMessage("ReturnStatementNode Func ERROR", node.getPos());
         }
         node.setSymbol(currentFunc);
-        VoidType voidType = new VoidType();
         if(node.getReturnVal() == null){
-            if(!currentFunc.getType().equals(voidType)){
+            System.out.println(currentFunc.getType().getType());
+            if(!(currentFunc.getType() instanceof VoidType)){
                 throw new ErrorMessage("ReturnStatementNode Void ReturnType ERROR", node.getPos());
             }
         }
         else{
-            if(currentFunc.getType().equals(voidType)){
+            if(currentFunc.getType() instanceof VoidType){
                 throw new ErrorMessage("ReturnStatementNode NotVoid ReturnType ERROR", node.getPos());
             }
             node.getReturnVal().accept(this);

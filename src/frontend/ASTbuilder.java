@@ -34,6 +34,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
                 }
             }
         }
+        System.out.println("visitComplication_code");
         return code;
     }
 
@@ -49,6 +50,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
         else if(ctx.VOID() != null){
             res.setReturnType(new TypeNode(new position(ctx.VOID()), ctx.VOID().getText(), 0));
         }
+        System.out.println("visitFunction_def_unit");
         return res;
     }
 
@@ -79,6 +81,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitVar_def_unit(MymxParser.Var_def_unitContext ctx) {
+        System.out.println("visitVar_def_unit");
         return visit(ctx.variable_list());
     }
 
@@ -130,6 +133,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
             }
             else res.addStat(tmp);
         }
+        System.out.println("visitSuite");
         return res;
     }
 
@@ -140,6 +144,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitVardefStat(MymxParser.VardefStatContext ctx) {
+        System.out.println("visitVardefStat");
         return new VardefstatementNode(new position(ctx), (VardefListNode) visit(ctx.var_def_unit()));
     }
 
@@ -223,7 +228,10 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitReturnStat(MymxParser.ReturnStatContext ctx) {
-        if(ctx.expression() != null) return new ReturnstatementNode(new position(ctx), (ExprNode) visit(ctx.expression()));
+        if(ctx.expression() != null) {
+            System.out.println("visitReturnStat");
+            return new ReturnstatementNode(new position(ctx), (ExprNode) visit(ctx.expression()));
+        }
         else return new ReturnstatementNode(new position(ctx), null);
     }
 
@@ -234,6 +242,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitExprStat(MymxParser.ExprStatContext ctx) {
+        System.out.println("visitExprStat");
         return new ExprstatementNode(new position(ctx), (ExprNode) visit(ctx.expression()));
     }
 
