@@ -18,7 +18,7 @@ public class Main {
         } else {
             fileName = "test.mx";
         }*/
-        String fileName = "./testcase/sema/codeforces-package/399A.mx";
+        String fileName = "./testcase/sema/symbol-package/symbol-7.mx";
         try {
             InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);

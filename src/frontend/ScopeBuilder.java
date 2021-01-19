@@ -141,6 +141,55 @@ public class ScopeBuilder implements ASTVisitor {
                 ClassSymbol classSymbol = (ClassSymbol) ((ClassdefNode)tmp).getSymbol();
                 currentScope = classSymbol.getScope();
                 ((ClassdefNode) tmp).getVarList().forEach(x-> x.accept(this));
+                for (FundefNode func : ((ClassdefNode) tmp).getFuncList()){
+                    FuncSymbol funcSymbol = new FuncSymbol(func.getPos(), func.getIdentifier(), null, func);
+                    String baseType = func.getReturnType().getType();
+                    int dim = func.getReturnType().getDim();
+                    Type type = currentScope.findClassSymbol(baseType, func.getPos()).getType();
+                    if(dim == 0){
+                        funcSymbol.setType(type);
+                    }
+                    else{
+                        ArrayType arrayType = new ArrayType(type, dim);
+                        funcSymbol.setType(arrayType);
+                    }
+                    funcSymbol.setScope(new LocalScope(currentScope));
+                    currentScope.registerFunc(funcSymbol);
+                    func.setSymbol(funcSymbol);
+                    func.setScope(funcSymbol.getScope());
+                    currentScope = func.getScope();
+                    func.getParameterList().forEach(x->x.accept(this)); //visit parameters first
+                    currentScope = func.getScope().getParent();
+                    if(func.getIdentifier().equals(((ClassdefNode) tmp).getIdentifier())){
+                        throw new ErrorMessage("fake constructor ERROR", node.getPos());
+                    }
+                }
+                if (((ClassdefNode) tmp).getConstructor() != null){
+                    FundefNode func = ((ClassdefNode) tmp).getConstructor();
+                    func.setConstructor(true);
+                    if(!((ClassdefNode) tmp).getConstructor().getIdentifier().equals(((ClassdefNode) tmp).getIdentifier())){
+                        throw new ErrorMessage("constructor name ERROR", node.getPos());
+                    }
+                    FuncSymbol funcSymbol = new FuncSymbol(func.getPos(), func.getIdentifier(), null, func);
+                    classSymbol.setConstructor(funcSymbol);
+                    String baseType = func.getReturnType().getType();
+                    int dim = func.getReturnType().getDim();
+                    Type type = currentScope.findClassSymbol(baseType, func.getPos()).getType();
+                    if(dim == 0){
+                        funcSymbol.setType(type);
+                    }
+                    else{
+                        ArrayType arrayType = new ArrayType(type, dim);
+                        funcSymbol.setType(arrayType);
+                    }
+                    funcSymbol.setScope(new LocalScope(currentScope));
+                    ((LocalScope) currentScope).registerClassConstructor(funcSymbol);
+                    func.setSymbol(funcSymbol);
+                    func.setScope(funcSymbol.getScope());
+                    currentScope = func.getScope();
+                    func.getParameterList().forEach(x->x.accept(this)); //visit parameters first
+                    currentScope = func.getScope().getParent();
+                }
                 currentScope = currentScope.getParent();
             }
         }
@@ -288,7 +337,7 @@ public class ScopeBuilder implements ASTVisitor {
         currentClass = classSymbol;
         currentScope = classSymbol.getScope();
     //    node.getVarList().forEach(x-> x.accept(this));
-        for (FundefNode func : node.getFuncList()){
+    /*    for (FundefNode func : node.getFuncList()){
             FuncSymbol funcSymbol = new FuncSymbol(func.getPos(), func.getIdentifier(), null, func);
             String baseType = func.getReturnType().getType();
             int dim = func.getReturnType().getDim();
@@ -336,7 +385,7 @@ public class ScopeBuilder implements ASTVisitor {
             currentScope = func.getScope();
             func.getParameterList().forEach(x->x.accept(this)); //visit parameters first
             currentScope = func.getScope().getParent();
-        }
+        }*/
         for(FundefNode func : node.getFuncList()){
             func.accept(this);
             currentScope = func.getScope().getParent();
