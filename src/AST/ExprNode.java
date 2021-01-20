@@ -6,7 +6,7 @@ import Util.type.Type;
 
 public abstract class ExprNode extends ASTNode{
     public enum ExprType {
-        LVALUE, RVALUE,CLASS, FUNCTION
+        LVALUE, RVALUE, CLASS, FUNCTION
     }
     private Type type;
     private ExprType exprType;

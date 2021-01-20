@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-//        String fileName = "./testcase/sema/symbol-package/symbol-1.mx";
+//        String fileName = "./testcase/sema/misc-package/misc-37.mx";
         try {
             InputStream file = System.in;
 //            InputStream file = new FileInputStream(fileName);
