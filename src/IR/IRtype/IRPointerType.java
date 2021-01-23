@@ -1,9 +1,9 @@
 package IR.IRtype;
 
-public class PointerType implements Type{
-    private Type pointTo;
+public class IRPointerType implements IRType{
+    private IRType pointTo;
 
-    public PointerType(Type pointTo){
+    public IRPointerType(IRType pointTo){
         this.pointTo = pointTo;
     }
 

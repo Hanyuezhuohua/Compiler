@@ -1,10 +1,10 @@
 package IR.IRtype;
 
-public class ArrayType implements Type{
+public class IRArrayType implements IRType{
     private int arraySize;
-    private Type baseType;
+    private IRType baseType;
 
-    public ArrayType(int arraySize, Type baseType){
+    public IRArrayType(int arraySize, IRType baseType){
         this.arraySize = arraySize;
         this.baseType = baseType;
     }

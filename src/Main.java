@@ -12,10 +12,10 @@ import java.io.InputStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-//        String fileName = "./testcase/sema/misc-package/misc-37.mx";
+        String fileName = "./testcase/sema/class-package/class-10.mx";
         try {
-            InputStream file = System.in;
-//            InputStream file = new FileInputStream(fileName);
+//            InputStream file = System.in;
+            InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new ScopeBuilder().visit(ast);
         } catch (Exception err) {

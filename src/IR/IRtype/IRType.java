@@ -1,6 +1,6 @@
 package IR.IRtype;
 
-public interface Type {
+public interface IRType {
     public abstract int getSize();
     public abstract String getType();
 }

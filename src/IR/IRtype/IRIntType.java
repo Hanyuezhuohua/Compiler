@@ -2,13 +2,13 @@ package IR.IRtype;
 
 import Util.error.ErrorMessage;
 
-public class IntType implements Type{
+public class IRIntType implements IRType{
     public enum IntTypeBytes{
         Int8, Int32
     }
     private IntTypeBytes intTypeBytes;
 
-    public IntType(IntTypeBytes intTypeBytes){
+    public IRIntType(IntTypeBytes intTypeBytes){
         this.intTypeBytes = intTypeBytes;
     }
 

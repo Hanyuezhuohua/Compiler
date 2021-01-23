@@ -221,6 +221,13 @@ public class ScopeBuilder implements ASTVisitor {
         }
     }
 
+    public Scope getGlobalScope() {
+        while(currentScope instanceof LocalScope){
+            currentScope = currentScope.getParent();
+        }
+        return currentScope;
+    }
+
     @Override
     public void visit(TypeNode node) {
         throw new ErrorMessage("TypeNode ERROR", node.getPos());

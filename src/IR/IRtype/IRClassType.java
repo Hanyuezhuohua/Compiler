@@ -2,15 +2,15 @@ package IR.IRtype;
 
 import java.util.ArrayList;
 
-public class ClassType implements Type{
+public class IRClassType implements IRType{
     private String identifier;
     private int size;
-    private ArrayList<Type> members;
+    private ArrayList<IRType> members;
 
-    public ClassType(String identifier){
+    public IRClassType(String identifier){
         this.identifier = identifier;
         this.size = 0;
-        members = new ArrayList<Type>();
+        members = new ArrayList<IRType>();
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ClassType implements Type{
         StringBuilder res = new StringBuilder(getType());
         res.append("<{ ");
         if(!members.isEmpty()){
-            for(Type subType: members){
+            for(IRType subType: members){
                 res.append(subType.getType() + ", ");
             }
             res.delete(res.length() - 2, res.length());

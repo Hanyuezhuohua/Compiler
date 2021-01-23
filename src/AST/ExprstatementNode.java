@@ -3,7 +3,7 @@ package AST;
 import Util.position;
 
 public class ExprstatementNode extends StatementNode{
-    ExprNode expression;
+    private ExprNode expression;
     public ExprstatementNode(position pos, ExprNode expression){
         super(pos);
         this.expression = expression;

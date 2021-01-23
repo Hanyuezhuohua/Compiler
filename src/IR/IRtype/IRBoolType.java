@@ -1,6 +1,6 @@
 package IR.IRtype;
 
-public class BoolType implements Type{ // same to i1
+public class IRBoolType implements IRType{ // same to i1
     @Override
     public int getSize() {
         return 8;
