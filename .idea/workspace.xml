@@ -2,19 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/IR/IRoperand/IROperand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/ExprstatementNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ExprstatementNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/Operand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/ArrayType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRArrayType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/BoolType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRBoolType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/ClassType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRClassType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/IntType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRIntType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/PointerType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRPointerType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/VoidType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRVoidType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/ScopeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/ScopeBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/IRInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/IRInstruction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
