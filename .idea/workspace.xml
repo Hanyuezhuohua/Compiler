@@ -3,7 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/IRInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/IRInstruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRbasicblock/IRBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRbasicblock/IRBasicBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRfunction/IRFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRfunction/IRFunction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRmodule/IRModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRmodule/IRModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRLocalRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRLocalRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/IRClassType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRClassType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Util/symbol/FuncSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/symbol/FuncSymbol.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

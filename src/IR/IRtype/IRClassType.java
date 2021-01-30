@@ -13,6 +13,19 @@ public class IRClassType implements IRType{
         members = new ArrayList<IRType>();
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void addMember(IRType member){
+        members.add(member);
+        size += member.getSize();
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     @Override
     public int getSize() {
         return size;
