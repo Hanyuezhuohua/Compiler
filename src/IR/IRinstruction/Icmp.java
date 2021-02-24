@@ -5,7 +5,7 @@ import IR.IRoperand.IROperand;
 
 public class Icmp extends IRInstruction{
     public enum IRIcmpOpType{
-        eg, ne, sgt, sge, slt, sle
+        eq, ne, sgt, sge, slt, sle
     }
 
     private IRIcmpOpType op;
@@ -19,5 +19,10 @@ public class Icmp extends IRInstruction{
         this.op1 = op1;
         this.op2 = op2;
         this.result = result;
+    }
+
+    @Override
+    public boolean Terminal() {
+        return false;
     }
 }

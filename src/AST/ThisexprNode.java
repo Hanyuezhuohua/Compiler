@@ -1,5 +1,6 @@
 package AST;
 
+import IR.IRoperand.IROperand;
 import Util.position;
 import Util.symbol.Symbol;
 

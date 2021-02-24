@@ -10,4 +10,9 @@ public class Ret extends IRInstruction{
         super(instIn);
         this.value = value;
     }
+
+    @Override
+    public boolean Terminal() {
+        return true;
+    }
 }

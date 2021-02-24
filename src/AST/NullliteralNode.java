@@ -1,5 +1,6 @@
 package AST;
 
+import IR.IRoperand.IROperand;
 import Util.position;
 
 public class NullliteralNode extends ExprNode{

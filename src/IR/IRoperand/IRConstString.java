@@ -11,4 +11,8 @@ public class IRConstString extends IROperand{
         super(new IRPointerType(new IRArrayType(value.length(), new IRIntType(IRIntType.IntTypeBytes.Int8))));
         this.value = value;
     }
+
+    public String getValue() {
+        return value;
+    }
 }

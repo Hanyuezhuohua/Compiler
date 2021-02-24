@@ -10,4 +10,14 @@ public abstract class IRInstruction {
     public IRInstruction(IRBasicBlock instIn){
         this.instIn = instIn;
     }
+
+    public abstract boolean Terminal();
+
+    public void setNext(IRInstruction next) {
+        this.next = next;
+    }
+
+    public void setPrev(IRInstruction prev) {
+        this.prev = prev;
+    }
 }

@@ -1,5 +1,6 @@
 package AST;
 
+import IR.IRoperand.IROperand;
 import Util.error.ErrorMessage;
 import Util.position;
 import Util.type.Type;
@@ -10,6 +11,9 @@ public abstract class ExprNode extends ASTNode{
     }
     private Type type;
     private ExprType exprType;
+
+    private IROperand result;
+    private IROperand basicResult;
 
     public ExprNode(position pos){
         super(pos);
@@ -38,5 +42,21 @@ public abstract class ExprNode extends ASTNode{
 
     public void setExprType(ExprType exprType) {
         this.exprType = exprType;
+    }
+
+    public IROperand getResult() {
+        return result;
+    }
+
+    public void setResult(IROperand result) {
+        this.result = result;
+    }
+
+    public IROperand getBasicResult() {
+        return basicResult;
+    }
+
+    public void setBasicResult(IROperand basicResult) {
+        this.basicResult = basicResult;
     }
 }

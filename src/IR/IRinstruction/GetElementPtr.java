@@ -16,4 +16,9 @@ public class GetElementPtr extends IRInstruction{
         this.index = index;
         this.result = result;
     }
+
+    @Override
+    public boolean Terminal() {
+        return false;
+    }
 }

@@ -16,4 +16,9 @@ public class Phi extends IRInstruction{
         this.labels = labels;
         this.result = result;
     }
+
+    @Override
+    public boolean Terminal() {
+        return false;
+    }
 }

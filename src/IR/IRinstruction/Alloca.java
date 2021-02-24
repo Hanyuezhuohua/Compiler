@@ -9,4 +9,9 @@ public class Alloca extends IRInstruction{
         super(instIn);
         this.result = result;
     }
+
+    @Override
+    public boolean Terminal() {
+        return false;
+    }
 }

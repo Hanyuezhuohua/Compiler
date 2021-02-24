@@ -1,5 +1,6 @@
 package AST;
 
+import IR.IRoperand.IROperand;
 import Util.position;
 
 public class IntegerliteralNode extends ExprNode{
@@ -7,6 +8,10 @@ public class IntegerliteralNode extends ExprNode{
     public IntegerliteralNode(position pos, int val){
         super(pos);
         this.val = val;
+    }
+
+    public int getVal() {
+        return val;
     }
 
     @Override

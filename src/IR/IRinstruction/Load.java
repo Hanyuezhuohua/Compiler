@@ -12,4 +12,9 @@ public class Load extends IRInstruction{
         this.pointer = pointer;
         this.result = result;
     }
+
+    @Override
+    public boolean Terminal() {
+        return false;
+    }
 }

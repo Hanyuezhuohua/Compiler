@@ -57,6 +57,12 @@ public class IRModule {
         classTypeMap.put(ClassType.getIdentifier(), ClassType);
     }
 
+    public void addConstString(String string){
+        if(!constStringMap.containsKey(string)){
+            constStringMap.put(string, new IRConstString(string));
+        }
+    }
+
     public IRType getClassType(String identifier){
         return classTypeMap.get(identifier);
     }

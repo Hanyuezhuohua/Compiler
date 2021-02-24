@@ -17,4 +17,15 @@ public class IRBasicBlock {
         head = tail = null;
         prev = next = null;
     }
+
+    public void addInst(IRInstruction inst){
+        if(head == null){
+            head = tail = inst;
+        }
+        else if(!inst.Terminal()){
+            tail.setNext(inst);
+            inst.setPrev(tail);
+            tail = inst;
+        }
+    }
 }

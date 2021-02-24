@@ -12,4 +12,9 @@ public class BitCast extends IRInstruction{
         this.value = value;
         this.result = result;
     }
+
+    @Override
+    public boolean Terminal() {
+        return false;
+    }
 }

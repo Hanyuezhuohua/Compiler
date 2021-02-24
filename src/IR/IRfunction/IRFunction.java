@@ -43,4 +43,8 @@ public class IRFunction {
     public String getIdentifier() {
         return identifier;
     }
+
+    public IROperand getClassPtr() {
+        return classPtr;
+    }
 }

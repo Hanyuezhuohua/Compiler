@@ -12,4 +12,9 @@ public class Store extends IRInstruction{
         this.value = value;
         this.pointer = pointer;
     }
+
+    @Override
+    public boolean Terminal() {
+        return false;
+    }
 }

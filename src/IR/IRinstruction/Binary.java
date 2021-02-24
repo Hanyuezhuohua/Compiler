@@ -20,4 +20,9 @@ public class Binary extends IRInstruction{
         this.op2 = op2;
         this.result = result;
     }
+
+    @Override
+    public boolean Terminal() {
+        return false;
+    }
 }

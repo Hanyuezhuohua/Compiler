@@ -14,4 +14,9 @@ public class Br extends IRInstruction{
         this.ifTrue = ifTrue;
         this.ifFalse = ifFalse;
     }
+
+    @Override
+    public boolean Terminal() {
+        return true;
+    }
 }
