@@ -1,0 +1,87 @@
+package RISCV.RISCVfunction;
+
+import RISCV.RISCVbasicblock.RISCVBasicBlock;
+import RISCV.RISCVmodule.RISCVModule;
+import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+
+public class RISCVFunction {
+    private RISCVModule functionIn;
+    private String identifier;
+    public HashSet<RISCVBasicBlock> blockContain;
+    private ArrayList<RISCVRegister> parameters;
+    private RISCVBasicBlock entry;
+    private RISCVBasicBlock exit;
+    private RISCVBasicBlock tailCall;
+    private int Offset;
+    public RISCVFunction(RISCVModule functionIn, String identifier) {
+        this.functionIn = functionIn;
+        this.identifier = identifier;
+        blockContain = new LinkedHashSet<>();
+        parameters = new ArrayList<>();
+        entry = null;
+        exit = null;
+        tailCall = null;
+        Offset = 0;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void addBlock(RISCVBasicBlock block){
+        blockContain.add(block);
+    }
+
+    public void removeBlock(RISCVBasicBlock block){
+        blockContain.remove(block);
+    }
+
+    public HashSet<RISCVBasicBlock> getBlockContain() {
+        return blockContain;
+    }
+
+    public ArrayList<RISCVRegister> getParameters() {
+        return parameters;
+    }
+
+    public RISCVBasicBlock getEntry() {
+        return entry;
+    }
+
+    public void setEntry(RISCVBasicBlock entry) {
+        this.entry = entry;
+    }
+
+    public RISCVBasicBlock getExit() {
+        return exit;
+    }
+
+    public void setExit(RISCVBasicBlock exit) {
+        this.exit = exit;
+    }
+
+    public void setTailCall(RISCVBasicBlock tailCall) {
+        this.tailCall = tailCall;
+    }
+
+    public RISCVBasicBlock getTailCall() {
+        return tailCall;
+    }
+
+    public void setOffset(int offset) {
+        Offset = offset;
+    }
+
+    public int getOffset() {
+        return Offset;
+    }
+
+    @Override
+    public String toString() {
+        return this.identifier;
+    }
+}
