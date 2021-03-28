@@ -36,28 +36,28 @@ public class Main {
         String fileName = "./testcase/code.mx";
         try {
             InputStream file = System.in;
-//            InputStream file = new FileInputStream(fileName);
+ //          InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new SemanticChecker().visit(ast);
             if(!codegen) return;
             IRBuilder irBuilder = new IRBuilder();
             irBuilder.visit(ast);
-  //          PrintStream IRFile = new PrintStream( "out.ll");
-  //          new IRPrinter(IRFile).run(irBuilder.getModule());
+            PrintStream IRFile = new PrintStream( "out.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
             new Memory_Register().run(irBuilder.getModule());
-  //          IRFile = new PrintStream( "out1.ll");
-  //          new IRPrinter(IRFile).run(irBuilder.getModule());
+            IRFile = new PrintStream( "out1.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
             new PhiResolution().run(irBuilder.getModule());
-  //          IRFile = new PrintStream( "out2.ll");
-  //          new IRPrinter(IRFile).run(irBuilder.getModule());
+            IRFile = new PrintStream( "out2.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
             ASMBuilder asmBuilder = new ASMBuilder();
             asmBuilder.visit(irBuilder.getModule());
             RISCVModule riscvModule = asmBuilder.getModule();
- //           PrintStream ASMFile1 = new PrintStream( "output1.s");
- //           new ASMPrinter(riscvModule, new PrintStream(ASMFile1), false).run();
+            PrintStream ASMFile1 = new PrintStream( "output1.s");
+            new ASMPrinter(riscvModule, new PrintStream(ASMFile1), false).run();
  //           RISCVModule riscvModule = (new ASMBuilder(irBuilder.getModule())).run();
             new RegisterAllocation(riscvModule).run();
- //           Peephole.run(riscvModule);
+            Peephole.run(riscvModule);
             PrintStream ASMFile = new PrintStream( "output.s");
             new ASMPrinter(riscvModule, new PrintStream(ASMFile), true).run();
         } catch (Exception err) {
