@@ -1,31 +1,220 @@
 package IR.IRbasicblock;
 
+import AST.NullliteralNode;
 import IR.IRfunction.IRFunction;
-import IR.IRinstruction.IRInstruction;
+import IR.IRinstruction.*;
+import IR.IRoperand.IRConstVoid;
+import IR.IRoperand.IRLocalRegister;
+import IR.IRtype.IRPointerType;
+import IR.IRutility.IRVisitor;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class IRBasicBlock {
     private IRFunction blockIn;
     private String identifier;
-
     private IRInstruction head, tail;
-
-    private IRBasicBlock prev, next;
+    private ArrayList<IRBasicBlock> prev, next;
+    private IRBasicBlock idom = null;
+    private HashSet<IRBasicBlock> domFrontiers = new HashSet<>();
 
     public IRBasicBlock(IRFunction blockIn, String identifier){
         this.blockIn = blockIn;
         this.identifier = identifier;
         head = tail = null;
-        prev = next = null;
+        prev = new ArrayList<>();
+        next = new ArrayList<>();
     }
 
     public void addInst(IRInstruction inst){
+        if(inst instanceof Phi){
+            if(head == null){
+                head = tail = inst;
+            }
+            else{
+                if(head instanceof Phi){
+                    IRInstruction prev = head;
+                    if(prev != tail){
+                        while(prev.getNext() instanceof Phi){
+                            prev = prev.getNext();
+                        }
+                    }
+                    if(prev == tail){
+                        tail.setNext(inst);
+                        inst.setPrev(tail);
+                        tail = inst;
+                    }
+                    else{
+                        IRInstruction next = prev.getNext();
+                        prev.setNext(inst);
+                        next.setPrev(inst);
+                        inst.setPrev(prev);
+                        inst.setNext(next);
+                    }
+                }
+                else{
+                    inst.setNext(head);
+                    head.setPrev(inst);
+                    head = inst;
+                }
+            }
+        }
+        else{
+            if(head == null){
+                head = tail = inst;
+                if(inst instanceof Br){
+                    link(((Br) inst).getIfTrue());
+                    link(((Br) inst).getIfFalse());
+                }
+            }
+            else if(!tail.Terminal()){
+                tail.setNext(inst);
+                inst.setPrev(tail);
+                tail = inst;
+                if(inst instanceof Br){
+                    link(((Br) inst).getIfTrue());
+                    link(((Br) inst).getIfFalse());
+                }
+            }
+        }
+    }
+
+    public void addAlloc(IRLocalRegister var){
+        IRInstruction store = new Store(this, new IRConstVoid(), var);
+//        IRInstruction store = new Store(this, ((IRPointerType) var.getOperandType()).getPointTo().initValue(), var);
         if(head == null){
-            head = tail = inst;
+            head = tail = new Alloca(this, var);
+            head.setNext(store);
+            tail = store;
+            tail.setPrev(head);
         }
-        else if(!inst.Terminal()){
-            tail.setNext(inst);
-            inst.setPrev(tail);
-            tail = inst;
+        else{
+            IRInstruction inst = new Alloca(this, var);
+            if(head instanceof Alloca || head instanceof Phi){
+                IRInstruction prev = head;
+                if(prev != tail){
+                    while(prev.getNext() instanceof Alloca || prev.getNext() instanceof Phi){
+                        prev = prev.getNext();
+                    }
+                }
+                if(prev == tail){
+                    tail.setNext(inst);
+                    inst.setPrev(tail);
+                    inst.setNext(store);
+                    store.setPrev(inst);
+                    tail = store;
+                }
+                else{
+                    IRInstruction next = prev.getNext();
+                    prev.setNext(inst);
+                    next.setPrev(store);
+                    inst.setPrev(prev);
+                    inst.setNext(store);
+                    store.setPrev(inst);
+                    store.setNext(next);
+                }
+            }
+            else{
+                inst.setNext(store);
+                store.setPrev(inst);
+                store.setNext(head);
+                head.setPrev(store);
+                head = inst;
+            }
         }
+    }
+
+    public void addPrev(IRBasicBlock prev){
+        this.prev.add(prev);
+    }
+
+    public void addNext(IRBasicBlock next){
+        this.next.add(next);
+    }
+
+    public void link(IRBasicBlock next){
+        if(next == null) return;
+        this.addNext(next);
+        next.addPrev(this);
+    }
+
+    public boolean Terminal(){
+        if(tail == null) return false;
+        else return tail.Terminal();
+    }
+
+    public IRInstruction getHead() {
+        return head;
+    }
+
+    public IRInstruction getTail() {
+        return tail;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public ArrayList<IRBasicBlock> getNext() {
+        return next;
+    }
+
+    public ArrayList<IRBasicBlock> getPrev() {
+        return prev;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String PrintBasicBlock(){
+        return  "%" + identifier;
+    }
+
+    public void setIdom(IRBasicBlock idom) {
+        this.idom = idom;
+    }
+
+    public IRBasicBlock getIdom() {
+        return idom;
+    }
+
+    public void addDomFrontier(IRBasicBlock domFrontier){
+        domFrontiers.add(domFrontier);
+    }
+
+    public HashSet<IRBasicBlock> getDomFrontiers() {
+        return domFrontiers;
+    }
+
+    public void setHead(IRInstruction head) {
+        this.head = head;
+    }
+
+    public void setTail(IRInstruction tail) {
+        this.tail = tail;
+    }
+
+    public void setPrev(ArrayList<IRBasicBlock> prev) {
+        this.prev = prev;
+    }
+
+    public void setNext(ArrayList<IRBasicBlock> next) {
+        this.next = next;
+    }
+
+    public void updateBlock(IRBasicBlock Old, IRBasicBlock New){
+        ((Br) tail).updateBlock(Old, New);
+        next.remove(Old);
+        link(New);
+    }
+
+    public void setDomFrontiers(HashSet<IRBasicBlock> domFrontiers) {
+        this.domFrontiers = domFrontiers;
+    }
+
+    public void accept(IRVisitor visitor){
+        visitor.visit(this);
     }
 }

@@ -1,12 +1,14 @@
 package Util.symbol;
 
 import AST.ClassdefNode;
+import IR.IRtype.IRClassType;
 import Util.scope.Scope;
 import Util.type.Type;
 import Util.position;
 
 public class ClassSymbol extends Symbol{
     private FuncSymbol constructor;
+    private IRClassType classType;
     public ClassSymbol(position pos, String identifier, Type type, ClassdefNode definition){
         super(pos, identifier, type, definition);
         constructor = null;
@@ -28,5 +30,13 @@ public class ClassSymbol extends Symbol{
 
     public FuncSymbol getConstructor() {
         return constructor;
+    }
+
+    public void setClassType(IRClassType classType) {
+        this.classType = classType;
+    }
+
+    public IRClassType getClassType() {
+        return classType;
     }
 }

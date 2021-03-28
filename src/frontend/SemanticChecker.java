@@ -12,15 +12,14 @@ import Util.symbol.Symbol;
 import Util.symbol.VarSymbol;
 import Util.type.*;
 
-import java.util.ArrayList;
-
-public class ScopeBuilder implements ASTVisitor {
+public class SemanticChecker implements ASTVisitor {
     private Scope currentScope;
     private ClassSymbol currentClass;
     private FuncSymbol currentFunc;
     private StatementNode currentLoop;
+    private boolean visitMember;
 
-    public ScopeBuilder(){
+    public SemanticChecker(){
         currentScope = new GlobalScope();
 
         ClassSymbol Int = new ClassSymbol(new position(-1, -1), "int", new IntType(), new LocalScope(currentScope));
@@ -29,8 +28,10 @@ public class ScopeBuilder implements ASTVisitor {
         ClassSymbol Void = new ClassSymbol(new position(-1, -1), "void", new VoidType(), new LocalScope(currentScope));
 
         FuncSymbol Length = new FuncSymbol(new position(-1, -1), "length", new IntType(), new LocalScope(string.getScope()));
+        Length.setMember(true);
 
         FuncSymbol Substring = new FuncSymbol(new position(-1, -1), "substring", new StringType());
+        Substring.setMember(true);
         LocalScope SubstringScope = new LocalScope(string.getScope());
         VarSymbol Left = new VarSymbol(Substring.getPos(), "left", new IntType(), SubstringScope);
         VarSymbol Right = new VarSymbol(Substring.getPos(), "right", new IntType(), SubstringScope);
@@ -39,8 +40,10 @@ public class ScopeBuilder implements ASTVisitor {
         Substring.setScope(SubstringScope);
 
         FuncSymbol ParseInt = new FuncSymbol(new position(-1, -1), "parseInt", new IntType(), new LocalScope(string.getScope()));
+        ParseInt.setMember(true);
 
         FuncSymbol Ord = new FuncSymbol(new position(-1, -1), "ord", new IntType());
+        Ord.setMember(true);
         LocalScope OrdScope = new LocalScope(string.getScope());
         VarSymbol Pos = new VarSymbol(Ord.getPos(), "pos", new IntType(), OrdScope);
         OrdScope.registerPara(Pos);
@@ -126,9 +129,12 @@ public class ScopeBuilder implements ASTVisitor {
             if(tmp instanceof ClassdefNode){
                 ClassSymbol classSymbol = (ClassSymbol) ((ClassdefNode)tmp).getSymbol();
                 currentScope = classSymbol.getScope();
+                visitMember = true;
                 ((ClassdefNode) tmp).getVarList().forEach(x-> x.accept(this));
+                visitMember = false;
                 for (FundefNode func : ((ClassdefNode) tmp).getFuncList()){
                     FuncSymbol funcSymbol = new FuncSymbol(func.getPos(), func.getIdentifier(), null, func);
+                    funcSymbol.setMember(true);
                     String baseType = func.getReturnType().getType();
                     int dim = func.getReturnType().getDim();
                     Type type = currentScope.findClassSymbol(baseType, func.getPos()).getType();
@@ -157,6 +163,7 @@ public class ScopeBuilder implements ASTVisitor {
                         throw new ErrorMessage("constructor name ERROR", node.getPos());
                     }
                     FuncSymbol funcSymbol = new FuncSymbol(func.getPos(), func.getIdentifier(), null, func);
+                    funcSymbol.setMember(true);
                     classSymbol.setConstructor(funcSymbol);
                     String baseType = func.getReturnType().getType();
                     int dim = func.getReturnType().getDim();
@@ -221,13 +228,6 @@ public class ScopeBuilder implements ASTVisitor {
         }
     }
 
-    public Scope getGlobalScope() {
-        while(currentScope instanceof LocalScope){
-            currentScope = currentScope.getParent();
-        }
-        return currentScope;
-    }
-
     @Override
     public void visit(TypeNode node) {
         throw new ErrorMessage("TypeNode ERROR", node.getPos());
@@ -281,6 +281,9 @@ public class ScopeBuilder implements ASTVisitor {
             type.checkAssignment(node.getExpression().getType(), node.getPos());
         }
         VarSymbol varSymbol = new VarSymbol(node.getPos(), node.getIdentifier(), type, currentScope);
+        if(visitMember){
+            varSymbol.setMember(true);
+        }
         if(currentScope instanceof GlobalScope){
             currentScope.registerVar(varSymbol);
         }

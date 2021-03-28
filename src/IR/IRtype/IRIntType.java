@@ -1,5 +1,7 @@
 package IR.IRtype;
 
+import IR.IRoperand.IRConstInt;
+import IR.IRoperand.IROperand;
 import Util.error.ErrorMessage;
 
 public class IRIntType implements IRType{
@@ -21,8 +23,21 @@ public class IRIntType implements IRType{
 
     @Override
     public String getType() {
-        if(intTypeBytes.equals(IntTypeBytes.Int8)) return "int8";
-        else if(intTypeBytes.equals(IntTypeBytes.Int32)) return "int32";
+        if(intTypeBytes.equals(IntTypeBytes.Int8)) return "i8";
+        else if(intTypeBytes.equals(IntTypeBytes.Int32)) return "i32";
         else throw new ErrorMessage("IR IntType toString ERROR");
+    }
+
+    @Override
+    public IROperand initValue() {
+        return new IRConstInt(0, intTypeBytes);
+    }
+
+    @Override
+    public Boolean resolvable() { return false; }
+
+    @Override
+    public String toString() {
+        return getType();
     }
 }

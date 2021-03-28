@@ -4,28 +4,28 @@ import IR.IRfunction.IRFunction;
 import IR.IRoperand.IRConstString;
 import IR.IRoperand.IRGlobalVariable;
 import IR.IRtype.*;
+import IR.IRutility.IRVisitor;
 import Util.error.ErrorMessage;
+import Util.type.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class IRModule {
     private HashMap<String, IRFunction> internalFunctionMap;
     private HashMap<String, IRFunction> externalFunctionMap;
     private HashMap<String, IRConstString> constStringMap;
-    private HashMap<String, IRType> classTypeMap;
+    private HashMap<String, IRClassType> classTypeMap;
+    private HashMap<String, IRType> baseTypeMap;
     private ArrayList<IRGlobalVariable> globalVariableList;
-    public static IRType IRString = new IRPointerType(new IRIntType(IRIntType.IntTypeBytes.Int8));
-    public static IRType IRVoid = new IRVoidType();
-    public static IRType IRInt = new IRIntType(IRIntType.IntTypeBytes.Int32);
-    public static IRType IRChar = new IRIntType(IRIntType.IntTypeBytes.Int8);
-    public static IRType IRBool = new IRBoolType();
 
     public IRModule(){
-        internalFunctionMap = new HashMap<>();
-        externalFunctionMap = new HashMap<>();
-        constStringMap = new HashMap<>();
-        classTypeMap = new HashMap<>();
+        internalFunctionMap = new LinkedHashMap<>();
+        externalFunctionMap = new LinkedHashMap<>();
+        constStringMap = new LinkedHashMap<>();
+        classTypeMap = new LinkedHashMap<>();
+        baseTypeMap = new LinkedHashMap<>();
         globalVariableList = new ArrayList<>();
     }
 
@@ -44,10 +44,10 @@ public class IRModule {
     }
 
     public void addBuiltinType(IRType builtinType, String identifier){
-        if(classTypeMap.containsKey(identifier)){
+        if(baseTypeMap.containsKey(identifier)){
             throw new ErrorMessage("addBuiltinType Conflict");
         }
-        classTypeMap.put(identifier, builtinType);
+        baseTypeMap.put(identifier, builtinType);
     }
 
     public void addClassType(IRClassType ClassType){
@@ -59,11 +59,56 @@ public class IRModule {
 
     public void addConstString(String string){
         if(!constStringMap.containsKey(string)){
-            constStringMap.put(string, new IRConstString(string));
+            constStringMap.put(string, new IRConstString(string, constStringMap.size()));
         }
     }
 
+    public void addGlobalVariableList(IRGlobalVariable globalVariable){
+        globalVariableList.add(globalVariable);
+    }
+
     public IRType getClassType(String identifier){
+        if(baseTypeMap.containsKey(identifier)){
+            return baseTypeMap.get(identifier);
+        }
         return classTypeMap.get(identifier);
+    }
+
+    public IRFunction getFunction(String identifier){
+        if(internalFunctionMap.containsKey(identifier)){
+            return internalFunctionMap.get(identifier);
+        }
+        else{
+            return externalFunctionMap.get(identifier);
+        }
+    }
+
+    public IRConstString getConstString(String string){
+        return constStringMap.get(string);
+    }
+
+    public HashMap<String, IRFunction> getInternalFunctionMap() {
+        return internalFunctionMap;
+    }
+
+    public HashMap<String, IRClassType> getClassTypeMap() {
+        return classTypeMap;
+    }
+
+
+    public ArrayList<IRGlobalVariable> getGlobalVariableList() {
+        return globalVariableList;
+    }
+
+    public HashMap<String, IRConstString> getConstStringMap() {
+        return constStringMap;
+    }
+
+    public HashMap<String, IRFunction> getExternalFunctionMap() {
+        return externalFunctionMap;
+    }
+
+    public void accept(IRVisitor visitor){
+        visitor.visit(this);
     }
 }

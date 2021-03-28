@@ -12,4 +12,9 @@ public class NullliteralNode extends ExprNode{
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public boolean isConst() {
+        return false;
+    }
 }
