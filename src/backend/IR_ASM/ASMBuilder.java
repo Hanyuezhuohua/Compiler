@@ -147,58 +147,6 @@ public class ASMBuilder implements IRVisitor {
         else throw new ErrorMessage();
     }
 
-    void makeBinary(IROperand src1, IROperand src2, String op, RISCVRegister rd) {
-        RISCVInstruction.SCategory sop;
-        boolean abelian = false, iType = false;
-        switch (op) {
-            case "+": sop = RISCVInstruction.SCategory.add; abelian = true; iType = true; break;
-            case "-": sop = RISCVInstruction.SCategory.sub; iType = true; break;
-            case "*": sop = RISCVInstruction.SCategory.mul; break;
-            case "/": sop = RISCVInstruction.SCategory.div; break;
-            case "%": sop = RISCVInstruction.SCategory.rem; break;
-            case "^": sop = RISCVInstruction.SCategory.xor; abelian = true; iType = true; break;
-            case "&": sop = RISCVInstruction.SCategory.and; abelian = true; iType = true; break;
-            case "|": sop = RISCVInstruction.SCategory.or; abelian = true; iType = true; break;
-            case "<<": sop = RISCVInstruction.SCategory.sll; iType = true; break;
-            case ">>": sop = RISCVInstruction.SCategory.sra; iType = true; break;
-            default: throw new ErrorMessage();
-        }
-        if (ZeroChecker(src2)) {
-            if (sop == RISCVInstruction.SCategory.and || sop == RISCVInstruction.SCategory.mul) {
-                currentBlock.addInst(new RISCVMove(module.getPhysicalRegister("zero"), rd, currentBlock));
-            } else {
-                currentBlock.addInst(new RISCVMove(getRegister(src1), rd, currentBlock));
-            }
-        } else if (ZeroChecker(src1)) {
-            if (sop == RISCVInstruction.SCategory.add || sop == RISCVInstruction.SCategory.sub || sop == RISCVInstruction.SCategory.or || sop == RISCVInstruction.SCategory.xor) {
-                currentBlock.addInst(new RegisterBinary(module.getPhysicalRegister("zero"), getRegister(src2), sop, rd, currentBlock));
-            } else {
-                currentBlock.addInst(new RISCVMove(module.getPhysicalRegister("zero"), rd, currentBlock));
-            }
-        } else if (iType) {
-            if (sop.equals(RISCVInstruction.SCategory.sub) && checkNegOperandImm(src2)) {
-                currentBlock.addInst(new ImmediateBinary(getRegister(src1), getNegImm(src2), RISCVInstruction.SCategory.add, rd, currentBlock));
-            } else if (!sop.equals(RISCVInstruction.SCategory.sub) && checkOperandImm(src2)) {
-                currentBlock.addInst(new ImmediateBinary(getRegister(src1), getImm(src2), sop, rd, currentBlock));
-            } else if (abelian && checkOperandImm(src1)) {
-                currentBlock.addInst(new ImmediateBinary(getRegister(src2), getImm(src1), sop, rd, currentBlock));
-            } else {
-                currentBlock.addInst(new RegisterBinary(getRegister(src1), getRegister(src2), sop, rd, currentBlock));
-            }
-        } else {
- /*           if (sop == RISCVInstruction.SCategory.mul && checkOperandConst(src1) && isPowerOfTwo(getOperandConst(src1))) {
-                currentBlock.addInst(new ImmediateBinary(getRegister(src2), new RISCVImmediate(Integer.numberOfTrailingZeros(getOperandConst(src1))), RISCVInstruction.SCategory.sll, rd, currentBlock));
-            } else if (sop == RISCVInstruction.SCategory.mul && checkOperandConst(src2) && isPowerOfTwo(getOperandConst(src2))) {
-                currentBlock.addInst(new ImmediateBinary(getRegister(src1), new RISCVImmediate(Integer.numberOfTrailingZeros(getOperandConst(src2))), RISCVInstruction.SCategory.sll, rd, currentBlock));
-            } else if (sop == RISCVInstruction.SCategory.div && checkOperandConst(src2) && isPowerOfTwo(getOperandConst(src2))) { // wrong when negative, assumed undefined
-                currentBlock.addInst(new ImmediateBinary(getRegister(src1), new RISCVImmediate(Integer.numberOfTrailingZeros(getOperandConst(src2))), RISCVInstruction.SCategory.sra, rd, currentBlock));
-            } else if (sop == RISCVInstruction.SCategory.rem && checkOperandConst(src2) && isPowerOfTwo(getOperandConst(src2))) { // wrong when negative, assumed undefined
-                currentBlock.addInst(new ImmediateBinary(getRegister(src1), new RISCVImmediate((1 << Integer.numberOfTrailingZeros(getOperandConst(src2))) - 1), RISCVInstruction.SCategory.and, rd, currentBlock));
-            } else {*/
-                currentBlock.addInst(new RegisterBinary(getRegister(src1), getRegister(src2), sop, rd, currentBlock));
-           // }
-        }
-    }
     @Override
     public void visit(Binary inst) {
         Binary.IRBinaryOpType op = inst.getOp();
@@ -278,13 +226,7 @@ public class ASMBuilder implements IRVisitor {
             int index = ((IRConstInt) inst.getIndex().get(0)).getValue();
             if (index != 0) {
                 dest = new RISCVVirtualRegister(4);
-                IROperand op1 = inst.getPtrval();
-                IROperand op2 = new IRConstInt(index * (type.getSize() / 8), IRIntType.IntTypeBytes.Int32);
-                if(ZeroChecker(op2)) currentBlock.addInst(new RISCVMove(getRegister(op1), dest, currentBlock));
-                else if(ZeroChecker(op1)) currentBlock.addInst(new RISCVMove(getRegister(op2), dest, currentBlock));
-                else if(checkOperandImm(op2)) currentBlock.addInst(new ImmediateBinary(getRegister(op1), getImm(op2), RISCVInstruction.SCategory.add, dest, currentBlock));
-                else if(checkOperandImm(op1)) currentBlock.addInst(new ImmediateBinary(getRegister(op2), getImm(op1), RISCVInstruction.SCategory.add, dest, currentBlock));
-                else currentBlock.addInst(new RegisterBinary(getRegister(op1), getRegister(op2), RISCVInstruction.SCategory.add, dest, currentBlock));
+                makeBinary(inst.getPtrval(), new IRConstInt(index * (type.getSize() / 8), IRIntType.IntTypeBytes.Int32), "+", dest);
             } else {
                 RISCVRegister ptr = getRegister(inst.getPtrval());
                 if (ptr instanceof RISCVGlobalRegister) {
@@ -299,13 +241,7 @@ public class ASMBuilder implements IRVisitor {
         } else {
             RISCVVirtualRegister tmp = new RISCVVirtualRegister(4);
             dest = new RISCVVirtualRegister(4);
-            IROperand op1 = inst.getIndex().get(0);
-            IROperand op2 = new IRConstInt(type.getSize() / 8, IRIntType.IntTypeBytes.Int32);
-            if(ZeroChecker(op2)) currentBlock.addInst(new RISCVMove(getRegister(op1), tmp, currentBlock));
-            else if(ZeroChecker(op1)) currentBlock.addInst(new RISCVMove(getRegister(op2), tmp, currentBlock));
-            else if(checkOperandImm(op2)) currentBlock.addInst(new ImmediateBinary(getRegister(op1), getImm(op2), RISCVInstruction.SCategory.add, tmp, currentBlock));
-            else if(checkOperandImm(op1)) currentBlock.addInst(new ImmediateBinary(getRegister(op2), getImm(op1), RISCVInstruction.SCategory.add, tmp, currentBlock));
-            else currentBlock.addInst(new RegisterBinary(getRegister(op1), getRegister(op2), RISCVInstruction.SCategory.add, dest, currentBlock));
+            makeBinary(inst.getIndex().get(0), new IRConstInt(type.getSize() / 8, IRIntType.IntTypeBytes.Int32), "*", tmp);
             currentBlock.addInst(new RegisterBinary(getRegister(inst.getPtrval()), tmp, RISCVInstruction.SCategory.add, dest, currentBlock));
         }
         if (!(inst.getIndex().size() == 1 || ((IRConstInt) inst.getIndex().get(1)).getValue() == 0)) {
@@ -532,5 +468,58 @@ public class ASMBuilder implements IRVisitor {
         else currentBlock.addInst(new RISCVStore(addr, new RISCVImmediate(0), getRegister(inst.getValue()), inst.getValue().getOperandType().getSize() / 8, currentBlock));
     }
 
+
+    void makeBinary(IROperand src1, IROperand src2, String op, RISCVRegister rd) {
+        RISCVInstruction.SCategory sop;
+        boolean abelian = false, iType = false;
+        switch (op) {
+            case "+": sop = RISCVInstruction.SCategory.add; abelian = true; iType = true; break;
+            case "-": sop = RISCVInstruction.SCategory.sub; iType = true; break;
+            case "*": sop = RISCVInstruction.SCategory.mul; break;
+            case "/": sop = RISCVInstruction.SCategory.div; break;
+            case "%": sop = RISCVInstruction.SCategory.rem; break;
+            case "^": sop = RISCVInstruction.SCategory.xor; abelian = true; iType = true; break;
+            case "&": sop = RISCVInstruction.SCategory.and; abelian = true; iType = true; break;
+            case "|": sop = RISCVInstruction.SCategory.or; abelian = true; iType = true; break;
+            case "<<": sop = RISCVInstruction.SCategory.sll; iType = true; break;
+            case ">>": sop = RISCVInstruction.SCategory.sra; iType = true; break;
+            default: throw new ErrorMessage();
+        }
+        if (ZeroChecker(src2)) {
+            if (sop == RISCVInstruction.SCategory.and || sop == RISCVInstruction.SCategory.mul) {
+                currentBlock.addInst(new RISCVMove(module.getPhysicalRegister("zero"), rd, currentBlock));
+            } else {
+                currentBlock.addInst(new RISCVMove(getRegister(src1), rd, currentBlock));
+            }
+        } else if (ZeroChecker(src1)) {
+            if (sop == RISCVInstruction.SCategory.add || sop == RISCVInstruction.SCategory.sub || sop == RISCVInstruction.SCategory.or || sop == RISCVInstruction.SCategory.xor) {
+                currentBlock.addInst(new RegisterBinary(module.getPhysicalRegister("zero"), getRegister(src2), sop, rd, currentBlock));
+            } else {
+                currentBlock.addInst(new RISCVMove(module.getPhysicalRegister("zero"), rd, currentBlock));
+            }
+        } else if (iType) {
+            if (sop.equals(RISCVInstruction.SCategory.sub) && checkNegOperandImm(src2)) {
+                currentBlock.addInst(new ImmediateBinary(getRegister(src1), getNegImm(src2), RISCVInstruction.SCategory.add, rd, currentBlock));
+            } else if (!sop.equals(RISCVInstruction.SCategory.sub) && checkOperandImm(src2)) {
+                currentBlock.addInst(new ImmediateBinary(getRegister(src1), getImm(src2), sop, rd, currentBlock));
+            } else if (abelian && checkOperandImm(src1)) {
+                currentBlock.addInst(new ImmediateBinary(getRegister(src2), getImm(src1), sop, rd, currentBlock));
+            } else {
+                currentBlock.addInst(new RegisterBinary(getRegister(src1), getRegister(src2), sop, rd, currentBlock));
+            }
+        } else {
+            if (sop == RISCVInstruction.SCategory.mul && checkOperandConst(src1) && isPowerOfTwo(getOperandConst(src1))) {
+                currentBlock.addInst(new ImmediateBinary(getRegister(src2), new RISCVImmediate(Integer.numberOfTrailingZeros(getOperandConst(src1))), RISCVInstruction.SCategory.sll, rd, currentBlock));
+            } else if (sop == RISCVInstruction.SCategory.mul && checkOperandConst(src2) && isPowerOfTwo(getOperandConst(src2))) {
+                currentBlock.addInst(new ImmediateBinary(getRegister(src1), new RISCVImmediate(Integer.numberOfTrailingZeros(getOperandConst(src2))), RISCVInstruction.SCategory.sll, rd, currentBlock));
+            } else if (sop == RISCVInstruction.SCategory.div && checkOperandConst(src2) && isPowerOfTwo(getOperandConst(src2))) { // wrong when negative, assumed undefined
+                currentBlock.addInst(new ImmediateBinary(getRegister(src1), new RISCVImmediate(Integer.numberOfTrailingZeros(getOperandConst(src2))), RISCVInstruction.SCategory.sra, rd, currentBlock));
+            } else if (sop == RISCVInstruction.SCategory.rem && checkOperandConst(src2) && isPowerOfTwo(getOperandConst(src2))) { // wrong when negative, assumed undefined
+                currentBlock.addInst(new ImmediateBinary(getRegister(src1), new RISCVImmediate((1 << Integer.numberOfTrailingZeros(getOperandConst(src2))) - 1), RISCVInstruction.SCategory.and, rd, currentBlock));
+            } else {
+                currentBlock.addInst(new RegisterBinary(getRegister(src1), getRegister(src2), sop, rd, currentBlock));
+            }
+        }
+    }
 }
 
