@@ -6,7 +6,6 @@ import backend.AST_IR.IRPrinter;
 import backend.AST_IR.Memory_Register;
 import backend.AST_IR.PhiResolution;
 import backend.IR_ASM.ASMBuilder;
-import backend.IR_ASM.Peephole;
 import backend.IR_ASM.RegisterAllocation;
 import frontend.ASTbuilder;
 import frontend.SemanticChecker;
