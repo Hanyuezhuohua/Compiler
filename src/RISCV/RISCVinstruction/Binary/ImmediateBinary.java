@@ -23,7 +23,7 @@ public class ImmediateBinary extends RISCVInstruction {
     }
     @Override
     public String toString() {
-        return op + "" + rd + ", " + rs + ", " + imm.getValue();
+        return op + " " + rd + ", " + rs + ", " + imm.getValue();
     }
     @Override
     public HashSet<RISCVRegister> Uses() {

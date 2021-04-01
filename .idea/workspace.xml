@@ -2,64 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Compiler.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/BoolliteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/BoolliteralNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/ExprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ExprNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/FuncexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/FuncexprNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/IdentifierNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/IdentifierNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/IntegerliteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/IntegerliteralNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/NewexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/NewexprNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/NullliteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/NullliteralNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/VardefNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/VardefNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRbasicblock/IRBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRbasicblock/IRBasicBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRfunction/IRFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRfunction/IRFunction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Alloca.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Alloca.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Binary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/BitCast.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/BitCast.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/BitwiseBinary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/BitwiseBinary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Br.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Br.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Call.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Call.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/GetElementPtr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/GetElementPtr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/IRInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/IRInstruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Icmp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Icmp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Load.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Load.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Phi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Phi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Ret.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Ret.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRmodule/IRModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRmodule/IRModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRConstBool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRConstBool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRConstInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRConstInt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRConstNull.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRConstNull.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRConstString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRConstString.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRConstVoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRConstVoid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRGlobalVariable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRGlobalVariable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRLocalRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRLocalRegister.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IROperand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IROperand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/IRArrayType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRArrayType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/IRBoolType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRBoolType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/IRClassType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRClassType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/IRIntType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRIntType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/IRPointerType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRPointerType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/IRType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRtype/IRVoidType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRtype/IRVoidType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/symbol/ClassSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/symbol/ClassSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/symbol/FuncSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/symbol/FuncSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/symbol/VarSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Util/symbol/VarSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/IRBuilder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/ASTbuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/ASTbuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/ScopeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/SemanticChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.g4" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Mymx.g4" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Mymx.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Mymx.interp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxBaseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxBaseListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxBaseVisitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxLexer.interp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxLexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/MymxVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/MymxVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Binary/ImmediateBinary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Binary/ImmediateBinary.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
