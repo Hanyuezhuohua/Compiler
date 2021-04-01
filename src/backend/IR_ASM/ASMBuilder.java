@@ -378,12 +378,14 @@ public class ASMBuilder implements IRVisitor {
 
     @Override
     public void visit(Store inst) {
-        if (getRegister(inst.getPointer()) instanceof RISCVGlobalRegister) {
+        RISCVRegister address = getRegister(inst.getPointer());
+        if (address instanceof RISCVGlobalRegister) {
             RISCVVirtualRegister tmp = new RISCVVirtualRegister(4);
-            currentBlock.addInst(new RISCVLui(new RISCVRelocation((RISCVGlobalRegister) getRegister(inst.getPointer()), RISCVRelocation.RelocationType.hi), tmp, currentBlock));
-            currentBlock.addInst(new RISCVStore(tmp, new RISCVRelocation((RISCVGlobalRegister) getRegister(inst.getPointer()), RISCVRelocation.RelocationType.lo),getRegister(inst.getValue()), inst.getValue().getOperandType().getSize() / 8, currentBlock));
+            RISCVRegister value = getRegister(inst.getValue());
+            currentBlock.addInst(new RISCVLui(new RISCVRelocation((RISCVGlobalRegister) address, RISCVRelocation.RelocationType.hi), tmp, currentBlock));
+            currentBlock.addInst(new RISCVStore(tmp, new RISCVRelocation((RISCVGlobalRegister) address, RISCVRelocation.RelocationType.lo), value, inst.getValue().getOperandType().getSize() / 8, currentBlock));
         }
-        else currentBlock.addInst(new RISCVStore(getRegister(inst.getPointer()), new RISCVImmediate(0), getRegister(inst.getValue()), inst.getValue().getOperandType().getSize() / 8, currentBlock));
+        else currentBlock.addInst(new RISCVStore(address, new RISCVImmediate(0), getRegister(inst.getValue()), inst.getValue().getOperandType().getSize() / 8, currentBlock));
     }
 }
 
