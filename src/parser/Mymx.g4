@@ -37,7 +37,7 @@ suite: '{' statement* '}';
 
 BOOL_LITERAL: TRUE | FALSE;
 INTEGER_LITERAL: '0' | [1-9][0-9]*;
-STRING_LITERAL: '"' (~["\\\r\n]| '\\' ["n\\])* '"';
+STRING_LITERAL: '"' (~["\n\r\\] | '\\' ["nr\\])*? '"';
 NULL_LITERAL: NULL;
 
 //keyword
@@ -84,8 +84,8 @@ expression: THIS                                                                
           | <assoc=right> op = ('++' | '--') expression                                    #prefixExpr
           | <assoc=right> op = ('+' | '-') expression                                      #prefixExpr
           | <assoc=right> op = ('!' | '~') expression                                      #prefixExpr
-          | lhs = expression op = ('+' | '-' ) rhs = expression                            #binaryExpr
           | lhs = expression op = ('*' | '/' | '%') rhs = expression                       #binaryExpr
+          | lhs = expression op = ('+' | '-' ) rhs = expression                            #binaryExpr
           | lhs = expression op = ('<<' | '>>') rhs = expression                           #binaryExpr
           | lhs = expression op = ('<' | '>' | '<=' | '>=' | '==' | '!=') rhs = expression #binaryExpr
           | lhs = expression op = ('&' | '^' | '|' | '&&' | '||') rhs = expression         #binaryExpr

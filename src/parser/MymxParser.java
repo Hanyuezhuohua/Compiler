@@ -1,4 +1,4 @@
-// Generated from D:/Compiler/src/parser\Mymx.g4 by ANTLR 4.9
+// Generated from C:/Users/16976/Desktop/Compiler/src/parser\Mymx.g4 by ANTLR 4.9
 package parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -1490,11 +1490,11 @@ public class MymxParser extends Parser {
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public TerminalNode ADD() { return getToken(MymxParser.ADD, 0); }
-		public TerminalNode MINUS() { return getToken(MymxParser.MINUS, 0); }
 		public TerminalNode MUL() { return getToken(MymxParser.MUL, 0); }
 		public TerminalNode DIV() { return getToken(MymxParser.DIV, 0); }
 		public TerminalNode MOD() { return getToken(MymxParser.MOD, 0); }
+		public TerminalNode ADD() { return getToken(MymxParser.ADD, 0); }
+		public TerminalNode MINUS() { return getToken(MymxParser.MINUS, 0); }
 		public TerminalNode LEFT_SHIFT() { return getToken(MymxParser.LEFT_SHIFT, 0); }
 		public TerminalNode RIGHT_SHIFT() { return getToken(MymxParser.RIGHT_SHIFT, 0); }
 		public TerminalNode LESS() { return getToken(MymxParser.LESS, 0); }
@@ -1720,7 +1720,7 @@ public class MymxParser extends Parser {
 						setState(183);
 						((BinaryExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==ADD || _la==MINUS) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MUL) | (1L << DIV) | (1L << MOD))) != 0)) ) {
 							((BinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -1742,7 +1742,7 @@ public class MymxParser extends Parser {
 						setState(186);
 						((BinaryExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MUL) | (1L << DIV) | (1L << MOD))) != 0)) ) {
+						if ( !(_la==ADD || _la==MINUS) ) {
 							((BinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -2465,8 +2465,8 @@ public class MymxParser extends Parser {
 		"\u00b4\5\30\r\2\u00b4\u00b5\7\"\2\2\u00b5\u00b7\3\2\2\2\u00b6\u00a6\3"+
 		"\2\2\2\u00b6\u00a8\3\2\2\2\u00b6\u00a9\3\2\2\2\u00b6\u00aa\3\2\2\2\u00b6"+
 		"\u00ac\3\2\2\2\u00b6\u00ae\3\2\2\2\u00b6\u00b0\3\2\2\2\u00b6\u00b2\3\2"+
-		"\2\2\u00b7\u00dc\3\2\2\2\u00b8\u00b9\f\t\2\2\u00b9\u00ba\t\4\2\2\u00ba"+
-		"\u00db\5\30\r\n\u00bb\u00bc\f\b\2\2\u00bc\u00bd\t\6\2\2\u00bd\u00db\5"+
+		"\2\2\u00b7\u00dc\3\2\2\2\u00b8\u00b9\f\t\2\2\u00b9\u00ba\t\6\2\2\u00ba"+
+		"\u00db\5\30\r\n\u00bb\u00bc\f\b\2\2\u00bc\u00bd\t\4\2\2\u00bd\u00db\5"+
 		"\30\r\t\u00be\u00bf\f\7\2\2\u00bf\u00c0\t\7\2\2\u00c0\u00db\5\30\r\b\u00c1"+
 		"\u00c2\f\6\2\2\u00c2\u00c3\t\b\2\2\u00c3\u00db\5\30\r\7\u00c4\u00c5\f"+
 		"\5\2\2\u00c5\u00c6\t\t\2\2\u00c6\u00db\5\30\r\6\u00c7\u00c8\f\4\2\2\u00c8"+

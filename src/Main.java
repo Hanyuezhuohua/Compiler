@@ -1,6 +1,14 @@
 import AST.RootNode;
+import backend.IR_ASM.ASMPrinter;
+import RISCV.RISCVmodule.RISCVModule;
+import backend.AST_IR.IRBuilder;
+import backend.AST_IR.IRPrinter;
+import backend.AST_IR.Memory_Register;
+import backend.AST_IR.PhiResolution;
+import backend.IR_ASM.ASMBuilder;
+import backend.IR_ASM.RegisterAllocation;
 import frontend.ASTbuilder;
-import frontend.ScopeBuilder;
+import frontend.SemanticChecker;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import parser.MymxErrorListener;
@@ -9,15 +17,47 @@ import parser.MymxParser;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String fileName = "./testcase/sema/class-package/class-10.mx";
+        boolean codegen = true;
+        boolean optimize = false;
+        if(args.length > 0){
+            for (String arg : args){
+                switch (arg){
+                    case "-semantic" -> codegen = false;
+                    case "-codegen" -> codegen = true;
+                    case "-optimize" -> optimize = true;
+                }
+            }
+        }
+        String fileName = "./testcase/code.mx";
         try {
-//            InputStream file = System.in;
-            InputStream file = new FileInputStream(fileName);
+            InputStream file = System.in;
+ //           InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
-            new ScopeBuilder().visit(ast);
+            new SemanticChecker().visit(ast);
+            if(!codegen) return;
+            IRBuilder irBuilder = new IRBuilder();
+            irBuilder.visit(ast);
+            PrintStream IRFile = new PrintStream( "out.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
+            new Memory_Register().run(irBuilder.getModule());
+            IRFile = new PrintStream( "out1.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
+            new PhiResolution().run(irBuilder.getModule());
+            IRFile = new PrintStream( "out2.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
+            ASMBuilder asmBuilder = new ASMBuilder();
+            asmBuilder.visit(irBuilder.getModule());
+            RISCVModule riscvModule = asmBuilder.getModule();
+            PrintStream ASMFile1 = new PrintStream( "output1.s");
+            new ASMPrinter(riscvModule, new PrintStream(ASMFile1), false).run();
+ //           RISCVModule riscvModule = (new ASMBuilder(irBuilder.getModule())).run();
+            new RegisterAllocation(riscvModule).run();
+            PrintStream ASMFile = new PrintStream( "output.s");
+            new ASMPrinter(riscvModule, new PrintStream(ASMFile), true).run();
         } catch (Exception err) {
             err.printStackTrace();
             System.err.println(err.getMessage());

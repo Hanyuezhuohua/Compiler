@@ -91,7 +91,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
     public ASTNode visitParameter_list(MymxParser.Parameter_listContext ctx) {
         VardefListNode res = new VardefListNode(new position(ctx));
         for(int i = 0; i < ctx.IDENTIFIER().size(); ++i){
-            res.addVar(new VardefNode(ctx.IDENTIFIER(i).getText(), (TypeNode) visit(ctx.type(i)), new position(ctx)));
+            res.addVar(new VardefNode(ctx.IDENTIFIER(i).getText(), (TypeNode) visit(ctx.type(i)), new position(ctx), true));
         }
         return res;
     }
@@ -111,7 +111,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitVariable_decl(MymxParser.Variable_declContext ctx) {
-        VardefNode res = new VardefNode(ctx.IDENTIFIER().getText(), new position(ctx));
+        VardefNode res = new VardefNode(ctx.IDENTIFIER().getText(), new position(ctx), false);
         if(ctx.expression() != null) res.setExpression((ExprNode) visit(ctx.expression()));
         return res;
     }
@@ -316,7 +316,7 @@ public class ASTbuilder extends MymxBaseVisitor<ASTNode>{
             return new IntegerliteralNode(new position(ctx), Integer.parseInt(ctx.INTEGER_LITERAL().getText()));
         }
         else if(ctx.STRING_LITERAL() != null){
-            return new StringliteralNode(new position(ctx), ctx.STRING_LITERAL().getText());
+            return new StringliteralNode(new position(ctx), ctx.STRING_LITERAL().getText().substring(1, ctx.STRING_LITERAL().getText().length() - 1));
         }
         else if(ctx.NULL_LITERAL() != null){
             return new NullliteralNode(new position(ctx));

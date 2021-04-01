@@ -1,5 +1,8 @@
 package IR.IRtype;
 
+import IR.IRoperand.IRConstNull;
+import IR.IRoperand.IROperand;
+
 public class IRArrayType implements IRType{
     private int arraySize;
     private IRType baseType;
@@ -16,6 +19,17 @@ public class IRArrayType implements IRType{
 
     @Override
     public String getType() {
-        return "[" + arraySize + "x" + baseType.toString() + "]";
+        return "[" + arraySize + " x " + baseType.getType() + "]";
+    }
+
+    @Override
+    public IROperand initValue() { return new IRConstNull(); }
+
+    @Override
+    public Boolean resolvable() { return false; }
+
+    @Override
+    public String toString() {
+        return getType();
     }
 }

@@ -22,4 +22,9 @@ public class BoolliteralNode extends ExprNode{
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public boolean isConst() {
+        return true;
+    }
 }

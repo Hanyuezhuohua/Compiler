@@ -1,16 +1,22 @@
 package IR.IRtype;
 
+import IR.IRoperand.IRConstInt;
+import IR.IRoperand.IRConstNull;
+import IR.IRoperand.IROperand;
+
 import java.util.ArrayList;
 
 public class IRClassType implements IRType{
     private String identifier;
     private int size;
     private ArrayList<IRType> members;
+    private ArrayList<IRConstInt> offsets;
 
     public IRClassType(String identifier){
         this.identifier = identifier;
         this.size = 0;
-        members = new ArrayList<IRType>();
+        members = new ArrayList<>();
+        offsets = new ArrayList<>();
     }
 
     public String getIdentifier() {
@@ -19,6 +25,7 @@ public class IRClassType implements IRType{
 
     public void addMember(IRType member){
         members.add(member);
+        offsets.add(new IRConstInt(size, IRIntType.IntTypeBytes.Int32));
         size += member.getSize();
     }
 
@@ -28,13 +35,35 @@ public class IRClassType implements IRType{
 
     @Override
     public int getSize() {
+        if(size == 0){
+            return 8;
+        }
         return size;
+    }
+
+    public int getOffset(int id){
+        int res = 0;
+        for(int i = 0; i < id; ++i){
+            res += members.get(i).getSize();
+        }
+        return res;
+    }
+
+    public ArrayList<IRConstInt> getOffsets() {
+        return offsets;
     }
 
     @Override
     public String getType() {
-        return "%" + identifier;
+        return "%struct." + identifier;
     }
+
+    public ArrayList<IRType> getMembers() {
+        return members;
+    }
+
+    @Override
+    public IROperand initValue() { return new IRConstNull(); }
 
     public String getTypeDetailed(){
         StringBuilder res = new StringBuilder(getType());
@@ -48,5 +77,17 @@ public class IRClassType implements IRType{
         }
         res.append("}>");
         return res.toString();
+    }
+
+    @Override
+    public Boolean resolvable() { return false; }
+
+    @Override
+    public String toString() {
+        return getType();
+    }
+
+    public int getIndex(){
+        return members.size() - 1;
     }
 }

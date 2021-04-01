@@ -1,4 +1,4 @@
-// Generated from D:/Compiler/src/parser\Mymx.g4 by ANTLR 4.9
+// Generated from C:/Users/16976/Desktop/Compiler/src/parser\Mymx.g4 by ANTLR 4.9
 package parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 

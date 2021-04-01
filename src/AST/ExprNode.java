@@ -59,4 +59,6 @@ public abstract class ExprNode extends ASTNode{
     public void setBasicResult(IROperand basicResult) {
         this.basicResult = basicResult;
     }
+
+    public boolean isConst() { return false; }
 }
