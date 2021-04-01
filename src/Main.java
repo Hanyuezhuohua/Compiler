@@ -34,8 +34,8 @@ public class Main {
         }
         String fileName = "./testcase/code.mx";
         try {
-            InputStream file = System.in;
- //           InputStream file = new FileInputStream(fileName);
+ //           InputStream file = System.in;
+            InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new SemanticChecker().visit(ast);
             if(!codegen) return;
@@ -56,6 +56,7 @@ public class Main {
             new ASMPrinter(riscvModule, new PrintStream(ASMFile1), false).run();
  //           RISCVModule riscvModule = (new ASMBuilder(irBuilder.getModule())).run();
             new RegisterAllocation(riscvModule).run();
+
             PrintStream ASMFile = new PrintStream( "output.s");
             new ASMPrinter(riscvModule, new PrintStream(ASMFile), true).run();
         } catch (Exception err) {

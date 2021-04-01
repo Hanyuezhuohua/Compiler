@@ -12,7 +12,6 @@ public class RISCVGlobalRegister extends RISCVRegister {
     public int getWidth() { return width; }
 
     public String getIdentifier() { return identifier; }
-
     @Override
     public String toString() {
         return identifier;

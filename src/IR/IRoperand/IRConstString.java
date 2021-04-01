@@ -47,5 +47,4 @@ public class IRConstString extends IROperand{
 
     @Override
     public boolean isZero() { return false; }
-
 }

@@ -25,5 +25,4 @@ public class IRConstNull extends IROperand{
     public boolean isZero() {
         return true;
     }
-
 }

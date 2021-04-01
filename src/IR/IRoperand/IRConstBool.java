@@ -27,7 +27,6 @@ public class IRConstBool extends IROperand{
 
     @Override
     public void removeInst(IRInstruction inst) {}
-
     @Override
     public boolean isZero() {
         return value ^ true;
