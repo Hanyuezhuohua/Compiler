@@ -51,168 +51,167 @@ define void @init()
 	%9 = bitcast i32* %8 to i32**
 	br label %10
 10:
-;prev: 0 14 
-;next: 14 23 
+;prev: 0 13 
+;next: 13 22 
 ;iDom: 0
 ;DomFrontiers: 10 
-	%11 = phi i32 [ 0, %0 ], [ %12, %14 ]
-	%12 = add i32 %11, 1
-	%13 = icmp ne i32 %11, %3
-	br i1 %13, label %14, label %23
-14:
+	%11 = phi i32 [ 0, %0 ], [ %21, %13 ]
+	%12 = icmp slt i32 %11, %3
+	br i1 %12, label %13, label %22
+13:
 ;prev: 10 
 ;next: 10 
 ;iDom: 10
 ;DomFrontiers: 10 
-	%15 = getelementptr inbounds i32, i32* %7, i32 %11
-	%16 = bitcast i32* %15 to i32**
-	%17 = load i32, i32* @n, align 4
-	%18 = mul i32 %17, 4
-	%19 = add i32 %18, 4
-	%20 = call i8* @malloc(i32 %19)
-	%21 = bitcast i8* %20 to i32*
-	store i32 %17, i32* %21, align 4
-	%22 = getelementptr inbounds i32, i32* %21, i32 1
-	store i32* %22, i32** %16, align 4
+	%14 = getelementptr inbounds i32*, i32** %9, i32 %11
+	%15 = load i32, i32* @n, align 4
+	%16 = mul i32 %15, 4
+	%17 = add i32 %16, 4
+	%18 = call i8* @malloc(i32 %17)
+	%19 = bitcast i8* %18 to i32*
+	store i32 %15, i32* %19, align 4
+	%20 = getelementptr inbounds i32, i32* %19, i32 1
+	store i32* %20, i32** %14, align 4
+	%21 = add i32 %11, 1
 	br label %10
-23:
+22:
 ;prev: 10 
-;next: 24 
+;next: 23 
 ;iDom: 10
 	store i32** %9, i32*** @a, align 4
-	br label %24
-24:
-;prev: 23 54 
-;next: 29 30 
+	br label %23
+23:
+;prev: 22 53 
+;next: 28 29 
+;iDom: 22
+;DomFrontiers: 23 
+	%24 = phi i32 [ , %22 ], [ %31, %53 ]
+	%25 = phi i32 [ 0, %22 ], [ %54, %53 ]
+	%26 = load i32, i32* @n, align 4
+	%27 = icmp slt i32 %25, %26
+	br i1 %27, label %28, label %29
+28:
+;prev: 23 
+;next: 30 
 ;iDom: 23
-;DomFrontiers: 24 
-	%25 = phi i32 [ , %23 ], [ %32, %54 ]
-	%26 = phi i32 [ 0, %23 ], [ %55, %54 ]
-	%27 = load i32, i32* @n, align 4
-	%28 = icmp slt i32 %26, %27
-	br i1 %28, label %29, label %30
+;DomFrontiers: 23 
+	br label %30
 29:
-;prev: 24 
-;next: 31 
-;iDom: 24
-;DomFrontiers: 24 
-	br label %31
+;prev: 23 
+;next: 34 
+;iDom: 23
+	br label %34
 30:
-;prev: 24 
-;next: 35 
-;iDom: 24
-	br label %35
-31:
-;prev: 29 52 
-;next: 39 45 
+;prev: 28 51 
+;next: 38 44 
+;iDom: 28
+;DomFrontiers: 23 30 
+	%31 = phi i32 [ 0, %28 ], [ %52, %51 ]
+	%32 = load i32, i32* @n, align 4
+	%33 = icmp slt i32 %31, %32
+	br i1 %33, label %38, label %44
+34:
+;prev: 29 55 
+;next: 45 50 
 ;iDom: 29
-;DomFrontiers: 31 24 
-	%32 = phi i32 [ 0, %29 ], [ %53, %52 ]
-	%33 = load i32, i32* @n, align 4
-	%34 = icmp slt i32 %32, %33
-	br i1 %34, label %39, label %45
-35:
-;prev: 30 56 
-;next: 46 51 
+;DomFrontiers: 34 
+	%35 = phi i32 [ 0, %29 ], [ %56, %55 ]
+	%36 = load i32, i32* @n, align 4
+	%37 = icmp slt i32 %35, %36
+	br i1 %37, label %45, label %50
+38:
+;prev: 30 
+;next: 51 
 ;iDom: 30
-;DomFrontiers: 35 
-	%36 = phi i32 [ 0, %30 ], [ %57, %56 ]
-	%37 = load i32, i32* @n, align 4
-	%38 = icmp slt i32 %36, %37
-	br i1 %38, label %46, label %51
-39:
-;prev: 31 
-;next: 52 
-;iDom: 31
-;DomFrontiers: 31 
-	%40 = load i32**, i32*** @a, align 4
-	%41 = getelementptr inbounds i32*, i32** %40, i32 %26
-	%42 = load i32*, i32** %41, align 4
-	%43 = getelementptr inbounds i32, i32* %42, i32 %32
-	%44 = load i32, i32* @INF, align 4
-	store i32 %44, i32* %43, align 4
-	br label %52
+;DomFrontiers: 30 
+	%39 = load i32**, i32*** @a, align 4
+	%40 = getelementptr inbounds i32*, i32** %39, i32 %25
+	%41 = load i32*, i32** %40, align 4
+	%42 = getelementptr inbounds i32, i32* %41, i32 %31
+	%43 = load i32, i32* @INF, align 4
+	store i32 %43, i32* %42, align 4
+	br label %51
+44:
+;prev: 30 
+;next: 53 
+;iDom: 30
+;DomFrontiers: 23 
+	br label %53
 45:
-;prev: 31 
-;next: 54 
-;iDom: 31
-;DomFrontiers: 24 
-	br label %54
-46:
-;prev: 35 
-;next: 56 
-;iDom: 35
-;DomFrontiers: 35 
-	%47 = load i32**, i32*** @a, align 4
-	%48 = getelementptr inbounds i32*, i32** %47, i32 %36
-	%49 = load i32*, i32** %48, align 4
-	%50 = getelementptr inbounds i32, i32* %49, i32 %36
-	store i32 0, i32* %50, align 4
-	br label %56
+;prev: 34 
+;next: 55 
+;iDom: 34
+;DomFrontiers: 34 
+	%46 = load i32**, i32*** @a, align 4
+	%47 = getelementptr inbounds i32*, i32** %46, i32 %35
+	%48 = load i32*, i32** %47, align 4
+	%49 = getelementptr inbounds i32, i32* %48, i32 %35
+	store i32 0, i32* %49, align 4
+	br label %55
+50:
+;prev: 34 
+;next: 57 
+;iDom: 34
+	br label %57
 51:
-;prev: 35 
-;next: 58 
-;iDom: 35
-	br label %58
-52:
-;prev: 39 
-;next: 31 
-;iDom: 39
-;DomFrontiers: 31 
-	%53 = add i32 %32, 1
-	br label %31
-54:
+;prev: 38 
+;next: 30 
+;iDom: 38
+;DomFrontiers: 30 
+	%52 = add i32 %31, 1
+	br label %30
+53:
+;prev: 44 
+;next: 23 
+;iDom: 44
+;DomFrontiers: 23 
+	%54 = add i32 %25, 1
+	br label %23
+55:
 ;prev: 45 
-;next: 24 
+;next: 34 
 ;iDom: 45
-;DomFrontiers: 24 
-	%55 = add i32 %26, 1
-	br label %24
-56:
-;prev: 46 
-;next: 35 
-;iDom: 46
-;DomFrontiers: 35 
-	%57 = add i32 %36, 1
-	br label %35
-58:
-;prev: 51 74 
-;next: 65 73 
-;iDom: 51
-;DomFrontiers: 58 
-	%59 = phi i32 [ , %51 ], [ %66, %74 ]
-	%60 = phi i32 [ , %51 ], [ %67, %74 ]
-	%61 = phi i32 [ , %51 ], [ %68, %74 ]
-	%62 = phi i32 [ 0, %51 ], [ %75, %74 ]
-	%63 = load i32, i32* @m, align 4
-	%64 = icmp slt i32 %62, %63
-	br i1 %64, label %65, label %73
-65:
-;prev: 58 
-;next: 74 
-;iDom: 58
-;DomFrontiers: 58 
+;DomFrontiers: 34 
+	%56 = add i32 %35, 1
+	br label %34
+57:
+;prev: 50 73 
+;next: 64 72 
+;iDom: 50
+;DomFrontiers: 57 
+	%58 = phi i32 [ , %50 ], [ %65, %73 ]
+	%59 = phi i32 [ , %50 ], [ %66, %73 ]
+	%60 = phi i32 [ , %50 ], [ %67, %73 ]
+	%61 = phi i32 [ 0, %50 ], [ %74, %73 ]
+	%62 = load i32, i32* @m, align 4
+	%63 = icmp slt i32 %61, %62
+	br i1 %63, label %64, label %72
+64:
+;prev: 57 
+;next: 73 
+;iDom: 57
+;DomFrontiers: 57 
+	%65 = call i32 @_gbl_getInt()
 	%66 = call i32 @_gbl_getInt()
 	%67 = call i32 @_gbl_getInt()
-	%68 = call i32 @_gbl_getInt()
-	%69 = load i32**, i32*** @a, align 4
-	%70 = getelementptr inbounds i32*, i32** %69, i32 %66
-	%71 = load i32*, i32** %70, align 4
-	%72 = getelementptr inbounds i32, i32* %71, i32 %67
-	store i32 %68, i32* %72, align 4
-	br label %74
-73:
-;prev: 58 
+	%68 = load i32**, i32*** @a, align 4
+	%69 = getelementptr inbounds i32*, i32** %68, i32 %65
+	%70 = load i32*, i32** %69, align 4
+	%71 = getelementptr inbounds i32, i32* %70, i32 %66
+	store i32 %67, i32* %71, align 4
+	br label %73
+72:
+;prev: 57 
 ;next: 
-;iDom: 58
+;iDom: 57
 	ret void 
-74:
-;prev: 65 
-;next: 58 
-;iDom: 65
-;DomFrontiers: 58 
-	%75 = add i32 %62, 1
-	br label %58
+73:
+;prev: 64 
+;next: 57 
+;iDom: 64
+;DomFrontiers: 57 
+	%74 = add i32 %61, 1
+	br label %57
 }
 define i32 @main()
 
@@ -307,7 +306,7 @@ define i32 @main()
 ;prev: 21 96 
 ;next: 52 60 
 ;iDom: 21
-;DomFrontiers: 14 29 
+;DomFrontiers: 29 14 
 	%30 = phi i32 [ 0, %21 ], [ %97, %96 ]
 	%31 = load i32, i32* @n, align 4
 	%32 = icmp slt i32 %30, %31

@@ -49,169 +49,168 @@ define void @init()
 	store i32 %3, i32* %7, align 4
 	%8 = getelementptr inbounds i32, i32* %7, i32 1
 	%9 = bitcast i32* %8 to i32**
-	%23 = mv i32 0
+	%22 = mv i32 0
 	br label %11
 11:
-;prev: 0 14 
-;next: 14 24 
+;prev: 0 13 
+;next: 13 23 
 ;iDom: 0
 ;DomFrontiers: 11 
-	%12 = add i32 %23, 1
-	%13 = icmp ne i32 %23, %3
-	br i1 %13, label %14, label %24
-14:
+	%12 = icmp slt i32 %22, %3
+	br i1 %12, label %13, label %23
+13:
 ;prev: 11 
 ;next: 11 
 ;iDom: 11
 ;DomFrontiers: 11 
-	%15 = getelementptr inbounds i32, i32* %7, i32 %23
-	%16 = bitcast i32* %15 to i32**
-	%17 = load i32, i32* @n, align 4
-	%18 = mul i32 %17, 4
-	%19 = add i32 %18, 4
-	%20 = call i8* @malloc(i32 %19)
-	%21 = bitcast i8* %20 to i32*
-	store i32 %17, i32* %21, align 4
-	%22 = getelementptr inbounds i32, i32* %21, i32 1
-	store i32* %22, i32** %16, align 4
-	%23 = mv i32 %12
+	%14 = getelementptr inbounds i32*, i32** %9, i32 %22
+	%15 = load i32, i32* @n, align 4
+	%16 = mul i32 %15, 4
+	%17 = add i32 %16, 4
+	%18 = call i8* @malloc(i32 %17)
+	%19 = bitcast i8* %18 to i32*
+	store i32 %15, i32* %19, align 4
+	%20 = getelementptr inbounds i32, i32* %19, i32 1
+	store i32* %20, i32** %14, align 4
+	%21 = add i32 %22, 1
+	%22 = mv i32 %21
 	br label %11
-24:
+23:
 ;prev: 11 
-;next: 26 
+;next: 25 
 ;iDom: 11
 	store i32** %9, i32*** @a, align 4
-	%48 = mv i32 0
-	br label %26
-26:
-;prev: 24 45 
-;next: 29 31 
-;iDom: 24
-;DomFrontiers: 26 
-	%27 = load i32, i32* @n, align 4
-	%28 = icmp slt i32 %48, %27
-	br i1 %28, label %29, label %31
-29:
-;prev: 26 
-;next: 33 
-;iDom: 26
-;DomFrontiers: 26 
-	%58 = mv i32 0
-	br label %33
-31:
-;prev: 26 
-;next: 36 
-;iDom: 26
-	%61 = mv i32 0
-	br label %36
-33:
-;prev: 29 56 
-;next: 39 45 
-;iDom: 29
-;DomFrontiers: 33 26 
-	%34 = load i32, i32* @n, align 4
-	%35 = icmp slt i32 %58, %34
-	br i1 %35, label %39, label %45
-36:
-;prev: 31 59 
-;next: 49 54 
-;iDom: 31
-;DomFrontiers: 36 
-	%37 = load i32, i32* @n, align 4
-	%38 = icmp slt i32 %61, %37
-	br i1 %38, label %49, label %54
-39:
-;prev: 33 
-;next: 56 
-;iDom: 33
-;DomFrontiers: 33 
-	%40 = load i32**, i32*** @a, align 4
-	%41 = getelementptr inbounds i32*, i32** %40, i32 %48
-	%42 = load i32*, i32** %41, align 4
-	%43 = getelementptr inbounds i32, i32* %42, i32 %58
-	%44 = load i32, i32* @INF, align 4
-	store i32 %44, i32* %43, align 4
-	br label %56
-45:
-;prev: 33 
-;next: 26 
-;iDom: 33
-;DomFrontiers: 26 
-	%46 = add i32 %48, 1
-	%47 = mv i32 %58
-	%48 = mv i32 %46
-	br label %26
-49:
-;prev: 36 
-;next: 59 
-;iDom: 36
-;DomFrontiers: 36 
-	%50 = load i32**, i32*** @a, align 4
-	%51 = getelementptr inbounds i32*, i32** %50, i32 %61
-	%52 = load i32*, i32** %51, align 4
-	%53 = getelementptr inbounds i32, i32* %52, i32 %61
-	store i32 0, i32* %53, align 4
-	br label %59
-54:
-;prev: 36 
-;next: 62 
-;iDom: 36
-	%79 = mv i32 0
-	br label %62
-56:
-;prev: 39 
-;next: 33 
-;iDom: 39
-;DomFrontiers: 33 
-	%57 = add i32 %58, 1
-	%58 = mv i32 %57
-	br label %33
-59:
-;prev: 49 
-;next: 36 
-;iDom: 49
-;DomFrontiers: 36 
-	%60 = add i32 %61, 1
-	%61 = mv i32 %60
-	br label %36
-62:
-;prev: 54 74 
-;next: 65 73 
-;iDom: 54
-;DomFrontiers: 62 
-	%63 = load i32, i32* @m, align 4
-	%64 = icmp slt i32 %79, %63
-	br i1 %64, label %65, label %73
-65:
-;prev: 62 
-;next: 74 
-;iDom: 62
-;DomFrontiers: 62 
+	%47 = mv i32 0
+	br label %25
+25:
+;prev: 23 44 
+;next: 28 30 
+;iDom: 23
+;DomFrontiers: 25 
+	%26 = load i32, i32* @n, align 4
+	%27 = icmp slt i32 %47, %26
+	br i1 %27, label %28, label %30
+28:
+;prev: 25 
+;next: 32 
+;iDom: 25
+;DomFrontiers: 25 
+	%57 = mv i32 0
+	br label %32
+30:
+;prev: 25 
+;next: 35 
+;iDom: 25
+	%60 = mv i32 0
+	br label %35
+32:
+;prev: 28 55 
+;next: 38 44 
+;iDom: 28
+;DomFrontiers: 25 32 
+	%33 = load i32, i32* @n, align 4
+	%34 = icmp slt i32 %57, %33
+	br i1 %34, label %38, label %44
+35:
+;prev: 30 58 
+;next: 48 53 
+;iDom: 30
+;DomFrontiers: 35 
+	%36 = load i32, i32* @n, align 4
+	%37 = icmp slt i32 %60, %36
+	br i1 %37, label %48, label %53
+38:
+;prev: 32 
+;next: 55 
+;iDom: 32
+;DomFrontiers: 32 
+	%39 = load i32**, i32*** @a, align 4
+	%40 = getelementptr inbounds i32*, i32** %39, i32 %47
+	%41 = load i32*, i32** %40, align 4
+	%42 = getelementptr inbounds i32, i32* %41, i32 %57
+	%43 = load i32, i32* @INF, align 4
+	store i32 %43, i32* %42, align 4
+	br label %55
+44:
+;prev: 32 
+;next: 25 
+;iDom: 32
+;DomFrontiers: 25 
+	%45 = add i32 %47, 1
+	%46 = mv i32 %57
+	%47 = mv i32 %45
+	br label %25
+48:
+;prev: 35 
+;next: 58 
+;iDom: 35
+;DomFrontiers: 35 
+	%49 = load i32**, i32*** @a, align 4
+	%50 = getelementptr inbounds i32*, i32** %49, i32 %60
+	%51 = load i32*, i32** %50, align 4
+	%52 = getelementptr inbounds i32, i32* %51, i32 %60
+	store i32 0, i32* %52, align 4
+	br label %58
+53:
+;prev: 35 
+;next: 61 
+;iDom: 35
+	%78 = mv i32 0
+	br label %61
+55:
+;prev: 38 
+;next: 32 
+;iDom: 38
+;DomFrontiers: 32 
+	%56 = add i32 %57, 1
+	%57 = mv i32 %56
+	br label %32
+58:
+;prev: 48 
+;next: 35 
+;iDom: 48
+;DomFrontiers: 35 
+	%59 = add i32 %60, 1
+	%60 = mv i32 %59
+	br label %35
+61:
+;prev: 53 73 
+;next: 64 72 
+;iDom: 53
+;DomFrontiers: 61 
+	%62 = load i32, i32* @m, align 4
+	%63 = icmp slt i32 %78, %62
+	br i1 %63, label %64, label %72
+64:
+;prev: 61 
+;next: 73 
+;iDom: 61
+;DomFrontiers: 61 
+	%65 = call i32 @_gbl_getInt()
 	%66 = call i32 @_gbl_getInt()
 	%67 = call i32 @_gbl_getInt()
-	%68 = call i32 @_gbl_getInt()
-	%69 = load i32**, i32*** @a, align 4
-	%70 = getelementptr inbounds i32*, i32** %69, i32 %66
-	%71 = load i32*, i32** %70, align 4
-	%72 = getelementptr inbounds i32, i32* %71, i32 %67
-	store i32 %68, i32* %72, align 4
-	br label %74
-73:
-;prev: 62 
+	%68 = load i32**, i32*** @a, align 4
+	%69 = getelementptr inbounds i32*, i32** %68, i32 %65
+	%70 = load i32*, i32** %69, align 4
+	%71 = getelementptr inbounds i32, i32* %70, i32 %66
+	store i32 %67, i32* %71, align 4
+	br label %73
+72:
+;prev: 61 
 ;next: 
-;iDom: 62
+;iDom: 61
 	ret void 
-74:
-;prev: 65 
-;next: 62 
-;iDom: 65
-;DomFrontiers: 62 
-	%75 = add i32 %79, 1
+73:
+;prev: 64 
+;next: 61 
+;iDom: 64
+;DomFrontiers: 61 
+	%74 = add i32 %78, 1
+	%75 = mv i32 %65
 	%76 = mv i32 %66
 	%77 = mv i32 %67
-	%78 = mv i32 %68
-	%79 = mv i32 %75
-	br label %62
+	%78 = mv i32 %74
+	br label %61
 }
 define i32 @main()
 
@@ -302,7 +301,7 @@ define i32 @main()
 ;prev: 24 99 
 ;next: 55 63 
 ;iDom: 24
-;DomFrontiers: 14 30 
+;DomFrontiers: 30 14 
 	%31 = load i32, i32* @n, align 4
 	%32 = icmp slt i32 %101, %31
 	br i1 %32, label %55, label %63

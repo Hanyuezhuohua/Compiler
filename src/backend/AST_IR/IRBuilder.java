@@ -1172,8 +1172,8 @@ public class IRBuilder implements ASTVisitor {
             IROperand CurrentIndex = new IRLocalRegister(new IRIntType(IRIntType.IntTypeBytes.Int32), "CurrentIndex");
             IROperand NextIndex = new IRLocalRegister(new IRIntType(IRIntType.IntTypeBytes.Int32), "NextIndex");
             IROperand IcmpResult =new IRLocalRegister(new IRBoolType(), "IcmpResult");
-//            IROperand GEPResult = new IRLocalRegister(arrayPtr.getOperandType(), "GEPResult");
-            IROperand GEPResult = new IRLocalRegister(new IRPointerType(new IRIntType(IRIntType.IntTypeBytes.Int32), false), "GEPResult");
+            IROperand GEPResult = new IRLocalRegister(arrayPtr.getOperandType(), "GEPResult");
+//            IROperand GEPResult = new IRLocalRegister(new IRPointerType(new IRIntType(IRIntType.IntTypeBytes.Int32), false), "GEPResult");
             IROperand BCResult = new IRLocalRegister(arrayPtr.getOperandType(), "BCResult");
 
             values.add(NextIndex);
@@ -1181,19 +1181,20 @@ public class IRBuilder implements ASTVisitor {
 
             currentBasicBlock = condBlock;
             currentBasicBlock.addInst(new Phi(currentBasicBlock, values, labels, CurrentIndex));
-            currentBasicBlock.addInst(new Binary(currentBasicBlock, Binary.IRBinaryOpType.add, CurrentIndex, new IRConstInt(1, IRIntType.IntTypeBytes.Int32), NextIndex));
-            currentBasicBlock.addInst(new Icmp(currentBasicBlock, Icmp.IRIcmpOpType.ne, CurrentIndex, newArraySize, IcmpResult));
+ //           currentBasicBlock.addInst(new Binary(currentBasicBlock, Binary.IRBinaryOpType.add, CurrentIndex, new IRConstInt(1, IRIntType.IntTypeBytes.Int32), NextIndex));
+            currentBasicBlock.addInst(new Icmp(currentBasicBlock, Icmp.IRIcmpOpType.slt, CurrentIndex, newArraySize, IcmpResult));
             currentBasicBlock.addInst(new Br(currentBasicBlock, IcmpResult, stmtBlock, destBlock));
 
             currentBasicBlock = stmtBlock;
             ArrayList<IROperand> index = new ArrayList<>();
             index.add(CurrentIndex);
-    //        currentBasicBlock.addInst(new GetElementPtr(currentBasicBlock, arrayPtr, index, GEPResult));
-            currentBasicBlock.addInst(new GetElementPtr(currentBasicBlock, BitCastResult, index, GEPResult));
-            currentBasicBlock.addInst(new BitCast(currentBasicBlock, GEPResult, BCResult));
+            currentBasicBlock.addInst(new GetElementPtr(currentBasicBlock, arrayPtr, index, GEPResult));
+    //        currentBasicBlock.addInst(new GetElementPtr(currentBasicBlock, BitCastResult, index, GEPResult));
+    //        currentBasicBlock.addInst(new BitCast(currentBasicBlock, GEPResult, BCResult));
 
-            newArray(known, currentDim + 1, BCResult);
-    //        currentBasicBlock.addInst(new Binary(currentBasicBlock, Binary.IRBinaryOpType.add, CurrentIndex, new IRConstInt(1, IRIntType.IntTypeBytes.Int32), NextIndex));
+    //        newArray(known, currentDim + 1, BCResult);
+            newArray(known, currentDim + 1, GEPResult);
+            currentBasicBlock.addInst(new Binary(currentBasicBlock, Binary.IRBinaryOpType.add, CurrentIndex, new IRConstInt(1, IRIntType.IntTypeBytes.Int32), NextIndex));
             currentBasicBlock.addInst(new Br(currentBasicBlock, null, condBlock, null));
             currentBasicBlock = destBlock;
         }

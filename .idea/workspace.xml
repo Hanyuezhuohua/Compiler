@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/output.s" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out.ll" beforeDir="false" afterPath="$PROJECT_DIR$/out.ll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out1.ll" beforeDir="false" afterPath="$PROJECT_DIR$/out1.ll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out2.ll" beforeDir="false" afterPath="$PROJECT_DIR$/out2.ll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/output1.s" beforeDir="false" afterPath="$PROJECT_DIR$/output1.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/IR_ASM/ASMBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/IR_ASM/ASMBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,6 +118,25 @@
     <option name="LAST_COMMIT_MESSAGE" value="&quot;maybe ok&quot;" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/IR_ASM/ASMBuilder.java</url>
+          <line>368</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/IR_ASM/RegisterAllocation.java</url>
+          <line>377</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/IR_ASM/RegisterAllocation.java</url>
+          <line>399</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="backend.Memory_Register" memberName="varAlloc" />
