@@ -6,6 +6,7 @@ import backend.AST_IR.IRPrinter;
 import backend.AST_IR.Memory_Register;
 import backend.AST_IR.PhiResolution;
 import backend.IR_ASM.ASMBuilder;
+import backend.IR_ASM.Peephole;
 import backend.IR_ASM.RegisterAllocation;
 import frontend.ASTbuilder;
 import frontend.SemanticChecker;
@@ -56,6 +57,7 @@ public class Main {
             new ASMPrinter(riscvModule, new PrintStream(ASMFile1), false).run();
  //           RISCVModule riscvModule = (new ASMBuilder(irBuilder.getModule())).run();
             new RegisterAllocation(riscvModule).run();
+            Peephole.run(riscvModule);
             PrintStream ASMFile = new PrintStream( "output.s");
             new ASMPrinter(riscvModule, new PrintStream(ASMFile), true).run();
         } catch (Exception err) {
