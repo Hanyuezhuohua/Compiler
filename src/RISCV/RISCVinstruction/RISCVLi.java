@@ -11,7 +11,7 @@ public class RISCVLi extends RISCVInstruction {
     public RISCVLi(int value, RISCVRegister rd, RISCVBasicBlock block) {
         this.value = value;
         this.rd = rd;
-        this.block = block;
+        this.instIn = block;
     }
     @Override
     public String toString() {
@@ -30,6 +30,6 @@ public class RISCVLi extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new RISCVLi(value, rd, block);
+        return new RISCVLi(value, rd, instIn);
     }
 }

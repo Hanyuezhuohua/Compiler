@@ -6,13 +6,10 @@ import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 import java.util.HashSet;
 
 public abstract class RISCVInstruction {
-    public enum SCategory {
-        add, sub, slt, xor, or, and, sll, sra, mul, div, rem
-    }
 
     public RISCVInstruction prev;
     public RISCVInstruction next;
-    public RISCVBasicBlock block;
+    public RISCVBasicBlock instIn;
 
     public RISCVInstruction() {}
 
@@ -29,14 +26,14 @@ public abstract class RISCVInstruction {
     public abstract RISCVInstruction copy();
     public void appendFront(RISCVInstruction inst) {
         if (prev != null) prev.next = inst;
-        else block.setHead(inst);
+        else instIn.setHead(inst);
         inst.prev = prev;
         inst.next = this;
         this.prev = inst;
     }
     public void appendBack(RISCVInstruction inst) {
         if (next != null) next.prev = inst;
-        else block.setTail(inst);
+        else instIn.setTail(inst);
         inst.next = next;
         inst.prev = this;
         this.next = inst;
@@ -46,18 +43,18 @@ public abstract class RISCVInstruction {
             prev.next = inst;
             inst.prev = prev;
         }
-        else block.setHead(inst);
+        else instIn.setHead(inst);
         if (next != null) {
             next.prev = inst;
             inst.next = next;
         }
-        else block.setTail(inst);
+        else instIn.setTail(inst);
     }
     public void remove() {
         if (prev != null) prev.next = next;
-        else block.setHead(next);
+        else instIn.setHead(next);
         if (next != null) next.prev = prev;
-        else block.setTail(prev);
+        else instIn.setTail(prev);
     }
 }
 

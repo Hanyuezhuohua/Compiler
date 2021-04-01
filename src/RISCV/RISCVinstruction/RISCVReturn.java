@@ -11,7 +11,7 @@ public class RISCVReturn extends RISCVInstruction {
     static RISCVPhysicalRegister ra;
     public RISCVReturn(RISCVModule root, RISCVBasicBlock RISCVBasicBlock) {
         if (root != null) ra = root.getPhysicalRegister("ra");
-        this.block = RISCVBasicBlock;
+        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {
@@ -24,6 +24,6 @@ public class RISCVReturn extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new RISCVReturn(null, block);
+        return new RISCVReturn(null, instIn);
     }
 }

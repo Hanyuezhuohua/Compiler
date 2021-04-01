@@ -12,7 +12,7 @@ public class RISCVStore extends RISCVInstruction {
     public RISCVImmediate offset;
     public int width;
     public RISCVStore(RISCVRegister rs1, RISCVImmediate offset, RISCVRegister rs2, int width, RISCVBasicBlock block) {
-        this.block = block;
+        this.instIn = block;
         this.rs1 = rs1;
         this.offset = offset;
         this.rs2 = rs2;
@@ -48,6 +48,6 @@ public class RISCVStore extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new RISCVStore(rs1, offset, rs2, width, block);
+        return new RISCVStore(rs1, offset, rs2, width, instIn);
     }
 }

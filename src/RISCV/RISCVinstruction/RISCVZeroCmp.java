@@ -5,17 +5,17 @@ import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 
 import java.util.HashSet;
 
-public class Sz extends RISCVInstruction {
+public class RISCVZeroCmp extends RISCVInstruction {
     public RISCVRegister rs, rd;
     public SzCategory op;
     public enum SzCategory {
         seqz, snez,
     }
-    public Sz(RISCVRegister rs, SzCategory op, RISCVRegister rd, RISCVBasicBlock RISCVBasicBlock) {
+    public RISCVZeroCmp(RISCVRegister rs, SzCategory op, RISCVRegister rd, RISCVBasicBlock RISCVBasicBlock) {
         this.rs = rs;
         this.op = op;
         this.rd = rd;
-        this.block = RISCVBasicBlock;
+        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {
@@ -44,6 +44,6 @@ public class Sz extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new Sz(rs, op, rd, block);
+        return new RISCVZeroCmp(rs, op, rd, instIn);
     }
 }

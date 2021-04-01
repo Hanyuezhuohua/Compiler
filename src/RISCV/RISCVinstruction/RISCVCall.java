@@ -16,7 +16,7 @@ public class RISCVCall extends RISCVInstruction {
     public RISCVCall(RISCVModule rootInfo, RISCVFunction callee, RISCVBasicBlock block) {
         this.callee = callee;
         this.rootInfo = rootInfo;
-        this.block = block;
+        this.instIn = block;
     }
 
     @Override
@@ -45,6 +45,6 @@ public class RISCVCall extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new RISCVCall(rootInfo, callee, block);
+        return new RISCVCall(rootInfo, callee, instIn);
     }
 }

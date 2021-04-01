@@ -18,7 +18,7 @@ public class BinaryBranch extends RISCVInstruction {
         this.rs2 = rs2;
         this.op = op;
         this.offset = offset;
-        this.block = RISCVBasicBlock;
+        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {
@@ -40,6 +40,6 @@ public class BinaryBranch extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new BinaryBranch(rs1, rs2, op, offset, block);
+        return new BinaryBranch(rs1, rs2, op, offset, instIn);
     }
 }

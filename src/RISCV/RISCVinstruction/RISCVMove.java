@@ -10,7 +10,7 @@ public class RISCVMove extends RISCVInstruction {
     public RISCVMove(RISCVRegister rs, RISCVRegister rd, RISCVBasicBlock RISCVBasicBlock) {
         this.rs = rs;
         this.rd = rd;
-        this.block = RISCVBasicBlock;
+        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {
@@ -40,6 +40,6 @@ public class RISCVMove extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new RISCVMove(rs, rd, block);
+        return new RISCVMove(rs, rd, instIn);
     }
 }

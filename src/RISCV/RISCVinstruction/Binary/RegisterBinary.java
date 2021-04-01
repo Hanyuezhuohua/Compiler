@@ -7,14 +7,17 @@ import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 import java.util.HashSet;
 
 public class RegisterBinary extends RISCVInstruction {
+    public enum RegisterBinaryOp{
+        add, sub, mul, div, rem, sll, sra, and, or, xor, slt
+    }
     public RISCVRegister rs1, rs2, rd;
-    public SCategory op;
-    public RegisterBinary(RISCVRegister rs1, RISCVRegister rs2, SCategory op, RISCVRegister rd, RISCVBasicBlock RISCVBasicBlock) {
+    public RegisterBinaryOp op;
+    public RegisterBinary(RISCVRegister rs1, RISCVRegister rs2, RegisterBinaryOp op, RISCVRegister rd, RISCVBasicBlock RISCVBasicBlock) {
         this.rs1 = rs1;
         this.rs2 = rs2;
         this.op = op;
         this.rd = rd;
-        this.block = RISCVBasicBlock;
+        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {
@@ -50,6 +53,6 @@ public class RegisterBinary extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new RegisterBinary(rs1, rs2, op, rd, block);
+        return new RegisterBinary(rs1, rs2, op, rd, instIn);
     }
 }

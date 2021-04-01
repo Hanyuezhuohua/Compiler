@@ -12,7 +12,7 @@ public class RISCVLa extends RISCVInstruction {
     public RISCVLa(RISCVGlobalRegister src, RISCVRegister rd, RISCVBasicBlock block) {
         this.rd = rd;
         this.src = src;
-        this.block = block;
+        this.instIn = block;
     }
     @Override
     public String toString() {
@@ -31,6 +31,6 @@ public class RISCVLa extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new RISCVLa(src, rd, block);
+        return new RISCVLa(src, rd, instIn);
     }
 }

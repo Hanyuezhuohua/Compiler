@@ -7,7 +7,7 @@ public class UnaryBranch extends RISCVInstruction {
     public RISCVBasicBlock offset;
     public UnaryBranch(RISCVBasicBlock offset, RISCVBasicBlock RISCVBasicBlock) {
         this.offset = offset;
-        this.block = RISCVBasicBlock;
+        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {
@@ -16,6 +16,6 @@ public class UnaryBranch extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new UnaryBranch(offset, block);
+        return new UnaryBranch(offset, instIn);
     }
 }

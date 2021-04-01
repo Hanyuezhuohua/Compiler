@@ -19,38 +19,39 @@ public class ImmediateBinary extends RISCVInstruction {
         this.imm = imm;
         this.op = op;
         this.rd = rd;
-        this.block = RISCVBasicBlock;
-    }
-    @Override
-    public String toString() {
-        return op + " " + rd + ", " + rs + ", " + imm.getValue();
+        this.instIn = RISCVBasicBlock;
     }
     @Override
     public HashSet<RISCVRegister> Uses() {
-        return new HashSet<>(){{ add(rs); }};
+        HashSet<RISCVRegister> res = new HashSet<>();
+        res.add(rs);
+        return res;
     }
     @Override
     public HashSet<RISCVRegister> Defs() {
-        return new HashSet<>() {{ add(rd); }};
+        HashSet<RISCVRegister> res = new HashSet<>();
+        res.add(rd);
+        return res;
     }
     @Override
-    public void UpdateUse(RISCVRegister old, RISCVRegister newReg) {
-        if (rs == old) { rs = newReg; }
+    public void UpdateUse(RISCVRegister Old, RISCVRegister New) {
+        if(rs == Old) rs = New;
     }
 
     @Override
-    public void UpdateDef(RISCVRegister old, RISCVRegister newReg) {
-        if (rd == old) {
-            rd = newReg;
-        }
+    public void UpdateDef(RISCVRegister Old, RISCVRegister New) {
+        if(rd == Old) rd = New;
     }
     @Override
-    public void updateOffset(int stackOffset) {
-        imm.updateOffset(stackOffset);
-    }
+    public void updateOffset(int offset) { imm.updateOffset(offset); }
 
     @Override
     public RISCVInstruction copy() {
-        return new ImmediateBinary(rs, imm, op, rd, block);
+        return new ImmediateBinary(rs, imm, op, rd, instIn);
+    }
+
+    @Override
+    public String toString() {
+        return op.toString() + " " + rd.toString() + ", " + rs.toString() + ", " + imm.getValue();
     }
 }

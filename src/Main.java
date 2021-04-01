@@ -35,7 +35,7 @@ public class Main {
         String fileName = "./testcase/code.mx";
         try {
             InputStream file = System.in;
- //           InputStream file = new FileInputStream(fileName);
+ //          InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new SemanticChecker().visit(ast);
             if(!codegen) return;
