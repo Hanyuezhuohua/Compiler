@@ -57,7 +57,6 @@ public class Main {
             new ASMPrinter(riscvModule, new PrintStream(ASMFile1), false).run();
  //           RISCVModule riscvModule = (new ASMBuilder(irBuilder.getModule())).run();
             new RegisterAllocation(riscvModule).run();
-            Peephole.run(riscvModule);
             PrintStream ASMFile = new PrintStream( "output.s");
             new ASMPrinter(riscvModule, new PrintStream(ASMFile), true).run();
         } catch (Exception err) {
