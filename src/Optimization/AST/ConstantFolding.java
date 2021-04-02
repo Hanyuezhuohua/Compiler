@@ -271,6 +271,7 @@ public class ConstantFolding implements ASTVisitor {
                 else if(node.getOp() == BinaryexprNode.BinaryOpType.XorAri){
                     node.setConstant(new IntegerliteralNode(node.getPos(),((IntegerliteralNode) node.getLhs().getConstant()).getVal() ^ ((IntegerliteralNode) node.getRhs().getConstant()).getVal()));
                 }
+                else newConst = false;
             }
         }
     }
