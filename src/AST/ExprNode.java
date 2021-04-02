@@ -13,7 +13,8 @@ public abstract class ExprNode extends ASTNode{
     private ExprType exprType;
 
     private IROperand result;
-    private IROperand basicResult;
+
+    protected ExprNode constant = null;
 
     public ExprNode(position pos){
         super(pos);
@@ -52,13 +53,13 @@ public abstract class ExprNode extends ASTNode{
         this.result = result;
     }
 
-    public IROperand getBasicResult() {
-        return basicResult;
+    public void setConstant(ExprNode constant){
+        this.constant = constant;
     }
 
-    public void setBasicResult(IROperand basicResult) {
-        this.basicResult = basicResult;
-    }
+    public boolean isConst() { return constant != null; }
 
-    public boolean isConst() { return false; }
+    public ExprNode getConstant() {
+        return constant;
+    }
 }

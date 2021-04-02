@@ -7,34 +7,40 @@ import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 import java.util.HashSet;
 
 public class RISCVLui extends RISCVInstruction {
-    public RISCVImmediate value;
+    public RISCVImmediate imm;
     public RISCVRegister rd;
-    public RISCVLui(RISCVImmediate value, RISCVRegister rd, RISCVBasicBlock block) {
-        this.value = value;
+    public RISCVLui(RISCVImmediate imm, RISCVRegister rd, RISCVBasicBlock instIn) {
+        super(instIn);
+        this.imm = imm;
         this.rd = rd;
-        this.instIn = block;
     }
     @Override
     public String toString() {
-        return "lui " + rd + ", " + value;
+        return "lui " + rd.toString() + ", " + imm.toString();
     }
     @Override
     public HashSet<RISCVRegister> Defs() {
-        return new HashSet<>() {{ add(rd); }};
+        HashSet<RISCVRegister> res = new HashSet<>();
+        res.add(rd);
+        return res;
+    }
+
+    @Override
+    public HashSet<RISCVRegister> Uses() {
+        return new HashSet<>();
+    }
+
+    @Override
+    public void UpdateDef(RISCVRegister Old, RISCVRegister New) {
+        if (rd == Old) rd = New;
     }
     @Override
-    public void UpdateDef(RISCVRegister old, RISCVRegister newReg) {
-        if (rd == old) {
-            rd = newReg;
-        }
-    }
-    @Override
-    public void updateOffset(int stackOffset) {
-        value.updateOffset(stackOffset);
+    public void updateOffset(int offset) {
+        imm.updateOffset(offset);
     }
 
     @Override
     public RISCVInstruction copy() {
-        return new RISCVLui(value, rd, instIn);
+        return new RISCVLui(imm, rd, instIn);
     }
 }

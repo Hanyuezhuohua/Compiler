@@ -6,6 +6,7 @@ import Util.position;
 public class NullliteralNode extends ExprNode{
     public NullliteralNode(position pos){
         super(pos);
+        this.constant = this;
     }
 
     @Override

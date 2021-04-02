@@ -6,8 +6,8 @@ import RISCV.RISCVinstruction.RISCVInstruction;
 public class UnaryBranch extends RISCVInstruction {
     public RISCVBasicBlock offset;
     public UnaryBranch(RISCVBasicBlock offset, RISCVBasicBlock RISCVBasicBlock) {
+        super(RISCVBasicBlock);
         this.offset = offset;
-        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {

@@ -13,7 +13,7 @@ public class RISCVLoad extends RISCVInstruction {
     public RISCVImmediate offset;
     public int width;
     public RISCVLoad(RISCVRegister rs, RISCVImmediate offset, RISCVRegister rd, int width, RISCVBasicBlock block) {
-        this.instIn = block;
+        super(block);
         this.rs = rs;
         this.offset = offset;
         this.rd = rd;

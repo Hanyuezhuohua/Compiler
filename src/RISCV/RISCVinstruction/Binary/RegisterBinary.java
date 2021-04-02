@@ -13,11 +13,11 @@ public class RegisterBinary extends RISCVInstruction {
     public RISCVRegister rs1, rs2, rd;
     public RegisterBinaryOp op;
     public RegisterBinary(RISCVRegister rs1, RISCVRegister rs2, RegisterBinaryOp op, RISCVRegister rd, RISCVBasicBlock RISCVBasicBlock) {
+        super(RISCVBasicBlock);
         this.rs1 = rs1;
         this.rs2 = rs2;
         this.op = op;
         this.rd = rd;
-        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {

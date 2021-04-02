@@ -8,9 +8,9 @@ import java.util.HashSet;
 public class RISCVMove extends RISCVInstruction {
     public RISCVRegister rs, rd;
     public RISCVMove(RISCVRegister rs, RISCVRegister rd, RISCVBasicBlock RISCVBasicBlock) {
+        super(RISCVBasicBlock);
         this.rs = rs;
         this.rd = rd;
-        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {

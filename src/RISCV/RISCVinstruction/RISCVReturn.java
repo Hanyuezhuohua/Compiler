@@ -10,8 +10,8 @@ import java.util.HashSet;
 public class RISCVReturn extends RISCVInstruction {
     static RISCVPhysicalRegister ra;
     public RISCVReturn(RISCVModule root, RISCVBasicBlock RISCVBasicBlock) {
+        super(RISCVBasicBlock);
         if (root != null) ra = root.getPhysicalRegister("ra");
-        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {

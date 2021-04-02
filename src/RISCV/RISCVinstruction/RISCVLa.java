@@ -10,9 +10,9 @@ public class RISCVLa extends RISCVInstruction {
     public RISCVGlobalRegister src;
     public RISCVRegister rd;
     public RISCVLa(RISCVGlobalRegister src, RISCVRegister rd, RISCVBasicBlock block) {
+        super(block);
         this.rd = rd;
         this.src = src;
-        this.instIn = block;
     }
     @Override
     public String toString() {

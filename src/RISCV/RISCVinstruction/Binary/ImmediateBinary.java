@@ -15,11 +15,11 @@ public class ImmediateBinary extends RISCVInstruction {
     public RISCVImmediate imm;
     public ImmediateBinaryOp op;
     public ImmediateBinary(RISCVRegister rs, RISCVImmediate imm, ImmediateBinaryOp op, RISCVRegister rd, RISCVBasicBlock RISCVBasicBlock) {
+        super(RISCVBasicBlock);
         this.rs = rs;
         this.imm = imm;
         this.op = op;
         this.rd = rd;
-        this.instIn = RISCVBasicBlock;
     }
     @Override
     public HashSet<RISCVRegister> Uses() {

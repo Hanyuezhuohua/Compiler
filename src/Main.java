@@ -1,4 +1,5 @@
 import AST.RootNode;
+import Optimization.AST.ConstantFolding;
 import backend.IR_ASM.ASMPrinter;
 import RISCV.RISCVmodule.RISCVModule;
 import backend.AST_IR.IRBuilder;
@@ -22,7 +23,7 @@ import java.io.PrintStream;
 public class Main {
     public static void main(String[] args) throws Exception {
         boolean codegen = true;
-        boolean optimize = false;
+        boolean optimize = true;
         if(args.length > 0){
             for (String arg : args){
                 switch (arg){
@@ -35,9 +36,10 @@ public class Main {
         String fileName = "./testcase/code.mx";
         try {
             InputStream file = System.in;
-  //         InputStream file = new FileInputStream(fileName);
+//            InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new SemanticChecker().visit(ast);
+            if(optimize) new ConstantFolding().visit(ast);
             if(!codegen) return;
             IRBuilder irBuilder = new IRBuilder();
             irBuilder.visit(ast);

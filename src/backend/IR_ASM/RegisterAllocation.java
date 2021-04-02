@@ -38,7 +38,7 @@ public class RegisterAllocation {
     HashSet<RISCVRegister> coloredNodes = new LinkedHashSet<>();
     HashSet<Edge> adjSet = new LinkedHashSet<>();
     Stack<RISCVRegister> selectStack = new Stack<>();
-    int stackOffset, K;
+    int offset, K;
     RISCVFunction currentFunction;
     HashSet<RISCVMove> coalescedMoves = new LinkedHashSet<>();
     HashSet<RISCVMove> constrainedMoves = new LinkedHashSet<>();
@@ -53,9 +53,6 @@ public class RegisterAllocation {
         this.root = root;
         preColored.addAll(root.getPhysicalRegisters());
         K = root.getColors().size();
-    }
-    void debug(String s) {
-        System.err.println(s);
     }
 
     void init() {
@@ -377,8 +374,8 @@ public class RegisterAllocation {
         HashSet<RISCVRegister> newTemps = new LinkedHashSet<>();
         spilledCount += spilledNodes.size();
         spilledNodes.forEach(v -> {
-            v.offset = new RISCVStackOffset(-stackOffset - 4, false);
-            stackOffset += 4;
+            v.offset = new RISCVStackOffset(-offset - 4, false);
+            offset += 4;
         });
         for (RISCVBasicBlock block : currentFunction.getBlockContain()) {
             for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
@@ -456,10 +453,10 @@ public class RegisterAllocation {
         initial.addAll(newTemps);
     }
 
-    void applyStackOffset() {
+    void updateOffset() {
         for (RISCVBasicBlock block : currentFunction.getBlockContain()) {
             for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
-                inst.updateOffset(stackOffset);
+                inst.updateOffset(offset);
             }
         }
     }
@@ -467,11 +464,11 @@ public class RegisterAllocation {
     public void run() {
         spilledCount = 0;
         for (RISCVFunction function : root.getExternalFunctionSet()) {
-            stackOffset = 0;
+            offset = 0;
             runForFunction(function);
-            stackOffset += function.getOffset();
-            stackOffset = (stackOffset + 15) / 16 * 16;
-            applyStackOffset();
+            offset += function.getOffset();
+            offset = (offset + 15) / 16 * 16;
+            updateOffset();
         }
     }
 }

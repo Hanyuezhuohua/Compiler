@@ -3,51 +3,45 @@ package RISCV.RISCVinstruction;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVoperand.RISCVimmediate.RISCVImmediate;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
-import Util.error.ErrorMessage;
 
 import java.util.HashSet;
 
 public class RISCVStore extends RISCVInstruction {
-    public RISCVRegister rs1, rs2;
-    public RISCVImmediate offset;
-    public int width;
-    public RISCVStore(RISCVRegister rs1, RISCVImmediate offset, RISCVRegister rs2, int width, RISCVBasicBlock block) {
-        this.instIn = block;
+    private RISCVRegister rs1;
+    private RISCVRegister rs2;
+    private RISCVImmediate imm;
+    private int width;
+    public RISCVStore(RISCVRegister rs1, RISCVImmediate imm, RISCVRegister rs2, int width, RISCVBasicBlock block) {
+        super(block);
         this.rs1 = rs1;
-        this.offset = offset;
+        this.imm = imm;
         this.rs2 = rs2;
         this.width = width;
     }
     @Override
     public String toString() {
-        switch (width) {
-            case 1:
-                return "sb " + rs2 + ", " + (offset + "(" + rs1 + ")");
-            case 4:
-                return "sw " + rs2 + ", " + (offset + "(" + rs1 + ")");
-        }
-        throw new ErrorMessage();
+        if(width == 1) return "sb " + rs2 + ", " + (imm + "(" + rs1 + ")");
+        else return "sw " + rs2 + ", " + (imm + "(" + rs1 + ")");
     }
     @Override
     public HashSet<RISCVRegister> Uses() {
-        return new HashSet<>(){{add(rs1); add(rs2);}};
+        HashSet<RISCVRegister> res = new HashSet<>();
+        res.add(rs1);
+        res.add(rs2);
+        return res;
     }
     @Override
-    public void UpdateUse(RISCVRegister old, RISCVRegister newReg) {
-        if (rs1 == old) {
-            rs1 = newReg;
-        }
-        if (rs2 == old) {
-            rs2 = newReg;
-        }
+    public void UpdateUse(RISCVRegister Old, RISCVRegister New) {
+        if (rs1 == Old) rs1 = New;
+        if (rs2 == Old) rs2 = New;
     }
     @Override
-    public void updateOffset(int stackOffset) {
-        offset.updateOffset(stackOffset);
+    public void updateOffset(int offset) {
+        imm.updateOffset(offset);
     }
 
     @Override
     public RISCVInstruction copy() {
-        return new RISCVStore(rs1, offset, rs2, width, instIn);
+        return new RISCVStore(rs1, imm, rs2, width, instIn);
     }
 }

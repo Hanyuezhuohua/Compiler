@@ -8,6 +8,7 @@ public class IntegerliteralNode extends ExprNode{
     public IntegerliteralNode(position pos, int val){
         super(pos);
         this.val = val;
+        this.constant = this;
     }
 
     public int getVal() {

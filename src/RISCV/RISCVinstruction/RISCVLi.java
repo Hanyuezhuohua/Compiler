@@ -9,9 +9,9 @@ public class RISCVLi extends RISCVInstruction {
     public int value;
     public RISCVRegister rd;
     public RISCVLi(int value, RISCVRegister rd, RISCVBasicBlock block) {
+        super(block);
         this.value = value;
         this.rd = rd;
-        this.instIn = block;
     }
     @Override
     public String toString() {

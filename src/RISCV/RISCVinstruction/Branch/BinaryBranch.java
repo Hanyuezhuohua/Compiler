@@ -7,18 +7,18 @@ import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 import java.util.HashSet;
 
 public class BinaryBranch extends RISCVInstruction {
-    public enum BCategory {
-        eq, ne, le, ge, lt, gt,
+    public enum BinaryBranchOp {
+        eq, ne, le, ge, lt, gt
     }
     public RISCVRegister rs1, rs2;
-    public BCategory op;
+    public BinaryBranchOp op;
     public RISCVBasicBlock offset;
-    public BinaryBranch(RISCVRegister rs1, RISCVRegister rs2, BCategory op, RISCVBasicBlock offset, RISCVBasicBlock RISCVBasicBlock) {
+    public BinaryBranch(RISCVRegister rs1, RISCVRegister rs2, BinaryBranchOp op, RISCVBasicBlock offset, RISCVBasicBlock RISCVBasicBlock) {
+        super(RISCVBasicBlock);
         this.rs1 = rs1;
         this.rs2 = rs2;
         this.op = op;
         this.offset = offset;
-        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {

@@ -3,8 +3,29 @@
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/BoolliteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/BoolliteralNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ExprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ExprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/IntegerliteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/IntegerliteralNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/NullliteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/NullliteralNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/StringliteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/StringliteralNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Binary/ImmediateBinary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Binary/ImmediateBinary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Binary/RegisterBinary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Binary/RegisterBinary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Branch/BinaryBranch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Branch/BinaryBranch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Branch/UnaryBranch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Branch/UnaryBranch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVCall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVCall.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVInstruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVLa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVLa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVLi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVLi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVLoad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVLoad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVLui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVLui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVMove.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVMove.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVReturn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVReturn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVZeroCmp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/RISCVZeroCmp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/IR_ASM/ASMBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/IR_ASM/ASMBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/IR_ASM/RegisterAllocation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/IR_ASM/RegisterAllocation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,20 +135,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="&quot;maybe ok&quot;" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/backend/IR_ASM/RegisterAllocation.java</url>
-          <line>377</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/backend/IR_ASM/RegisterAllocation.java</url>
-          <line>399</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="backend.Memory_Register" memberName="varAlloc" />

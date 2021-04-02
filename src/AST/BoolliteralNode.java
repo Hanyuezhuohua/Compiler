@@ -1,6 +1,5 @@
 package AST;
 
-import IR.IRoperand.IROperand;
 import Util.position;
 
 public class BoolliteralNode extends ExprNode{
@@ -8,6 +7,7 @@ public class BoolliteralNode extends ExprNode{
     public BoolliteralNode(position pos, boolean val){
         super(pos);
         this.val = val;
+        this.constant = this;
     }
 
     public void setVal(boolean val) {

@@ -6,40 +6,39 @@ import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 import java.util.HashSet;
 
 public class RISCVZeroCmp extends RISCVInstruction {
-    public RISCVRegister rs, rd;
-    public SzCategory op;
-    public enum SzCategory {
-        seqz, snez,
-    }
-    public RISCVZeroCmp(RISCVRegister rs, SzCategory op, RISCVRegister rd, RISCVBasicBlock RISCVBasicBlock) {
+    public enum RISCVZeroCmpOp {seqz, snez}
+    private RISCVRegister rs;
+    private RISCVRegister rd;
+    private RISCVZeroCmpOp op;
+    public RISCVZeroCmp(RISCVRegister rs, RISCVZeroCmpOp op, RISCVRegister rd, RISCVBasicBlock instIn) {
+        super(instIn);
         this.rs = rs;
         this.op = op;
         this.rd = rd;
-        this.instIn = RISCVBasicBlock;
     }
     @Override
     public String toString() {
-        return op + " " + rd + ", " + rs;
+        return op.toString() + " " + rd.toString() + ", " + rs.toString();
     }
     @Override
     public HashSet<RISCVRegister> Uses() {
-        return new HashSet<>(){{add(rs);}};
+        HashSet<RISCVRegister> res = new HashSet<>();
+        res.add(rs);
+        return res;
     }
     @Override
-    public void UpdateUse(RISCVRegister old, RISCVRegister newReg) {
-        if (rs == old) {
-            rs = newReg;
-        }
+    public void UpdateUse(RISCVRegister Old, RISCVRegister New) {
+        if (rs == Old) rs = New;
     }
     @Override
     public HashSet<RISCVRegister> Defs() {
-        return new HashSet<>() {{ add(rd); }};
+        HashSet<RISCVRegister> res = new HashSet<>();
+        res.add(rd);
+        return res;
     }
     @Override
-    public void UpdateDef(RISCVRegister old, RISCVRegister newReg) {
-        if (rd == old) {
-            rd = newReg;
-        }
+    public void UpdateDef(RISCVRegister Old, RISCVRegister New) {
+        if (rd == Old) rd = New;
     }
 
     @Override

@@ -246,48 +246,6 @@ public class ASMBuilder implements IRVisitor {
                 currentBlock.addInst(new RISCVMove(RSMove, getRegister(inst.getResult()), currentBlock));
             }
         }
- /*       RISCVRegister dest;
-        IRType type = ((IRPointerType)inst.getPtrval().getOperandType()).getPointTo();
-        if (inst.getIndex().get(0) instanceof IRConstInt) {
-            int index = ((IRConstInt) inst.getIndex().get(0)).getValue();
-            if (index != 0) {
-                dest = new RISCVVirtualRegister(4);
-                IROperand op1 = inst.getPtrval();
-                IRConstInt op2 = new IRConstInt(index * (type.getSize() / 8), IRIntType.IntTypeBytes.Int32);
-                if(op2.isZero()) currentBlock.addInst(new RISCVMove(getRegister(op1), dest, currentBlock));
-                else if(op1.isZero()) currentBlock.addInst(new RISCVMove(getRegister(op2), dest, currentBlock));
-                else if(op2.isImm()) currentBlock.addInst(new ImmediateBinary(getRegister(op1), new RISCVImmediate(op2.getValue()), ImmediateBinary.ImmediateBinaryOp.addi, dest, currentBlock));
-                else if(op1.isImm()) currentBlock.addInst(new ImmediateBinary(getRegister(op2), new RISCVImmediate(((IRConstInt) op1).getValue()), ImmediateBinary.ImmediateBinaryOp.addi, dest, currentBlock));
-                else currentBlock.addInst(new RegisterBinary(getRegister(op1), getRegister(op2), RegisterBinary.RegisterBinaryOp.add, dest, currentBlock));
-            } else {
-                RISCVRegister ptr = getRegister(inst.getPtrval());
-                if (ptr instanceof RISCVGlobalRegister) {
-                    dest = new RISCVVirtualRegister(4);
-                    currentBlock.addInst(new RISCVLa((RISCVGlobalRegister) ptr, dest, currentBlock));
-                } else {
-                    dest = ptr;
-                }
-            }
-        } else {
-            RISCVVirtualRegister tmp = new RISCVVirtualRegister(4);
-            dest = new RISCVVirtualRegister(4);
-            IROperand op1 = inst.getIndex().get(0);
-            IROperand op2 = new IRConstInt(type.getSize() / 8, IRIntType.IntTypeBytes.Int32);
-            if(op1.isZero() || op2.isZero())currentBlock.addInst(new RISCVMove(module.getPhysicalRegister("zero"), tmp, currentBlock));
-            else currentBlock.addInst(new RegisterBinary(getRegister(op1), getRegister(op2), RegisterBinary.RegisterBinaryOp.mul, tmp, currentBlock));
-            currentBlock.addInst(new RegisterBinary(getRegister(inst.getPtrval()), tmp, RegisterBinary.RegisterBinaryOp.add, dest, currentBlock));
-        }
-        if (!(inst.getIndex().size() == 1 || ((IRConstInt) inst.getIndex().get(1)).getValue() == 0)) {
-            int offset = ((IRClassType) ((IRPointerType) inst.getPtrval().getOperandType()).getPointTo()).getOffsets().get(((IRConstInt) inst.getIndex().get(1)).getValue()).getValue() / 8;
-            RISCVRegister newDest = new RISCVVirtualRegister(4);
-            if (-(1 << 11) <= offset && offset <= (1 << 11) - 1) {
-                currentBlock.addInst(new ImmediateBinary(dest, new RISCVImmediate(offset), ImmediateBinary.ImmediateBinaryOp.addi, newDest, currentBlock));
-            } else {
-                currentBlock.addInst(new RegisterBinary(dest, getRegister(new IRConstInt(offset, IRIntType.IntTypeBytes.Int32)), RegisterBinary.RegisterBinaryOp.add, newDest, currentBlock));
-            }
-            dest = newDest;
-        }
-        currentBlock.addInst(new RISCVMove(dest, getRegister(inst.getResult()), currentBlock));*/
     }
 
     @Override
@@ -318,8 +276,8 @@ public class ASMBuilder implements IRVisitor {
             currentBlock.addInst(new ImmediateBinary(tmp, new RISCVImmediate(1), ImmediateBinary.ImmediateBinaryOp.xori, getRegister(inst.getResult()), currentBlock));
         }
         else if(inst.getOp() == Icmp.IRIcmpOpType.eq){
-            if(inst.getOp1().isZero()) currentBlock.addInst(new RISCVZeroCmp(getRegister(inst.getOp2()), RISCVZeroCmp.SzCategory.seqz, getRegister(inst.getResult()), currentBlock));
-            else if(inst.getOp2().isZero()) currentBlock.addInst(new RISCVZeroCmp(getRegister(inst.getOp1()), RISCVZeroCmp.SzCategory.seqz, getRegister(inst.getResult()), currentBlock));
+            if(inst.getOp1().isZero()) currentBlock.addInst(new RISCVZeroCmp(getRegister(inst.getOp2()), RISCVZeroCmp.RISCVZeroCmpOp.seqz, getRegister(inst.getResult()), currentBlock));
+            else if(inst.getOp2().isZero()) currentBlock.addInst(new RISCVZeroCmp(getRegister(inst.getOp1()), RISCVZeroCmp.RISCVZeroCmpOp.seqz, getRegister(inst.getResult()), currentBlock));
             else{
                 RISCVVirtualRegister tmp = new RISCVVirtualRegister(4);
                 if(inst.getOp2().isZero()) currentBlock.addInst(new ImmediateBinary(getRegister(inst.getOp1()), new RISCVImmediate(0), ImmediateBinary.ImmediateBinaryOp.xori, tmp, currentBlock));
@@ -327,12 +285,12 @@ public class ASMBuilder implements IRVisitor {
                 else if(inst.getOp2().isImm()) currentBlock.addInst(new ImmediateBinary(getRegister(inst.getOp1()), new RISCVImmediate(((IRConstInt) inst.getOp2()).getValue()), ImmediateBinary.ImmediateBinaryOp.xori, tmp, currentBlock));
                 else if(inst.getOp1().isImm()) currentBlock.addInst(new ImmediateBinary(getRegister(inst.getOp2()), new RISCVImmediate(((IRConstInt) inst.getOp1()).getValue()), ImmediateBinary.ImmediateBinaryOp.xori, tmp, currentBlock));
                 else currentBlock.addInst(new RegisterBinary(getRegister(inst.getOp1()), getRegister(inst.getOp2()), RegisterBinary.RegisterBinaryOp.xor, tmp, currentBlock));
-                currentBlock.addInst(new RISCVZeroCmp(tmp, RISCVZeroCmp.SzCategory.seqz, getRegister(inst.getResult()), currentBlock));
+                currentBlock.addInst(new RISCVZeroCmp(tmp, RISCVZeroCmp.RISCVZeroCmpOp.seqz, getRegister(inst.getResult()), currentBlock));
             }
         }
         else if(inst.getOp() == Icmp.IRIcmpOpType.ne){
-            if(inst.getOp1().isZero()) currentBlock.addInst(new RISCVZeroCmp(getRegister(inst.getOp2()), RISCVZeroCmp.SzCategory.snez, getRegister(inst.getResult()), currentBlock));
-            else if(inst.getOp2().isZero()) currentBlock.addInst(new RISCVZeroCmp(getRegister(inst.getOp1()), RISCVZeroCmp.SzCategory.snez, getRegister(inst.getResult()), currentBlock));
+            if(inst.getOp1().isZero()) currentBlock.addInst(new RISCVZeroCmp(getRegister(inst.getOp2()), RISCVZeroCmp.RISCVZeroCmpOp.snez, getRegister(inst.getResult()), currentBlock));
+            else if(inst.getOp2().isZero()) currentBlock.addInst(new RISCVZeroCmp(getRegister(inst.getOp1()), RISCVZeroCmp.RISCVZeroCmpOp.snez, getRegister(inst.getResult()), currentBlock));
             else{
                 RISCVVirtualRegister tmp = new RISCVVirtualRegister(4);
                 if(inst.getOp2().isZero()) currentBlock.addInst(new ImmediateBinary(getRegister(inst.getOp1()), new RISCVImmediate(0), ImmediateBinary.ImmediateBinaryOp.xori, tmp, currentBlock));
@@ -340,7 +298,7 @@ public class ASMBuilder implements IRVisitor {
                 if(inst.getOp2().isImm()) currentBlock.addInst(new ImmediateBinary(getRegister(inst.getOp1()), new RISCVImmediate(((IRConstInt) inst.getOp2()).getValue()), ImmediateBinary.ImmediateBinaryOp.xori, tmp, currentBlock));
                 else if(inst.getOp1().isImm()) currentBlock.addInst(new ImmediateBinary(getRegister(inst.getOp2()), new RISCVImmediate(((IRConstInt) inst.getOp1()).getValue()), ImmediateBinary.ImmediateBinaryOp.xori, tmp, currentBlock));
                 else currentBlock.addInst(new RegisterBinary(getRegister(inst.getOp1()), getRegister(inst.getOp2()), RegisterBinary.RegisterBinaryOp.xor, tmp, currentBlock));
-                currentBlock.addInst(new RISCVZeroCmp(tmp, RISCVZeroCmp.SzCategory.snez, getRegister(inst.getResult()), currentBlock));
+                currentBlock.addInst(new RISCVZeroCmp(tmp, RISCVZeroCmp.RISCVZeroCmpOp.snez, getRegister(inst.getResult()), currentBlock));
             }
         }
     }
@@ -360,14 +318,14 @@ public class ASMBuilder implements IRVisitor {
         }
         else{
             if (inst.BinaryBr()) {
-                if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.slt) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BCategory.lt, blockMap.get(inst.getIfTrue()), currentBlock));
-                else if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.sgt) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BCategory.gt, blockMap.get(inst.getIfTrue()), currentBlock));
-                else if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.sle) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BCategory.le, blockMap.get(inst.getIfTrue()), currentBlock));
-                else if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.sge) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BCategory.ge, blockMap.get(inst.getIfTrue()), currentBlock));
-                else if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.eq) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BCategory.eq, blockMap.get(inst.getIfTrue()), currentBlock));
-                else if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.ne) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BCategory.ne, blockMap.get(inst.getIfTrue()), currentBlock));
+                if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.slt) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BinaryBranchOp.lt, blockMap.get(inst.getIfTrue()), currentBlock));
+                else if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.sgt) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BinaryBranchOp.gt, blockMap.get(inst.getIfTrue()), currentBlock));
+                else if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.sle) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BinaryBranchOp.le, blockMap.get(inst.getIfTrue()), currentBlock));
+                else if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.sge) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BinaryBranchOp.ge, blockMap.get(inst.getIfTrue()), currentBlock));
+                else if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.eq) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BinaryBranchOp.eq, blockMap.get(inst.getIfTrue()), currentBlock));
+                else if(((Icmp) inst.getPrev()).getOp() == Icmp.IRIcmpOpType.ne) currentBlock.addInst(new BinaryBranch(getRegister(((Icmp) inst.getPrev()).getOp1()), getRegister(((Icmp) inst.getPrev()).getOp2()), BinaryBranch.BinaryBranchOp.ne, blockMap.get(inst.getIfTrue()), currentBlock));
             }
-            else currentBlock.addInst(new BinaryBranch(getRegister(inst.getCond()), module.getPhysicalRegister("zero"), BinaryBranch.BCategory.ne, blockMap.get(inst.getIfTrue()), currentBlock));
+            else currentBlock.addInst(new BinaryBranch(getRegister(inst.getCond()), module.getPhysicalRegister("zero"), BinaryBranch.BinaryBranchOp.ne, blockMap.get(inst.getIfTrue()), currentBlock));
             currentBlock.addInst(new UnaryBranch(blockMap.get(inst.getIfFalse()), currentBlock));
         }
     }

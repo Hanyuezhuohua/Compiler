@@ -7,6 +7,7 @@ public class StringliteralNode extends ExprNode{
     public StringliteralNode(position pos, String val){
         super(pos);
         this.val = val;
+        this.constant = this;
     }
 
     public String getVal() {

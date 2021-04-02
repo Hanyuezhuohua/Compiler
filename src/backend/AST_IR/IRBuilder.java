@@ -404,21 +404,25 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(ExprstatementNode node) {
+        if(node.getExpression().isConst()) return;
         node.getExpression().accept(this);
     }
 
     @Override
     public void visit(ForstatementNode node) {
-        IRBasicBlock condBlock = new IRBasicBlock(currentFunction, "whileCond");
-        IRBasicBlock stmtBlock = new IRBasicBlock(currentFunction, "whileStmt");
-        IRBasicBlock incrBlock = new IRBasicBlock(currentFunction, "whileIncr");
-        IRBasicBlock destBlock = new IRBasicBlock(currentFunction, "whileDest");
         if(node.getInitDef() != null){
             node.getInitDef().accept(this);
         }
         else if(node.getInitExpr() != null){
             node.getInitExpr().accept(this);
         }
+        if(node.getCondition().isConst() && !((BoolliteralNode)node.getCondition().getConstant()).getVal()){
+            return;
+        }
+        IRBasicBlock condBlock = new IRBasicBlock(currentFunction, "whileCond");
+        IRBasicBlock stmtBlock = new IRBasicBlock(currentFunction, "whileStmt");
+        IRBasicBlock incrBlock = new IRBasicBlock(currentFunction, "whileIncr");
+        IRBasicBlock destBlock = new IRBasicBlock(currentFunction, "whileDest");
         currentBasicBlock.addInst(new Br(currentBasicBlock, null, condBlock, null));
         currentBasicBlock = condBlock;
         node.getCondition().accept(this);
@@ -445,6 +449,15 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(IfstatementNode node) {
+        if(node.getCondition().isConst()){
+            if(((BoolliteralNode)node.getCondition().getConstant()).getVal()){
+                node.getTrueStat().accept(this);
+            }
+            else{
+                if(node.getFalseStat() != null) node.getFalseStat().accept(this);
+            }
+            return;
+        }
         node.getCondition().accept(this);
         IRBasicBlock trueBlock = new IRBasicBlock(currentFunction, "ifTrue");
         IRBasicBlock falseBlock = new IRBasicBlock(currentFunction, "ifFalse");
@@ -484,6 +497,7 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(WhilestatementNode node) {
+        if(node.getCondition().isConst() && !((BoolliteralNode) (node.getCondition().getConstant())).getVal()) return;
         IRBasicBlock condBlock = new IRBasicBlock(currentFunction, "whileCond");
         IRBasicBlock stmtBlock = new IRBasicBlock(currentFunction, "whileStmt");
         IRBasicBlock destBlock = new IRBasicBlock(currentFunction, "whileDest");
@@ -530,6 +544,29 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(IdentifierNode node) {
+        if(node.isConst()){
+            if(node.getConstant() instanceof BoolliteralNode){
+                node.setResult(((BoolliteralNode) node.getConstant()).getVal() ? new IRConstBool(true) : new IRConstBool(false));
+            }
+            else if(node.getConstant() instanceof IntegerliteralNode){
+                node.setResult(new IRConstInt(((IntegerliteralNode) node.getConstant()).getVal(), IRIntType.IntTypeBytes.Int32));
+            }
+            else if(node.getConstant() instanceof StringliteralNode){
+                //todo
+                String val = ((StringliteralNode) node.getConstant()).getVal();
+                module.addConstString(val);
+                IRConstString ConstString = module.getConstString(val);
+                node.setResult(new IRLocalRegister(new IRPointerType(new IRIntType(IRIntType.IntTypeBytes.Int8), false), "str_addr"));
+                ArrayList<IROperand> index = new ArrayList<>();
+                index.add(new IRConstInt(0, IRIntType.IntTypeBytes.Int32));
+                index.add(new IRConstInt(0, IRIntType.IntTypeBytes.Int32));
+                currentBasicBlock.addInst(new GetElementPtr(currentBasicBlock, ConstString, index, node.getResult()));
+            }
+            else{
+                node.setResult(new IRConstNull());
+            }
+            return;
+        }
         Symbol symbol = node.getSymbol();
         if(symbol instanceof VarSymbol){
             if(((VarSymbol) symbol).isMember()){
@@ -553,6 +590,11 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(BinaryexprNode node) {
+        if(node.isConst()){
+            node.getConstant().accept(this);
+            node.setResult(node.getConstant().getResult());
+            return;
+        }
         BinaryexprNode.BinaryOpType op = node.getOp();
         if(op == BinaryexprNode.BinaryOpType.AddBinary){
             node.getLhs().accept(this);
@@ -924,6 +966,11 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(PrefixexprNode node) {
+        if(node.isConst()){
+            node.getConstant().accept(this);
+            node.setResult(node.getConstant().getResult());
+            return;
+        }
         PrefixexprNode.PrefixOpType op = node.getOp();
         node.getExpression().accept(this);
         if(op == PrefixexprNode.PrefixOpType.Add){
@@ -1173,8 +1220,6 @@ public class IRBuilder implements ASTVisitor {
             IROperand NextIndex = new IRLocalRegister(new IRIntType(IRIntType.IntTypeBytes.Int32), "NextIndex");
             IROperand IcmpResult =new IRLocalRegister(new IRBoolType(), "IcmpResult");
             IROperand GEPResult = new IRLocalRegister(arrayPtr.getOperandType(), "GEPResult");
-//            IROperand GEPResult = new IRLocalRegister(new IRPointerType(new IRIntType(IRIntType.IntTypeBytes.Int32), false), "GEPResult");
-            IROperand BCResult = new IRLocalRegister(arrayPtr.getOperandType(), "BCResult");
 
             values.add(NextIndex);
             labels.add(stmtBlock);
@@ -1189,10 +1234,7 @@ public class IRBuilder implements ASTVisitor {
             ArrayList<IROperand> index = new ArrayList<>();
             index.add(CurrentIndex);
             currentBasicBlock.addInst(new GetElementPtr(currentBasicBlock, arrayPtr, index, GEPResult));
-    //        currentBasicBlock.addInst(new GetElementPtr(currentBasicBlock, BitCastResult, index, GEPResult));
-    //        currentBasicBlock.addInst(new BitCast(currentBasicBlock, GEPResult, BCResult));
 
-    //        newArray(known, currentDim + 1, BCResult);
             newArray(known, currentDim + 1, GEPResult);
             currentBasicBlock.addInst(new Binary(currentBasicBlock, Binary.IRBinaryOpType.add, CurrentIndex, new IRConstInt(1, IRIntType.IntTypeBytes.Int32), NextIndex));
             currentBasicBlock.addInst(new Br(currentBasicBlock, null, condBlock, null));

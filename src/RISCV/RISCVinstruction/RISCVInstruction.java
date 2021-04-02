@@ -11,7 +11,11 @@ public abstract class RISCVInstruction {
     public RISCVInstruction next;
     public RISCVBasicBlock instIn;
 
-    public RISCVInstruction() {}
+    public RISCVInstruction(RISCVBasicBlock instIn) {
+        this.instIn = instIn;
+        prev = null;
+        next = null;
+    }
 
     public abstract String toString();
     public HashSet<RISCVRegister> Uses() {
