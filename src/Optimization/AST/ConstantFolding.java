@@ -90,7 +90,7 @@ public class ConstantFolding implements ASTVisitor {
 
     @Override
     public void visit(ClassdefNode node) {
-        node.getConstructor().accept(this);
+        if(node.getConstructor() != null)node.getConstructor().accept(this);
         node.getFuncList().forEach(func -> func.accept(this));
     }
 
