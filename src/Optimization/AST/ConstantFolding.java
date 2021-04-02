@@ -188,10 +188,10 @@ public class ConstantFolding implements ASTVisitor {
                 else if(node.getOp() == BinaryexprNode.BinaryOpType.Mul){
                     node.setConstant(new IntegerliteralNode(node.getPos(),((IntegerliteralNode) node.getLhs().getConstant()).getVal() * ((IntegerliteralNode) node.getRhs().getConstant()).getVal()));
                 }
-                else if(node.getOp() == BinaryexprNode.BinaryOpType.Div){
+                else if(node.getOp() == BinaryexprNode.BinaryOpType.Div && ((IntegerliteralNode) node.getRhs().getConstant()).getVal() != 0){
                     node.setConstant(new IntegerliteralNode(node.getPos(),((IntegerliteralNode) node.getLhs().getConstant()).getVal() / ((IntegerliteralNode) node.getRhs().getConstant()).getVal()));
                 }
-                else if(node.getOp() == BinaryexprNode.BinaryOpType.Mod){
+                else if(node.getOp() == BinaryexprNode.BinaryOpType.Mod && ((IntegerliteralNode) node.getRhs().getConstant()).getVal() != 0){
                     node.setConstant(new IntegerliteralNode(node.getPos(),((IntegerliteralNode) node.getLhs().getConstant()).getVal() % ((IntegerliteralNode) node.getRhs().getConstant()).getVal()));
                 }
                 else if(node.getOp() == BinaryexprNode.BinaryOpType.LeftShift){
