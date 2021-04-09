@@ -1,5 +1,6 @@
 package RISCV.RISCVinstruction.Branch;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVinstruction.RISCVInstruction;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
@@ -41,5 +42,10 @@ public class BinaryBranch extends RISCVInstruction {
     @Override
     public RISCVInstruction copy() {
         return new BinaryBranch(rs1, rs2, op, offset, instIn);
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }

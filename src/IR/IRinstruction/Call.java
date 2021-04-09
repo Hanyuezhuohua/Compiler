@@ -6,6 +6,7 @@ import IR.IRoperand.IRConstVoid;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
 import IR.IRtype.IRVoidType;
+import IR.IRutility.IRCopy;
 import IR.IRutility.IRVisitor;
 
 import java.util.ArrayList;
@@ -24,6 +25,13 @@ public class Call extends IRInstruction{
         this.functionArgs.forEach(functionArg -> {
             functionArg.appendInst(this);
         });
+    }
+
+    @Override
+    public void instCopy(IRBasicBlock instIn, IRCopy Map) {
+        ArrayList<IROperand> functionArgs = new ArrayList<>();
+        this.functionArgs.forEach(parameter -> functionArgs.add(Map.get(parameter)));
+        instIn.addInst(new Call(instIn, fnptrval, functionArgs, Map.get(result)));
     }
 
     @Override
@@ -92,5 +100,15 @@ public class Call extends IRInstruction{
     @Override
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean hasSideEffect() {
+        return true;
+    }
+
+    @Override
+    public boolean CSEChecker(IRInstruction other) {
+        return false;
     }
 }

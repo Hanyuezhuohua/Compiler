@@ -1,5 +1,6 @@
 package RISCV.RISCVmodule;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVoperand.RISCVregister.RISCVGlobalRegister;
 import RISCV.RISCVoperand.RISCVregister.RISCVPhysicalRegister;
 import RISCV.RISCVfunction.RISCVFunction;
@@ -97,5 +98,9 @@ public class RISCVModule {
 
     public HashSet<RISCVGlobalRegister> getGlobalVariableSet() {
         return globalVariableSet;
+    }
+
+    public void accept(RISCVVisitor visitor){
+        visitor.visit(this);
     }
 }

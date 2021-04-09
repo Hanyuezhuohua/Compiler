@@ -3,6 +3,7 @@ package IR.IRinstruction;
 import IR.IRbasicblock.IRBasicBlock;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
+import IR.IRutility.IRCopy;
 import IR.IRutility.IRVisitor;
 
 import java.util.HashSet;
@@ -25,6 +26,11 @@ public class Binary extends IRInstruction{
         this.result = result;
         this.op1.appendInst(this);
         this.op2.appendInst(this);
+    }
+
+    @Override
+    public void instCopy(IRBasicBlock instIn, IRCopy Map) {
+        instIn.addInst(new Binary(instIn, op, Map.get(op1), Map.get(op2), Map.get(result)));
     }
 
     @Override
@@ -83,5 +89,38 @@ public class Binary extends IRInstruction{
 
     public IROperand getOp2() {
         return op2;
+    }
+
+    @Override
+    public boolean hasSideEffect() {
+        return false;
+    }
+
+    @Override
+    public boolean CSEChecker(IRInstruction other) {
+        if(other instanceof Binary && op == ((Binary) other).op){
+            if(op == IRBinaryOpType.add){
+                if((op1.CSEChecker(((Binary) other).op1) && op2.CSEChecker(((Binary) other).op2)) || (op1.CSEChecker(((Binary) other).op2) && op2.CSEChecker(((Binary) other).op1))) return true;
+                else return false;
+            }
+            else if(op == IRBinaryOpType.sub){
+                if(op1.CSEChecker(((Binary) other).op1) && op2.CSEChecker(((Binary) other).op2)) return true;
+                else return false;
+            }
+            else if(op == IRBinaryOpType.mul){
+                if((op1.CSEChecker(((Binary) other).op1) && op2.CSEChecker(((Binary) other).op2)) || (op1.CSEChecker(((Binary) other).op2) && op2.CSEChecker(((Binary) other).op1))) return true;
+                else return false;
+            }
+            else if(op == IRBinaryOpType.sdiv){
+                if(op1.CSEChecker(((Binary) other).op1) && op2.CSEChecker(((Binary) other).op2)) return true;
+                else return false;
+            }
+            else if(op == IRBinaryOpType.srem){
+                if(op1.CSEChecker(((Binary) other).op1) && op2.CSEChecker(((Binary) other).op2)) return true;
+                else return false;
+            }
+            else return false;
+        }
+        else return false;
     }
 }

@@ -3,18 +3,24 @@ package IR.IRinstruction;
 import IR.IRbasicblock.IRBasicBlock;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
+import IR.IRutility.IRCopy;
 import IR.IRutility.IRVisitor;
 
 import java.util.HashSet;
 
 public class Move extends IRInstruction{
-    public IROperand result;
-    public IROperand value;
+    private IROperand result;
+    private IROperand value;
     public Move(IRBasicBlock instIn, IROperand result, IROperand value){
         super(instIn);
         this.result = result;
         this.value = value;
  //       this.value.appendInst(this);
+    }
+
+    @Override
+    public void instCopy(IRBasicBlock instIn, IRCopy Map) {
+        instIn.addInst(new Move(instIn, Map.get(result), Map.get(value)));
     }
 
     @Override
@@ -61,5 +67,15 @@ public class Move extends IRInstruction{
     @Override
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean hasSideEffect() {
+        return false;
+    }
+
+    @Override
+    public boolean CSEChecker(IRInstruction other) {
+        return other instanceof Move && ((Move) other).value.CSEChecker(value);
     }
 }

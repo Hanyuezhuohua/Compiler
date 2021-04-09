@@ -1,5 +1,6 @@
 package RISCV.RISCVinstruction;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 
@@ -44,5 +45,10 @@ public class RISCVZeroCmp extends RISCVInstruction {
     @Override
     public RISCVInstruction copy() {
         return new RISCVZeroCmp(rs, op, rd, instIn);
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -33,6 +33,11 @@ public class IRLocalRegister extends IROperand{
         instructions.remove(inst);
     }
 
+    @Override
+    public void clearInst() {
+        instructions.clear();
+    }
+
     public void update(IROperand New){
         instructions.forEach(inst -> {
             inst.update(this, New);
@@ -46,4 +51,13 @@ public class IRLocalRegister extends IROperand{
         return false;
     }
 
+    @Override
+    public IROperand operandCopy() {
+        return new IRLocalRegister(getOperandType(), getIdentifier());
+    }
+
+    @Override
+    public boolean CSEChecker(IROperand other) {
+        return equals(other);
+    }
 }

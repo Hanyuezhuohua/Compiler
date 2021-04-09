@@ -1,5 +1,7 @@
 import AST.RootNode;
+import Optimization.ASM.ASMOptimize;
 import Optimization.AST.ConstantFolding;
+import Optimization.IR.Inline;
 import backend.IR_ASM.ASMPrinter;
 import RISCV.RISCVmodule.RISCVModule;
 import backend.AST_IR.IRBuilder;
@@ -23,7 +25,7 @@ import java.io.PrintStream;
 public class Main {
     public static void main(String[] args) throws Exception {
         boolean codegen = true;
-        boolean optimize = true;
+        boolean optimize = false;
         if(args.length > 0){
             for (String arg : args){
                 switch (arg){
@@ -48,6 +50,7 @@ public class Main {
             new Memory_Register().run(irBuilder.getModule());
             IRFile = new PrintStream( "out1.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
+            if(optimize) new Inline(irBuilder.getModule()).run();
             new PhiResolution().run(irBuilder.getModule());
             IRFile = new PrintStream( "out2.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
@@ -58,7 +61,7 @@ public class Main {
             new ASMPrinter(riscvModule, new PrintStream(ASMFile1), false).run();
  //           RISCVModule riscvModule = (new ASMBuilder(irBuilder.getModule())).run();
             new RegisterAllocation(riscvModule).run();
-
+            new ASMOptimize(riscvModule).run();
             PrintStream ASMFile = new PrintStream( "output.s");
             new ASMPrinter(riscvModule, new PrintStream(ASMFile), true).run();
         } catch (Exception err) {
@@ -66,6 +69,7 @@ public class Main {
             System.err.println(err.getMessage());
             throw new RuntimeException();
         }
+        System.err.println("[Compile Finished]");
     }
 
     public static RootNode buildAST(InputStream file) throws Exception {

@@ -31,7 +31,7 @@ public class ASMPrinter {
         visited.add(block);
         block.setIdentifier("." + currentFunction.getIdentifier() + "_." + blockCount++);
         if (block.getTail() instanceof UnaryBranch) {
-            if (Dfs(((UnaryBranch) block.getTail()).offset) && flag) {
+            if (Dfs(((UnaryBranch) block.getTail()).jumpTo) && flag) {
                 block.getTail().remove();
             }
         }

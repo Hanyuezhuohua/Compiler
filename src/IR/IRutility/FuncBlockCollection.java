@@ -3,7 +3,6 @@ package IR.IRutility;
 import IR.IRbasicblock.IRBasicBlock;
 import IR.IRfunction.IRFunction;
 import IR.IRinstruction.Br;
-import IR.IRinstruction.Ret;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -11,7 +10,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class FuncBlockCollection {
-    static LinkedHashSet<IRBasicBlock> visited;
     public FuncBlockCollection(){}
 
     public LinkedHashSet<IRBasicBlock> BlockCollecting(IRFunction func){

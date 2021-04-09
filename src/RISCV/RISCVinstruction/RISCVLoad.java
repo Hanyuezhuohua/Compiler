@@ -1,5 +1,6 @@
 package RISCV.RISCVinstruction;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVoperand.RISCVregister.RISCVGlobalRegister;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVoperand.RISCVimmediate.RISCVImmediate;
@@ -19,6 +20,23 @@ public class RISCVLoad extends RISCVInstruction {
         this.rd = rd;
         this.width = width;
     }
+
+    public RISCVRegister getRd() {
+        return rd;
+    }
+
+    public RISCVRegister getRs() {
+        return rs;
+    }
+
+    public RISCVImmediate getOffset() {
+        return offset;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
     @Override
     public String toString() {
         switch (width) {
@@ -51,12 +69,17 @@ public class RISCVLoad extends RISCVInstruction {
     }
 
     @Override
-    public void updateOffset(int stackOffset) {
-        offset.updateOffset(stackOffset);
+    public void updateOffset(int offset) {
+        this.offset.updateOffset(offset);
     }
 
     @Override
     public RISCVInstruction copy() {
         return new RISCVLoad(rs, offset, rd, width, instIn);
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }

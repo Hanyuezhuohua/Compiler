@@ -24,4 +24,9 @@ public class IRBoolType implements IRType{ // same to i1
     public String toString() {
         return getType();
     }
+
+    @Override
+    public Boolean CSEChecker(IRType other) {
+        return other instanceof IRBoolType;
+    }
 }

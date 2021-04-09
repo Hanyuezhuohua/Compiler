@@ -3,8 +3,10 @@ package IR.IRinstruction;
 import IR.IRbasicblock.IRBasicBlock;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
+import IR.IRutility.IRCopy;
 import IR.IRutility.IRVisitor;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public abstract class IRInstruction {
@@ -58,6 +60,18 @@ public abstract class IRInstruction {
         getOperands().forEach(operand -> {
             operand.removeInst(this);
         });
+        if(this instanceof Br){
+            if(((Br) this).getCond() != null){
+                instIn.getNext().remove(((Br) this).getIfTrue());
+                instIn.getNext().remove(((Br) this).getIfFalse());
+                ((Br) this).getIfTrue().getPrev().remove(this);
+                ((Br) this).getIfFalse().getPrev().remove(this);
+            }
+            else {
+                instIn.getNext().remove(((Br) this).getIfTrue());
+                ((Br) this).getIfTrue().getPrev().remove(this);
+            }
+        }
     }
 
     public void Insert(IRInstruction inst){
@@ -72,11 +86,25 @@ public abstract class IRInstruction {
         this.setPrev(inst);
     }
 
+    public void setInstIn(IRBasicBlock instIn) {
+        this.instIn = instIn;
+    }
+
+    public IRBasicBlock getInstIn() {
+        return instIn;
+    }
+
     public abstract void update(IRLocalRegister Old, IROperand New);
 
     public abstract HashSet<IROperand> getOperands();
 
+    public abstract void instCopy(IRBasicBlock instIn, IRCopy Map);
+
     public abstract void accept(IRVisitor visitor);
+
+    public abstract boolean hasSideEffect();
+
+    public abstract boolean CSEChecker(IRInstruction other);
 
     @Override
     public String toString() {

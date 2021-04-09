@@ -36,4 +36,9 @@ public class IRPointerType implements IRType{
 
     @Override
     public Boolean resolvable() { return resolvable; }
+
+    @Override
+    public Boolean CSEChecker(IRType other) {
+        return other instanceof IRPointerType && ((IRPointerType) other).pointTo.CSEChecker(pointTo);
+    }
 }

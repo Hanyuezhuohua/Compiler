@@ -1,13 +1,10 @@
 package IR.IRfunction;
 
 import IR.IRbasicblock.IRBasicBlock;
-import IR.IRinstruction.Store;
 import IR.IRmodule.IRModule;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
-import IR.IRtype.IRPointerType;
 import IR.IRtype.IRType;
-import IR.IRtype.IRVoidType;
 import IR.IRutility.IRVisitor;
 
 import java.util.ArrayList;
@@ -26,9 +23,12 @@ public class IRFunction {
     private IRBasicBlock entry;
     private IRBasicBlock exit;
 
-    private HashSet<IRFunction> funcCall;
+    private HashSet<IRFunction> callee;
+    private HashSet<IRFunction> caller;
     private HashSet<IRLocalRegister> varAlloc;
     private LinkedHashSet<IRBasicBlock> blockContain;
+
+    private boolean sideEffect;
 
     public IRFunction(IRModule functionIn, String identifier, IRType returnType, ArrayList<IRLocalRegister> parameters, IROperand classPtr){
         this.functionIn = functionIn;
@@ -38,11 +38,45 @@ public class IRFunction {
         this.classPtr = classPtr;
         entry = new IRBasicBlock(this, "entry");
         exit = null;
-        funcCall = new HashSet<>();
+        callee = new HashSet<>();
+        caller = new HashSet<>();
         varAlloc = new LinkedHashSet<>();
         blockContain = new LinkedHashSet<>();
         blockContain.add(entry);
     }
+
+    public boolean hasSideEffect() {
+        return sideEffect;
+    }
+
+    public void setSideEffect(boolean sideEffect) {
+        this.sideEffect = sideEffect;
+    }
+
+    public HashSet<IRFunction> getCallee() {
+        return callee;
+    }
+
+    public HashSet<IRFunction> getCaller() {
+        return caller;
+    }
+
+    public void ClearCallee(){
+        this.callee.clear();
+    }
+
+    public void ClearCaller(){
+        this.caller.clear();
+    }
+
+    public void addCallee(IRFunction callee){
+        this.callee.add(callee);
+    }
+
+    public void addCaller(IRFunction caller){
+        this.caller.add(caller);
+    }
+
 
     public String getIdentifier() {
         return identifier;

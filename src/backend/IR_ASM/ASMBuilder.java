@@ -157,8 +157,8 @@ public class ASMBuilder implements IRVisitor {
 
     @Override
     public void visit(GetElementPtr inst) {
-        if(inst.getIndex().size() == 1 || inst.getIndex().get(1).isZero()){
-            IROperand arrayIndex = inst.getIndex().get(0);
+        if(inst.getIndexs().size() == 1 || inst.getIndexs().get(1).isZero()){
+            IROperand arrayIndex = inst.getIndexs().get(0);
             if (arrayIndex instanceof IRConstInt){
                 if(arrayIndex.isZero()){
                     RISCVRegister ptrval = getRegister(inst.getPtrval());
@@ -184,7 +184,7 @@ public class ASMBuilder implements IRVisitor {
             else{
                 RISCVRegister tmp1 = new RISCVVirtualRegister(4);
                 RISCVRegister tmp2 = new RISCVVirtualRegister(4);
-                IROperand op1 = inst.getIndex().get(0);
+                IROperand op1 = inst.getIndexs().get(0);
                 IROperand op2 = new IRConstInt(((IRPointerType)inst.getPtrval().getOperandType()).getPointTo().getSize() / 8, IRIntType.IntTypeBytes.Int32);
                 if(op1.isZero() || op2.isZero())currentBlock.addInst(new RISCVMove(module.getPhysicalRegister("zero"), tmp1, currentBlock));
                 else currentBlock.addInst(new RegisterBinary(getRegister(op1), getRegister(op2), RegisterBinary.RegisterBinaryOp.mul, tmp1, currentBlock));
@@ -193,8 +193,8 @@ public class ASMBuilder implements IRVisitor {
             }
         }
         else{
-            IROperand arrayIndex = inst.getIndex().get(0);
-            IROperand classIndex = inst.getIndex().get(1);
+            IROperand arrayIndex = inst.getIndexs().get(0);
+            IROperand classIndex = inst.getIndexs().get(1);
             if (arrayIndex instanceof IRConstInt){
                 if(arrayIndex.isZero()){
                     RISCVRegister ptrval = getRegister(inst.getPtrval());
@@ -234,7 +234,7 @@ public class ASMBuilder implements IRVisitor {
             else{
                 RISCVRegister tmp1 = new RISCVVirtualRegister(4);
                 RISCVRegister tmp2 = new RISCVVirtualRegister(4);
-                IROperand op1 = inst.getIndex().get(0);
+                IROperand op1 = inst.getIndexs().get(0);
                 IROperand op2 = new IRConstInt(((IRPointerType)inst.getPtrval().getOperandType()).getPointTo().getSize() / 8, IRIntType.IntTypeBytes.Int32);
                 if(op1.isZero() || op2.isZero())currentBlock.addInst(new RISCVMove(module.getPhysicalRegister("zero"), tmp1, currentBlock));
                 else currentBlock.addInst(new RegisterBinary(getRegister(op1), getRegister(op2), RegisterBinary.RegisterBinaryOp.mul, tmp1, currentBlock));

@@ -24,4 +24,9 @@ public class IRVoidType implements IRType{
 
     @Override
     public Boolean resolvable() { return false; }
+
+    @Override
+    public Boolean CSEChecker(IRType other) {
+        return other instanceof IRVoidType;
+    }
 }

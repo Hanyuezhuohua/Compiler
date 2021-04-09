@@ -28,11 +28,6 @@ public class ConstantFolding implements ASTVisitor {
             newConst = false;
             node.getDefinition().forEach(tmp -> tmp.accept(this));
         }while(newConst);
-        VarMap.forEach((symbol, exprNode) -> {
-            if(!ReAssignSet.contains(symbol)){
-                System.err.println("Constant : " + symbol.getIdentifier());
-            }
-        });
     }
 
     @Override

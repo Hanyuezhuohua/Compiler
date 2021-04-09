@@ -1,5 +1,6 @@
 package RISCV.RISCVinstruction;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVoperand.RISCVimmediate.RISCVImmediate;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
@@ -14,6 +15,15 @@ public class RISCVLui extends RISCVInstruction {
         this.imm = imm;
         this.rd = rd;
     }
+
+    public RISCVRegister getRd() {
+        return rd;
+    }
+
+    public RISCVImmediate getImm() {
+        return imm;
+    }
+
     @Override
     public String toString() {
         return "lui " + rd.toString() + ", " + imm.toString();
@@ -42,5 +52,10 @@ public class RISCVLui extends RISCVInstruction {
     @Override
     public RISCVInstruction copy() {
         return new RISCVLui(imm, rd, instIn);
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }

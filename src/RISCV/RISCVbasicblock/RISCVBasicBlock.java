@@ -1,5 +1,6 @@
 package RISCV.RISCVbasicblock;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVinstruction.Branch.UnaryBranch;
 import RISCV.RISCVinstruction.RISCVInstruction;
 import RISCV.RISCVinstruction.RISCVReturn;
@@ -69,6 +70,14 @@ public class RISCVBasicBlock {
 
     public void addNext(ArrayList<RISCVBasicBlock> next) { this.next.addAll(next); }
 
+    public void setNext(ArrayList<RISCVBasicBlock> next) {
+        this.next = next;
+    }
+
+    public void setPrev(ArrayList<RISCVBasicBlock> prev) {
+        this.prev = prev;
+    }
+
     public void clearNext() { next.clear();}
 
     public void setLiveIn(HashSet<RISCVRegister> liveIn) { this.liveIn = liveIn; }
@@ -95,5 +104,24 @@ public class RISCVBasicBlock {
     @Override
     public String toString() {
         return identifier;
+    }
+
+    public void accept(RISCVVisitor visitor){
+        visitor.visit(this);
+    }
+
+    public void merge(RISCVBasicBlock nextBlock){
+        setNext(nextBlock.getNext());
+        next.forEach(block -> {
+            block.getPrev().remove(nextBlock);
+            block.getPrev().add(this);
+        });
+        for(RISCVInstruction inst = nextBlock.getHead(); inst != null; inst = inst.getNext()){
+            inst.setInstIn(this);
+        }
+        if(head == null) head = nextBlock.getHead();
+        else tail.setNext(nextBlock.getHead());
+        if(nextBlock.getHead() != null) nextBlock.getHead().setPrev(tail);
+        if(nextBlock.getTail() != null) tail = nextBlock.getTail();
     }
 }

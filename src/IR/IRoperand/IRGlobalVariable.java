@@ -46,8 +46,22 @@ public class IRGlobalVariable extends IROperand{
     }
 
     @Override
+    public void clearInst() {
+        instructions.clear();
+    }
+
+    @Override
     public boolean isZero() {
         return false;
     }
 
+    @Override
+    public IROperand operandCopy() {
+        return this;
+    }
+
+    @Override
+    public boolean CSEChecker(IROperand other) {
+        return equals(other);
+    }
 }

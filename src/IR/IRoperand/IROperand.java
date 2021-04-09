@@ -3,11 +3,12 @@ package IR.IRoperand;
 import IR.IRinstruction.IRInstruction;
 import IR.IRtype.IRType;
 
+import javax.swing.table.TableCellEditor;
 import java.util.HashSet;
 
 public abstract class IROperand {
-    private IRType OperandType;
-    private String identifier;
+    protected IRType OperandType;
+    protected String identifier;
 
     public IROperand(IRType operandType, String identifier){
         this.OperandType = operandType;
@@ -36,11 +37,17 @@ public abstract class IROperand {
 
     public abstract void removeInst(IRInstruction inst);
 
+    public abstract void clearInst();
+
     public abstract boolean isZero();
 
     public boolean isImm(){
         return false;
     }
+
+    public abstract IROperand operandCopy();
+
+    public abstract boolean CSEChecker(IROperand other);
 
     @Override
     public String toString() {

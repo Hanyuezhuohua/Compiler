@@ -26,6 +26,20 @@ public class IRConstVoid extends IROperand{
     }
 
     @Override
+    public void clearInst() {
+        instructions.clear();
+    }
+
+    @Override
     public boolean isZero() { return true; }
 
+    @Override
+    public IROperand operandCopy() {
+        return this;
+    }
+
+    @Override
+    public boolean CSEChecker(IROperand other) {
+        return other instanceof IRConstVoid;
+    }
 }

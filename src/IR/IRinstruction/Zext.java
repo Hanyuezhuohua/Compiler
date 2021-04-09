@@ -3,6 +3,7 @@ package IR.IRinstruction;
 import IR.IRbasicblock.IRBasicBlock;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
+import IR.IRutility.IRCopy;
 import IR.IRutility.IRVisitor;
 
 import java.util.HashSet;
@@ -16,6 +17,11 @@ public class Zext extends IRInstruction{
         this.value = value;
         this.result = result;
         this.result.appendInst(this);
+    }
+
+    @Override
+    public void instCopy(IRBasicBlock instIn, IRCopy Map) {
+        instIn.addInst(new Zext(instIn, Map.get(value), Map.get(result)));
     }
 
     @Override
@@ -60,5 +66,15 @@ public class Zext extends IRInstruction{
 
     public IROperand getValue() {
         return value;
+    }
+
+    @Override
+    public boolean hasSideEffect() {
+        return false;
+    }
+
+    @Override
+    public boolean CSEChecker(IRInstruction other) {
+        return other instanceof Zext && ((Zext) other).value.CSEChecker(value);
     }
 }

@@ -1,5 +1,7 @@
 package RISCV.RISCVinstruction.Binary;
 
+import IR.IRutility.IRVisitor;
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVinstruction.RISCVInstruction;
 import RISCV.RISCVoperand.RISCVimmediate.RISCVImmediate;
@@ -21,6 +23,23 @@ public class ImmediateBinary extends RISCVInstruction {
         this.op = op;
         this.rd = rd;
     }
+
+    public RISCVRegister getRs() {
+        return rs;
+    }
+
+    public RISCVRegister getRd() {
+        return rd;
+    }
+
+    public RISCVImmediate getImm() {
+        return imm;
+    }
+
+    public ImmediateBinaryOp getOp() {
+        return op;
+    }
+
     @Override
     public HashSet<RISCVRegister> Uses() {
         HashSet<RISCVRegister> res = new HashSet<>();
@@ -53,5 +72,10 @@ public class ImmediateBinary extends RISCVInstruction {
     @Override
     public String toString() {
         return op.toString() + " " + rd.toString() + ", " + rs.toString() + ", " + imm.getValue();
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }

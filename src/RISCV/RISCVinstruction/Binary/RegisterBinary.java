@@ -1,5 +1,6 @@
 package RISCV.RISCVinstruction.Binary;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVinstruction.RISCVInstruction;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
@@ -19,6 +20,23 @@ public class RegisterBinary extends RISCVInstruction {
         this.op = op;
         this.rd = rd;
     }
+
+    public RISCVRegister getRd() {
+        return rd;
+    }
+
+    public RegisterBinaryOp getOp() {
+        return op;
+    }
+
+    public RISCVRegister getRs1() {
+        return rs1;
+    }
+
+    public RISCVRegister getRs2() {
+        return rs2;
+    }
+
     @Override
     public String toString() {
         return op + " " + rd + ", " + rs1 + ", " + rs2;
@@ -54,5 +72,10 @@ public class RegisterBinary extends RISCVInstruction {
     @Override
     public RISCVInstruction copy() {
         return new RegisterBinary(rs1, rs2, op, rd, instIn);
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }

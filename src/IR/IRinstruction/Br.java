@@ -3,6 +3,7 @@ package IR.IRinstruction;
 import IR.IRbasicblock.IRBasicBlock;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
+import IR.IRutility.IRCopy;
 import IR.IRutility.IRVisitor;
 
 import java.util.HashSet;
@@ -20,6 +21,11 @@ public class Br extends IRInstruction{
         if(cond != null){
             this.cond.appendInst(this);
         }
+    }
+
+    @Override
+    public void instCopy(IRBasicBlock instIn, IRCopy Map) {
+        instIn.addInst(new Br(instIn, Map.get(cond), Map.get(ifTrue), Map.get(ifFalse)));
     }
 
     @Override
@@ -96,5 +102,15 @@ public class Br extends IRInstruction{
     @Override
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean hasSideEffect() {
+        return true;
+    }
+
+    @Override
+    public boolean CSEChecker(IRInstruction other) {
+        return false;
     }
 }

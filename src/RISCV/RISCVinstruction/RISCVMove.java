@@ -1,5 +1,6 @@
 package RISCV.RISCVinstruction;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 
@@ -12,6 +13,15 @@ public class RISCVMove extends RISCVInstruction {
         this.rs = rs;
         this.rd = rd;
     }
+
+    public RISCVRegister getRd() {
+        return rd;
+    }
+
+    public RISCVRegister getRs() {
+        return rs;
+    }
+
     @Override
     public String toString() {
         return "mv " + rd + ", " + rs;
@@ -41,5 +51,10 @@ public class RISCVMove extends RISCVInstruction {
     @Override
     public RISCVInstruction copy() {
         return new RISCVMove(rs, rd, instIn);
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }

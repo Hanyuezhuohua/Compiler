@@ -40,4 +40,9 @@ public class IRIntType implements IRType{
     public String toString() {
         return getType();
     }
+
+    @Override
+    public Boolean CSEChecker(IRType other) {
+        return other instanceof IRIntType && ((IRIntType) other).intTypeBytes == intTypeBytes;
+    }
 }

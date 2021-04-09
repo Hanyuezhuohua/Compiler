@@ -90,4 +90,9 @@ public class IRClassType implements IRType{
     public int getIndex(){
         return members.size() - 1;
     }
+
+    @Override
+    public Boolean CSEChecker(IRType other) {
+        return other instanceof IRClassType && ((IRClassType) other).identifier.equals(identifier);
+    }
 }

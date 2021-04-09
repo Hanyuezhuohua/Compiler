@@ -3,6 +3,7 @@ package IR.IRinstruction;
 import IR.IRbasicblock.IRBasicBlock;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
+import IR.IRutility.IRCopy;
 import IR.IRutility.IRVisitor;
 
 import java.util.HashSet;
@@ -16,6 +17,11 @@ public class BitCast extends IRInstruction{
         this.value = value;
         this.result = result;
         this.value.appendInst(this);
+    }
+
+    @Override
+    public void instCopy(IRBasicBlock instIn, IRCopy Map) {
+        instIn.addInst(new BitCast(instIn, Map.get(value), Map.get(result)));
     }
 
     @Override
@@ -39,6 +45,7 @@ public class BitCast extends IRInstruction{
         return result;
     }
 
+
     @Override
     public HashSet<IROperand> getOperands() {
         HashSet<IROperand> operands = new HashSet<>();
@@ -60,5 +67,15 @@ public class BitCast extends IRInstruction{
 
     public IROperand getValue() {
         return value;
+    }
+
+    @Override
+    public boolean hasSideEffect() {
+        return false;
+    }
+
+    @Override
+    public boolean CSEChecker(IRInstruction other) {
+        return other instanceof BitCast && ((BitCast) other).value.CSEChecker(value) && ((BitCast) other).result.getOperandType().CSEChecker(result.getOperandType());
     }
 }

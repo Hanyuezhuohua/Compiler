@@ -1,5 +1,6 @@
 package RISCV.RISCVinstruction;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 
@@ -15,6 +16,26 @@ public abstract class RISCVInstruction {
         this.instIn = instIn;
         prev = null;
         next = null;
+    }
+
+    public void setInstIn(RISCVBasicBlock instIn) {
+        this.instIn = instIn;
+    }
+
+    public RISCVInstruction getPrev() {
+        return prev;
+    }
+
+    public RISCVInstruction getNext() {
+        return next;
+    }
+
+    public void setPrev(RISCVInstruction prev) {
+        this.prev = prev;
+    }
+
+    public void setNext(RISCVInstruction next) {
+        this.next = next;
     }
 
     public abstract String toString();
@@ -60,5 +81,7 @@ public abstract class RISCVInstruction {
         if (next != null) next.prev = prev;
         else instIn.setTail(prev);
     }
+
+    public abstract void accept(RISCVVisitor visitor);
 }
 

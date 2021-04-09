@@ -4,6 +4,7 @@ import IR.IRbasicblock.IRBasicBlock;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
 import IR.IRtype.IRVoidType;
+import IR.IRutility.IRCopy;
 import IR.IRutility.IRVisitor;
 
 import java.util.HashSet;
@@ -17,6 +18,11 @@ public class Ret extends IRInstruction{
         if(!(value.getOperandType() instanceof IRVoidType)){
             this.value.appendInst(this);
         }
+    }
+
+    @Override
+    public void instCopy(IRBasicBlock instIn, IRCopy Map) {
+        instIn.addInst(new Ret(instIn, Map.get(value)));
     }
 
     @Override
@@ -55,5 +61,15 @@ public class Ret extends IRInstruction{
     @Override
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean hasSideEffect() {
+        return true;
+    }
+
+    @Override
+    public boolean CSEChecker(IRInstruction other) {
+        return false;
     }
 }

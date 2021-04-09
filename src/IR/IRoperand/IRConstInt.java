@@ -24,6 +24,9 @@ public class IRConstInt extends IROperand{
     @Override
     public void removeInst(IRInstruction inst) {}
 
+    @Override
+    public void clearInst() {}
+
     public int getValue() {
         return value;
     }
@@ -38,4 +41,13 @@ public class IRConstInt extends IROperand{
         return -(1 << 11) <= value && value <= (1 << 11) - 1;
     }
 
+    @Override
+    public IROperand operandCopy() {
+        return this;
+    }
+
+    @Override
+    public boolean CSEChecker(IROperand other) {
+        return other instanceof IRConstInt && ((IRConstInt) other).getValue() == value;
+    }
 }

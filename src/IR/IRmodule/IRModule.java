@@ -43,6 +43,10 @@ public class IRModule {
         externalFunctionMap.put(ExternalFunction.getIdentifier(), ExternalFunction);
     }
 
+    public void removeExternalFunction(String identifier){
+        externalFunctionMap.remove(identifier);
+    }
+
     public void addBuiltinType(IRType builtinType, String identifier){
         if(baseTypeMap.containsKey(identifier)){
             throw new ErrorMessage("addBuiltinType Conflict");
@@ -106,6 +110,10 @@ public class IRModule {
 
     public HashMap<String, IRFunction> getExternalFunctionMap() {
         return externalFunctionMap;
+    }
+
+    public boolean internal(IRFunction func){
+        return internalFunctionMap.containsKey(func);
     }
 
     public void accept(IRVisitor visitor){

@@ -1,5 +1,6 @@
 package RISCV.RISCVinstruction;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVoperand.RISCVimmediate.RISCVImmediate;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
@@ -18,6 +19,23 @@ public class RISCVStore extends RISCVInstruction {
         this.rs2 = rs2;
         this.width = width;
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public RISCVImmediate getImm() {
+        return imm;
+    }
+
+    public RISCVRegister getRs1() {
+        return rs1;
+    }
+
+    public RISCVRegister getRs2() {
+        return rs2;
+    }
+
     @Override
     public String toString() {
         if(width == 1) return "sb " + rs2 + ", " + (imm + "(" + rs1 + ")");
@@ -43,5 +61,10 @@ public class RISCVStore extends RISCVInstruction {
     @Override
     public RISCVInstruction copy() {
         return new RISCVStore(rs1, imm, rs2, width, instIn);
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -1,5 +1,6 @@
 package RISCV.RISCVfunction;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVmodule.RISCVModule;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
@@ -75,5 +76,9 @@ public class RISCVFunction {
     @Override
     public String toString() {
         return this.identifier;
+    }
+
+    public void accept(RISCVVisitor visitor){
+        visitor.visit(this);
     }
 }

@@ -7,4 +7,5 @@ public interface IRType {
     public abstract String getType();
     public abstract IROperand initValue();
     public abstract Boolean resolvable();
+    public abstract Boolean CSEChecker(IRType other);
 }

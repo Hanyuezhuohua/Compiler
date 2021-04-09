@@ -80,6 +80,10 @@ public class IRBasicBlock {
         }
     }
 
+    public IRFunction getBlockIn() {
+        return blockIn;
+    }
+
     public void addAlloc(IRLocalRegister var){
         IRInstruction store = new Store(this, new IRConstVoid(), var);
 //        IRInstruction store = new Store(this, ((IRPointerType) var.getOperandType()).getPointTo().initValue(), var);
@@ -216,5 +220,55 @@ public class IRBasicBlock {
 
     public void accept(IRVisitor visitor){
         visitor.visit(this);
+    }
+
+    public void split(IRBasicBlock newSplit, IRInstruction splitPoint){
+        next.forEach(nextBlock -> {
+            for(IRInstruction inst = nextBlock.getHead(); inst != null && inst instanceof Phi; inst = inst.getNext()){
+                ((Phi) inst).updateLabel(this, newSplit);
+            }
+            nextBlock.getPrev().remove(this);
+            nextBlock.getPrev().add(newSplit);
+        });
+        newSplit.setNext(next);
+        next = new ArrayList<>();
+        newSplit.setHead(splitPoint.getNext());
+        splitPoint.getNext().setPrev(null);
+        newSplit.setTail(tail);
+        if(splitPoint.getPrev() == null){
+            head = tail = null;
+        }
+        else{
+            tail = splitPoint.getPrev();
+            tail.setNext(null);
+        }
+        for (IRInstruction inst = newSplit.getHead(); inst != null; inst =inst.getNext()){
+            inst.setInstIn(newSplit);
+        }
+    }
+
+    public void merge(IRBasicBlock nextBlock){
+        setNext(nextBlock.getNext());
+        next.forEach(block -> {
+            block.getPrev().remove(nextBlock);
+            block.getPrev().add(this);
+            for(IRInstruction inst = block.getHead(); inst != null && inst instanceof Phi; inst = inst.getNext()){
+                ((Phi) inst).updateLabel(nextBlock, this);
+            }
+        });
+        for(IRInstruction inst = nextBlock.getHead(); inst != null; inst = inst.getNext()){
+            inst.setInstIn(this);
+        }
+        if(head == null) head = nextBlock.getHead();
+        else tail.setNext(nextBlock.getHead());
+        if(nextBlock.getHead() != null) nextBlock.getHead().setPrev(tail);
+        if(nextBlock.getTail() != null) tail = nextBlock.getTail();
+    }
+
+    public boolean DomBy(IRBasicBlock block){
+        for(IRBasicBlock iDom = this.idom; iDom != null; iDom = iDom.getIdom()){
+            if(iDom.equals(block)) return true;
+        }
+        return false;
     }
 }

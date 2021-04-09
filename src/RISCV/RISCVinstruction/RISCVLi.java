@@ -1,21 +1,31 @@
 package RISCV.RISCVinstruction;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 
 import java.util.HashSet;
 
 public class RISCVLi extends RISCVInstruction {
-    public int value;
+    public int rs;
     public RISCVRegister rd;
-    public RISCVLi(int value, RISCVRegister rd, RISCVBasicBlock block) {
+    public RISCVLi(int rs, RISCVRegister rd, RISCVBasicBlock block) {
         super(block);
-        this.value = value;
+        this.rs = rs;
         this.rd = rd;
     }
+
+    public RISCVRegister getRd() {
+        return rd;
+    }
+
+    public int getRs() {
+        return rs;
+    }
+
     @Override
     public String toString() {
-        return "li " + rd + ", " + value;
+        return "li " + rd + ", " + rs;
     }
     @Override
     public HashSet<RISCVRegister> Defs() {
@@ -30,6 +40,11 @@ public class RISCVLi extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new RISCVLi(value, rd, instIn);
+        return new RISCVLi(rs, rd, instIn);
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }

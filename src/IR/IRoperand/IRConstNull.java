@@ -22,7 +22,20 @@ public class IRConstNull extends IROperand{
     public void removeInst(IRInstruction inst) {}
 
     @Override
+    public void clearInst() {}
+
+    @Override
     public boolean isZero() {
         return true;
+    }
+
+    @Override
+    public IROperand operandCopy() {
+        return this;
+    }
+
+    @Override
+    public boolean CSEChecker(IROperand other) {
+        return other instanceof IRConstNull;
     }
 }

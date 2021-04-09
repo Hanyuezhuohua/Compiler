@@ -46,5 +46,18 @@ public class IRConstString extends IROperand{
     public void removeInst(IRInstruction inst) {}
 
     @Override
+    public void clearInst() {}
+
+    @Override
     public boolean isZero() { return false; }
+
+    @Override
+    public IROperand operandCopy() {
+        return this;
+    }
+
+    @Override
+    public boolean CSEChecker(IROperand other) {
+        return equals(other);
+    }
 }

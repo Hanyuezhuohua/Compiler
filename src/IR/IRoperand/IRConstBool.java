@@ -27,9 +27,22 @@ public class IRConstBool extends IROperand{
 
     @Override
     public void removeInst(IRInstruction inst) {}
+
+    @Override
+    public void clearInst() {}
+
     @Override
     public boolean isZero() {
         return value ^ true;
     }
 
+    @Override
+    public IROperand operandCopy() {
+        return this;
+    }
+
+    @Override
+    public boolean CSEChecker(IROperand other) {
+        return other instanceof IRConstBool && ((IRConstBool) other).getValue() == value;
+    }
 }

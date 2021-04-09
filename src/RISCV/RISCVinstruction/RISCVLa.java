@@ -1,5 +1,6 @@
 package RISCV.RISCVinstruction;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVoperand.RISCVregister.RISCVGlobalRegister;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
@@ -7,16 +8,25 @@ import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 import java.util.HashSet;
 
 public class RISCVLa extends RISCVInstruction {
-    public RISCVGlobalRegister src;
+    public RISCVGlobalRegister rs;
     public RISCVRegister rd;
-    public RISCVLa(RISCVGlobalRegister src, RISCVRegister rd, RISCVBasicBlock block) {
+    public RISCVLa(RISCVGlobalRegister rs, RISCVRegister rd, RISCVBasicBlock block) {
         super(block);
         this.rd = rd;
-        this.src = src;
+        this.rs = rs;
     }
+
+    public RISCVRegister getRd() {
+        return rd;
+    }
+
+    public RISCVGlobalRegister getRs() {
+        return rs;
+    }
+
     @Override
     public String toString() {
-        return "la " + rd + ", " + src;
+        return "la " + rd + ", " + rs;
     }
     @Override
     public HashSet<RISCVRegister> Defs() {
@@ -31,6 +41,11 @@ public class RISCVLa extends RISCVInstruction {
 
     @Override
     public RISCVInstruction copy() {
-        return new RISCVLa(src, rd, instIn);
+        return new RISCVLa(rs, rd, instIn);
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -32,4 +32,9 @@ public class IRArrayType implements IRType{
     public String toString() {
         return getType();
     }
+
+    @Override
+    public Boolean CSEChecker(IRType other) {
+        return other instanceof IRArrayType && ((IRArrayType) other).baseType.CSEChecker(baseType);
+    }
 }

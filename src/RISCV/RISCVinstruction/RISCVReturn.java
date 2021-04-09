@@ -1,5 +1,6 @@
 package RISCV.RISCVinstruction;
 
+import RISCV.RISCVUtility.RISCVVisitor;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVmodule.RISCVModule;
 import RISCV.RISCVoperand.RISCVregister.RISCVPhysicalRegister;
@@ -25,5 +26,10 @@ public class RISCVReturn extends RISCVInstruction {
     @Override
     public RISCVInstruction copy() {
         return new RISCVReturn(null, instIn);
+    }
+
+    @Override
+    public void accept(RISCVVisitor visitor) {
+        visitor.visit(this);
     }
 }
