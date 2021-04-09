@@ -11,7 +11,7 @@ import backend.AST_IR.DominatorTree;
 public class ADCE implements IRVisitor {
     private boolean newADCE;
 
-    public ADCE(IRModule module){
+    public ADCE(){
         newADCE = false;
     }
 
