@@ -91,15 +91,23 @@ public class RedundantCodeRemove {
                         }
                     }
                 }
-    /*            else if(inst instanceof RISCVStore){
+                else if(inst instanceof RISCVStore){
                     for(RISCVInstruction load = inst.getNext(); load != null; load = load.getNext()){
                         if(load instanceof RISCVLoad && ((RISCVStore) inst).getImm().getValue() == ((RISCVLoad) load).getOffset().getValue() && ((RISCVStore) inst).getWidth() == ((RISCVLoad) load).getWidth() && ((RISCVStore) inst).getRs1() == ((RISCVLoad) load).getRs() && ((RISCVStore) inst).getRs2().getColor() == ((RISCVLoad) load).getRd().getColor()){
                             load.remove();
                             modified = true;
                             newRedundantCodeRemove = true;
                         }
+                        boolean flag = false;
+                        for(RISCVRegister def : load.Defs()){
+                            if(def.getColor() == ((RISCVStore) inst).getRs1().getColor() || def.getColor() == ((RISCVStore) inst).getRs2().getColor()){
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if(flag) break;
                     }
-                }*/
+                }
                 removeAssign(inst);
                 if(!modified) for (RISCVRegister def : inst.Defs()) RegisterAllocation.put(def.getColor(), inst);
             }
