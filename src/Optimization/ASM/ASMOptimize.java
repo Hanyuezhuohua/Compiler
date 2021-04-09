@@ -20,9 +20,9 @@ public class ASMOptimize {
             CFGSimplification Opt2 = new CFGSimplification();
             Opt2.visit(module);
             modified |= Opt2.hasNewCFGSimplification();
-    /*        RedundantCodeRemove Opt3 = new RedundantCodeRemove();
+            RedundantCodeRemove Opt3 = new RedundantCodeRemove();
             Opt3.run(module);
-            modified |= Opt3.hasNewRedundantCodeRemove();*/
+            modified |= Opt3.hasNewRedundantCodeRemove();
         }while (modified);
     }
 }
