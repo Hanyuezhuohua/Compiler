@@ -1,5 +1,6 @@
 import AST.RootNode;
 import Optimization.ASM.ASMOptimize;
+import Optimization.AST.ASTOptimize;
 import Optimization.AST.ConstantFolding;
 import Optimization.IR.Inline;
 import backend.IR_ASM.ASMPrinter;
@@ -41,7 +42,8 @@ public class Main {
  //           InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new SemanticChecker().visit(ast);
-            if(optimize) new ConstantFolding().visit(ast);
+            //new ASTOptimize(ast).run();
+            new ConstantFolding().visit(ast);
             if(!codegen) return;
             IRBuilder irBuilder = new IRBuilder();
             irBuilder.visit(ast);

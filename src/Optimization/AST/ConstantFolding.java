@@ -18,16 +18,20 @@ public class ConstantFolding implements ASTVisitor {
     public ConstantFolding(){
         VarMap = new HashMap<>();
         ReAssignSet = new HashSet<>();
+        newConst = false;
     }
+
     @Override
     public void visit(RootNode node) {
         collectConst = true;
         node.getDefinition().forEach(tmp -> tmp.accept(this));
         collectConst = false;
-        do{
+        newConst = false;
+        node.getDefinition().forEach(tmp -> tmp.accept(this));
+        while (newConst){
             newConst = false;
             node.getDefinition().forEach(tmp -> tmp.accept(this));
-        }while(newConst);
+        }
     }
 
     @Override
