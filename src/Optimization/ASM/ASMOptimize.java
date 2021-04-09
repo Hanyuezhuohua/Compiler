@@ -17,10 +17,10 @@ public class ASMOptimize {
             RedundantInstRemove Opt1 = new RedundantInstRemove();
             Opt1.visit(module);
             modified |= Opt1.hasNewRedundantInstRemove();
-  /*          CFGSimplification Opt2 = new CFGSimplification();
+            CFGSimplification Opt2 = new CFGSimplification();
             Opt2.visit(module);
             modified |= Opt2.hasNewCFGSimplification();
-            RedundantCodeRemove Opt3 = new RedundantCodeRemove();
+    /*        RedundantCodeRemove Opt3 = new RedundantCodeRemove();
             Opt3.run(module);
             modified |= Opt3.hasNewRedundantCodeRemove();*/
         }while (modified);
