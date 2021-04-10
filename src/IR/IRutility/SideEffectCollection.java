@@ -56,6 +56,10 @@ public class SideEffectCollection {
                     }
                 });
             }
+            else{
+                func.setSideEffect(true);
+                func.getCaller().forEach(caller -> caller.setSideEffect(true));
+            }
         });
     }
 }
