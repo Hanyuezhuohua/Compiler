@@ -151,6 +151,9 @@ public class ADCE {
     public void collect(){
         Operands.addAll(module.getGlobalVariableList());
         module.getExternalFunctionMap().forEach((id, func) -> {
+            if(func.getClassPtr() != null && func.getClassPtr().getOperandType() instanceof IRPointerType){
+                Operands.add(func.getClassPtr());
+            }
             func.getParameters().forEach(parameter -> {
                 if(parameter.getOperandType() instanceof IRPointerType) Operands.add(parameter);
             });
