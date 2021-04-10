@@ -552,7 +552,6 @@ public class IRBuilder implements ASTVisitor {
                 node.setResult(new IRConstInt(((IntegerliteralNode) node.getConstant()).getVal(), IRIntType.IntTypeBytes.Int32));
             }
             else if(node.getConstant() instanceof StringliteralNode){
-                //todo
                 String val = ((StringliteralNode) node.getConstant()).getVal();
                 module.addConstString(val);
                 IRConstString ConstString = module.getConstString(val);

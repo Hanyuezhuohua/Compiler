@@ -40,20 +40,22 @@ public class SideEffectCollection {
         new FuncCallCollection(module).run();
 
         module.getExternalFunctionMap().forEach((id, func) -> {
-            func.getBlockContain().forEach(block -> {
-                for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
-                    if(inst instanceof Call && ((Call) inst).getFnptrval().hasSideEffect()){
-                        func.setSideEffect(true);
-                        func.getCaller().forEach(caller -> caller.setSideEffect(true));
-                        break;
+            if(func.getClassPtr() == null && func.getParameters().size() == 0){
+                func.getBlockContain().forEach(block -> {
+                    for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
+                        if(inst instanceof Call && ((Call) inst).getFnptrval().hasSideEffect()){
+                            func.setSideEffect(true);
+                            func.getCaller().forEach(caller -> caller.setSideEffect(true));
+                            break;
+                        }
+                        else if(inst instanceof Store && ((Store) inst).getPointer() instanceof IRGlobalVariable){
+                            func.setSideEffect(true);
+                            func.getCaller().forEach(caller -> caller.setSideEffect(true));
+                            break;
+                        }
                     }
-                    else if(inst instanceof Store && ((Store) inst).getPointer() instanceof IRGlobalVariable){
-                        func.setSideEffect(true);
-                        func.getCaller().forEach(caller -> caller.setSideEffect(true));
-                        break;
-                    }
-                }
-            });
+                });
+            }
         });
     }
 }

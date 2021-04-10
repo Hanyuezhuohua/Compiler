@@ -55,9 +55,9 @@ public class Main {
             new IRPrinter(IRFile).run(irBuilder.getModule());
             if(optimize) new Inline(irBuilder.getModule()).run();
             new ADCE().visit(irBuilder.getModule());
-            new PhiResolution().run(irBuilder.getModule());
             IRFile = new PrintStream( "out2.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
+            new PhiResolution().run(irBuilder.getModule());
             ASMBuilder asmBuilder = new ASMBuilder();
             asmBuilder.visit(irBuilder.getModule());
             RISCVModule riscvModule = asmBuilder.getModule();
