@@ -118,10 +118,10 @@ public class ADCE implements IRVisitor {
 
     @Override
     public void visit(Phi inst) {
-     /*   if(inst.getResult().getInstructions().size() == 0){
+        if(inst.getResult().getInstructions().size() == 0){
             inst.Remove();
             newADCE = true;
-        }*/
+        }
     }
 
     @Override
