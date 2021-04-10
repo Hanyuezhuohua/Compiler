@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/ADCE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/ADCE.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRLocalRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRLocalRegister.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IROperand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IROperand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRutility/SideEffectCollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRutility/SideEffectCollection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/ADCE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/DCE.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,6 +139,16 @@
           <url>file://$PROJECT_DIR$/src/Optimization/ASM/RedundantCodeRemove.java</url>
           <line>96</line>
           <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Optimization/IR/ADCE.java</url>
+          <line>84</line>
+          <option name="timeStamp" value="152" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Optimization/IR/ADCE.java</url>
+          <line>85</line>
+          <option name="timeStamp" value="153" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

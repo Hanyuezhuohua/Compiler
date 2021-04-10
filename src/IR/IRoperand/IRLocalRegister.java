@@ -7,10 +7,12 @@ import java.util.HashSet;
 
 public class IRLocalRegister extends IROperand{
     private HashSet<IRInstruction> instructions;
+    private IRInstruction def;
 
     public IRLocalRegister(IRType OperandType, String identifier){
         super(OperandType, identifier);
         instructions = new HashSet<>();
+        def = null;
     }
 
     @Override
@@ -59,5 +61,15 @@ public class IRLocalRegister extends IROperand{
     @Override
     public boolean CSEChecker(IROperand other) {
         return equals(other);
+    }
+
+    @Override
+    public void setDef(IRInstruction defInst) {
+        def = defInst;
+    }
+
+    @Override
+    public IRInstruction getDef() {
+        return def;
     }
 }

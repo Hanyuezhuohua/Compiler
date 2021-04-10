@@ -87,6 +87,7 @@ public class CFGSimplification implements IRVisitor {
                 }
             }
             if(newCFGSimplification){
+                new FuncBlockCollection().BlockCollecting(func);
                 new DominatorTree(func).Lengauer_Tarjan();
             }
         }while (newCFGSimplification);

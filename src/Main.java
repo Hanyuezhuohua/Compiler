@@ -1,8 +1,8 @@
 import AST.RootNode;
 import Optimization.ASM.ASMOptimize;
-import Optimization.AST.ASTOptimize;
 import Optimization.AST.ConstantFolding;
 import Optimization.IR.ADCE;
+import Optimization.IR.DCE;
 import Optimization.IR.Inline;
 import backend.IR_ASM.ASMPrinter;
 import RISCV.RISCVmodule.RISCVModule;
@@ -54,7 +54,8 @@ public class Main {
             IRFile = new PrintStream( "out1.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
             if(optimize) new Inline(irBuilder.getModule()).run();
-            new ADCE().visit(irBuilder.getModule());
+            new DCE().visit(irBuilder.getModule());
+            new ADCE(irBuilder.getModule()).run();
             IRFile = new PrintStream( "out2.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
             new PhiResolution().run(irBuilder.getModule());

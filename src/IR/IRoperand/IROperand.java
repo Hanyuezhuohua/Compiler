@@ -53,4 +53,10 @@ public abstract class IROperand {
     public String toString() {
         return PrintOperand();
     }
+
+    public void setDef(IRInstruction defInst){}
+
+    public IRInstruction getDef(){
+        return null;
+    }
 }
