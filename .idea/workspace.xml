@@ -4,7 +4,7 @@
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/ADCE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/ADCE.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,21 +137,30 @@
           <option name="timeStamp" value="147" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/ADCE.java</url>
-          <line>84</line>
-          <option name="timeStamp" value="152" />
+          <url>file://$PROJECT_DIR$/src/backend/IR_ASM/ASMBuilder.java</url>
+          <line>408</line>
+          <option name="timeStamp" value="162" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/RISCV/RISCVfunction/RISCVFunction.java</url>
+          <line>64</line>
+          <option name="timeStamp" value="163" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Optimization/IR/ADCE.java</url>
-          <line>85</line>
-          <option name="timeStamp" value="153" />
+          <line>204</line>
+          <option name="timeStamp" value="174" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>52</line>
+          <option name="timeStamp" value="176" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="backend.Memory_Register" memberName="varAlloc" />
-        <PinnedItemInfo parentTag="IR.IRbasicblock.IRBasicBlock" memberName="prev" />
         <PinnedItemInfo parentTag="IR.IRoperand.IRConstVoid" memberName="instructions" />
         <PinnedItemInfo parentTag="IR.IRbasicblock.IRBasicBlock" memberName="next" />
       </pinned-members>

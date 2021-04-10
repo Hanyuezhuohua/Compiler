@@ -322,7 +322,7 @@ public class IRBuilder implements ASTVisitor {
 //        IRLocalRegister tmp = null;
         if(node.getSymbol().getType() instanceof VoidType){
             RetBlock = new IRBasicBlock(currentFunction, "VoidReturn");
-            RetBlock.addInst(new Ret(currentBasicBlock, new IRConstVoid()));
+            RetBlock.addInst(new Ret(RetBlock, new IRConstVoid()));
             node.getSuite().accept(this);
             if(RetBlock.getPrev().size() == 0){
                 currentBasicBlock.addInst(new Ret(currentBasicBlock, new IRConstVoid()));
