@@ -110,6 +110,8 @@ public class SideEffectCollection {
 
     public void SideEffect(IRFunction func){
         func.setSideEffect(true);
-        func.getCaller().forEach(caller -> SideEffect(caller));
+        func.getCaller().forEach(caller -> {
+            if(!caller.hasSideEffect()) SideEffect(caller);
+        });
     }
 }
