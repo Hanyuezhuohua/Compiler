@@ -1,6 +1,10 @@
 package AST;
 
 import Util.position;
+import Util.scope.Scope;
+import Util.symbol.Symbol;
+
+import java.util.HashSet;
 
 public class BinaryexprNode extends ExprNode{
     public enum BinaryOpType{
@@ -19,6 +23,18 @@ public class BinaryexprNode extends ExprNode{
         this.op = op;
     }
 
+    public void setLhs(ExprNode lhs) {
+        this.lhs = lhs;
+    }
+
+    public void setRhs(ExprNode rhs) {
+        this.rhs = rhs;
+    }
+
+    public void setOp(BinaryOpType op) {
+        this.op = op;
+    }
+
     public ExprNode getLhs() {
         return lhs;
     }
@@ -34,5 +50,25 @@ public class BinaryexprNode extends ExprNode{
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean modified(HashSet<Symbol> symbols) {
+        return lhs.modified(symbols) || rhs.modified(symbols);
+    }
+
+    @Override
+    public boolean isSame(ExprNode node) {
+        return node instanceof BinaryexprNode && lhs.isSame(((BinaryexprNode) node).lhs) && rhs.isSame(((BinaryexprNode) node).rhs);
+    }
+
+    @Override
+    public ExprNode copy(Scope scope) {
+        ExprNode copy =  new BinaryexprNode(pos, lhs.copy(scope), rhs.copy(scope), op);
+        copy.setScope(scope);
+        copy.setType(getType());
+        copy.setExprType(getExprType());
+        copy.setConstant(getConstant());
+        return copy;
     }
 }

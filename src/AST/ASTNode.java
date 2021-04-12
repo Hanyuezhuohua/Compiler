@@ -4,8 +4,8 @@ import Util.position;
 import Util.scope.Scope;
 
 public abstract class ASTNode {
-    private position pos;
-    private Scope scope;
+    protected position pos;
+    protected Scope scope;
     public ASTNode(position pos){
         this.pos = pos;
     }

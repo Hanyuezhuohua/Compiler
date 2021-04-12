@@ -424,7 +424,7 @@ public class IRBuilder implements ASTVisitor {
         if(node.getCondition().isConst() && !((BoolliteralNode)node.getCondition().getConstant()).getVal()){
             return;
         }
-        if(optimize && (node.getInitExpr() != null && node.getInitExpr() instanceof BinaryexprNode && ((BinaryexprNode) node.getInitExpr()).getOp() == BinaryexprNode.BinaryOpType.Assign && ((BinaryexprNode) node.getInitExpr()).getRhs().isConst())
+/*        if(optimize && (node.getInitExpr() != null && node.getInitExpr() instanceof BinaryexprNode && ((BinaryexprNode) node.getInitExpr()).getOp() == BinaryexprNode.BinaryOpType.Assign && ((BinaryexprNode) node.getInitExpr()).getRhs().isConst())
             && (node.getCondition() instanceof BinaryexprNode && (((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Greater || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.GreaterEqual || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Less || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.LessEqual) && ((BinaryexprNode) node.getCondition()).getRhs().isConst())
             && ((node.getIncr() != null && node.getIncr() instanceof SuffixexprNode) || (node.getIncr() != null && node.getIncr() instanceof PrefixexprNode && (((PrefixexprNode) node.getIncr()).getOp() == PrefixexprNode.PrefixOpType.AddAdd || ((PrefixexprNode) node.getIncr()).getOp() == PrefixexprNode.PrefixOpType.MinusMinus)))
             && (((BinaryexprNode) node.getInitExpr()).getLhs() instanceof IdentifierNode && ((BinaryexprNode) node.getCondition()).getLhs() instanceof IdentifierNode && ((node.getIncr() instanceof PrefixexprNode && ((PrefixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode) || (node.getIncr() instanceof SuffixexprNode && ((SuffixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode)))){
@@ -517,7 +517,7 @@ public class IRBuilder implements ASTVisitor {
                     return;
                 }
             }
-        }
+        }*/
         IRBasicBlock condBlock = new IRBasicBlock(currentFunction, "forCond");
         IRBasicBlock stmtBlock = new IRBasicBlock(currentFunction, "forStmt");
         IRBasicBlock incrBlock = new IRBasicBlock(currentFunction, "forIncr");

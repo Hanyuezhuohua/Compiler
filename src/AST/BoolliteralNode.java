@@ -1,6 +1,9 @@
 package AST;
 
 import Util.position;
+import Util.symbol.Symbol;
+
+import java.util.HashSet;
 
 public class BoolliteralNode extends ExprNode{
     private boolean val;
@@ -26,5 +29,10 @@ public class BoolliteralNode extends ExprNode{
     @Override
     public boolean isConst() {
         return true;
+    }
+
+    @Override
+    public boolean modified(HashSet<Symbol> symbols) {
+        return false;
     }
 }

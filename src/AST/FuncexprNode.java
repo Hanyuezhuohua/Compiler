@@ -2,7 +2,9 @@ package AST;
 
 import Util.position;
 import Util.symbol.FuncSymbol;
+import Util.symbol.Symbol;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class FuncexprNode extends ExprNode{
@@ -36,5 +38,10 @@ public class FuncexprNode extends ExprNode{
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean modified(HashSet<Symbol> symbols) {
+        return false;
     }
 }

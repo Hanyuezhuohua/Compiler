@@ -3,7 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/optimize.bash" beforeDir="false" afterPath="$PROJECT_DIR$/optimize.bash" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ASTNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/BinaryexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/BinaryexprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/BoolliteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/BoolliteralNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/ExprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ExprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/FuncexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/FuncexprNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AST/IdentifierNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/IdentifierNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" afterDir="false" />
     </list>
@@ -45,7 +50,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="reference.idesettings.debugger.capture" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -156,6 +161,16 @@
           <url>file://$PROJECT_DIR$/src/Optimization/IR/Inline.java</url>
           <line>67</line>
           <option name="timeStamp" value="194" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>50</line>
+          <option name="timeStamp" value="225" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>695</line>
+          <option name="timeStamp" value="244" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

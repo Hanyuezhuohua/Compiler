@@ -3,7 +3,11 @@ package AST;
 import IR.IRoperand.IROperand;
 import Util.error.ErrorMessage;
 import Util.position;
+import Util.scope.Scope;
+import Util.symbol.Symbol;
 import Util.type.Type;
+
+import java.util.HashSet;
 
 public abstract class ExprNode extends ASTNode{
     public enum ExprType {
@@ -61,5 +65,17 @@ public abstract class ExprNode extends ASTNode{
 
     public ExprNode getConstant() {
         return constant;
+    }
+
+    public boolean modified(HashSet<Symbol> symbols){
+        return false;
+    }
+
+    public boolean isSame(ExprNode node){
+        return false;
+    }
+
+    public ExprNode copy(Scope scope){
+        return this;
     }
 }
