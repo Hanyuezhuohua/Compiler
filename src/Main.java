@@ -40,7 +40,7 @@ public class Main {
         String fileName = "./testcase/code.mx";
         try {
             InputStream file = System.in;
- //           InputStream file = new FileInputStream(fileName);
+  //         InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new SemanticChecker().visit(ast);
             //new ASTOptimize(ast).run();
@@ -54,10 +54,10 @@ public class Main {
             IRFile = new PrintStream( "out1.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
             new Inline(irBuilder.getModule()).run();
-            new DCE().visit(irBuilder.getModule());
-            new ADCE(irBuilder.getModule()).run();
             IRFile = new PrintStream( "out2.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
+            new DCE().visit(irBuilder.getModule());
+            new ADCE(irBuilder.getModule()).run();
             new PhiResolution().run(irBuilder.getModule());
             ASMBuilder asmBuilder = new ASMBuilder();
             asmBuilder.visit(irBuilder.getModule());

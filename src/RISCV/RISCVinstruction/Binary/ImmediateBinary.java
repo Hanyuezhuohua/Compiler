@@ -43,7 +43,7 @@ public class ImmediateBinary extends RISCVInstruction {
     public boolean mergeInst(){
         RISCVInstruction inst = this.next;
         if(inst != null && inst instanceof ImmediateBinary){
-            if(this.op == ImmediateBinaryOp.addi && ((ImmediateBinary) inst).op == ImmediateBinaryOp.addi && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor()){
+            if(this.op == ImmediateBinaryOp.addi && ((ImmediateBinary) inst).op == ImmediateBinaryOp.addi && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor() && this.rd.getColor() == ((ImmediateBinary) inst).getRd().getColor()){
                 int value = this.imm.getValue() + ((ImmediateBinary) inst).getImm().getValue();
                 if(-(1 << 11) <= value && value <= (1 << 11) - 1){
                     this.rd.setColor(((ImmediateBinary) inst).rd.color);
@@ -52,7 +52,7 @@ public class ImmediateBinary extends RISCVInstruction {
                     return true;
                 }
             }
-            else if(this.op == ImmediateBinaryOp.slli && ((ImmediateBinary) inst).op == ImmediateBinaryOp.slli && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor()){
+            else if(this.op == ImmediateBinaryOp.slli && ((ImmediateBinary) inst).op == ImmediateBinaryOp.slli && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor() && this.rd.getColor() == ((ImmediateBinary) inst).getRd().getColor()){
                 int value = this.imm.getValue() + ((ImmediateBinary) inst).getImm().getValue();
                 if(-(1 << 11) <= value && value <= (1 << 11) - 1){
                     this.rd.setColor(((ImmediateBinary) inst).rd.color);
@@ -61,7 +61,7 @@ public class ImmediateBinary extends RISCVInstruction {
                     return true;
                 }
             }
-            else if(this.op == ImmediateBinaryOp.srai && ((ImmediateBinary) inst).op == ImmediateBinaryOp.srai && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor()){
+            else if(this.op == ImmediateBinaryOp.srai && ((ImmediateBinary) inst).op == ImmediateBinaryOp.srai && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor() && this.rd.getColor() == ((ImmediateBinary) inst).getRd().getColor()){
                 int value = this.imm.getValue() + ((ImmediateBinary) inst).getImm().getValue();
                 if(-(1 << 11) <= value && value <= (1 << 11) - 1){
                     this.rd.setColor(((ImmediateBinary) inst).rd.color);
@@ -70,7 +70,7 @@ public class ImmediateBinary extends RISCVInstruction {
                     return true;
                 }
             }
-            else if(this.op == ImmediateBinaryOp.slli && ((ImmediateBinary) inst).op == ImmediateBinaryOp.srai && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor()){
+            else if(this.op == ImmediateBinaryOp.slli && ((ImmediateBinary) inst).op == ImmediateBinaryOp.srai && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor() && this.rd.getColor() == ((ImmediateBinary) inst).getRd().getColor()){
                 int value = this.imm.getValue() - ((ImmediateBinary) inst).getImm().getValue();
                 if(value >= 0){
                     if(-(1 << 11) <= value && value <= (1 << 11) - 1){
@@ -91,7 +91,7 @@ public class ImmediateBinary extends RISCVInstruction {
                     }
                 }
             }
-            else if(this.op == ImmediateBinaryOp.srai && ((ImmediateBinary) inst).op == ImmediateBinaryOp.slli && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor()){
+            else if(this.op == ImmediateBinaryOp.srai && ((ImmediateBinary) inst).op == ImmediateBinaryOp.slli && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor() && this.rd.getColor() == ((ImmediateBinary) inst).getRd().getColor()){
                 int value = this.imm.getValue() - ((ImmediateBinary) inst).getImm().getValue();
                 if(value >= 0){
                     if(-(1 << 11) <= value && value <= (1 << 11) - 1){
