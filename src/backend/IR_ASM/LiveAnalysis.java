@@ -1,5 +1,6 @@
 package backend.IR_ASM;
 
+import IR.IRbasicblock.IRBasicBlock;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVfunction.RISCVFunction;
 import RISCV.RISCVinstruction.RISCVInstruction;
@@ -8,6 +9,7 @@ import RISCV.RISCVoperand.RISCVregister.RISCVRegister;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Stack;
 
 public class LiveAnalysis {
 
@@ -29,7 +31,7 @@ public class LiveAnalysis {
         block.setLiveIn(new LinkedHashSet<>());
         block.setLiveOut(new HashSet<>());
     }
-
+/*
 
     static void runBackward(RISCVBasicBlock block) {
         if (visited.contains(block)) return;
@@ -49,6 +51,32 @@ public class LiveAnalysis {
         }
         for (RISCVBasicBlock precursor : block.getPrev()) {
             runBackward(precursor);
+        }
+    }
+*/
+    static void runBackward(RISCVBasicBlock block){
+        Stack<RISCVBasicBlock> S = new Stack<>();
+        S.push(block);
+        while(!S.empty()){
+            RISCVBasicBlock now = S.pop();
+            if (visited.contains(now)) continue;
+            visited.add(now);
+            HashSet<RISCVRegister> liveOut = new HashSet<>();
+            for (RISCVBasicBlock successor : now.getNext()) {
+                liveOut.addAll(successor.getLiveIn());
+            }
+            HashSet<RISCVRegister> liveIn = new HashSet<>(liveOut);
+            liveIn.removeAll(blockDefs.get(now));
+            liveIn.addAll(blockUses.get(now));
+            now.addLiveOut(liveOut);
+            liveIn.removeAll(now.getLiveIn());
+            if (!liveIn.isEmpty()) {
+                now.addLiveIn(liveIn);
+                visited.removeAll(now.getPrev());
+            }
+            for (RISCVBasicBlock precursor : now.getPrev()) {
+                S.push(precursor);
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package backend.IR_ASM;
 
+import IR.IRbasicblock.IRBasicBlock;
 import RISCV.RISCVinstruction.Branch.BinaryBranch;
 import RISCV.RISCVinstruction.Branch.UnaryBranch;
 import RISCV.RISCVinstruction.RISCVInstruction;
@@ -11,6 +12,7 @@ import RISCV.RISCVmodule.RISCVModule;
 import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Stack;
 
 public class ASMPrinter {
     RISCVModule root;
@@ -25,7 +27,7 @@ public class ASMPrinter {
     HashSet<RISCVBasicBlock> visited;
     int blockCount;
     RISCVFunction currentFunction;
-
+/*
     boolean Dfs(RISCVBasicBlock block) {
         if (visited.contains(block)) return false;
         visited.add(block);
@@ -41,6 +43,23 @@ public class ASMPrinter {
             }
         }
         return true;
+    }*/
+
+    void Dfs(RISCVBasicBlock block){
+        if (visited.contains(block)) return;
+        visited.add(block);
+        block.setIdentifier("." + currentFunction.getIdentifier() + "_." + blockCount++);
+        if (block.getTail() instanceof UnaryBranch) {
+            if (!visited.contains(((UnaryBranch) block.getTail()).jumpTo) && flag) {
+                Dfs(((UnaryBranch) block.getTail()).jumpTo);
+                block.getTail().remove();
+            }
+        }
+        for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
+            if (inst instanceof BinaryBranch) {
+                Dfs(((BinaryBranch) inst).offset);
+            }
+        }
     }
 
     void ChangeName(RISCVFunction function) {
