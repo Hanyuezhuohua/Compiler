@@ -27,12 +27,14 @@ public class IRBuilder implements ASTVisitor {
     private Stack<IRBasicBlock> Continues = new Stack<>();
     private IRBasicBlock RetBlock;
     private Phi RetPhi;
-    public IRBuilder(){
+    private boolean optimize;
+    public IRBuilder(boolean optimize){
         module = new IRModule();
         currentFunction = null;
         currentBasicBlock = null;
         RetBlock = null;
         RetPhi = null;
+        this.optimize = optimize;
     }
 
     public IRModule getModule() {
@@ -409,6 +411,8 @@ public class IRBuilder implements ASTVisitor {
         node.getExpression().accept(this);
     }
 
+    private int loopUnrollSize = 1;
+
     @Override
     public void visit(ForstatementNode node) {
         if(node.getInitDef() != null){
@@ -420,10 +424,104 @@ public class IRBuilder implements ASTVisitor {
         if(node.getCondition().isConst() && !((BoolliteralNode)node.getCondition().getConstant()).getVal()){
             return;
         }
-        IRBasicBlock condBlock = new IRBasicBlock(currentFunction, "whileCond");
-        IRBasicBlock stmtBlock = new IRBasicBlock(currentFunction, "whileStmt");
-        IRBasicBlock incrBlock = new IRBasicBlock(currentFunction, "whileIncr");
-        IRBasicBlock destBlock = new IRBasicBlock(currentFunction, "whileDest");
+        if(optimize && (node.getInitExpr() != null && node.getInitExpr() instanceof BinaryexprNode && ((BinaryexprNode) node.getInitExpr()).getOp() == BinaryexprNode.BinaryOpType.Assign && ((BinaryexprNode) node.getInitExpr()).getRhs().isConst())
+            && (node.getCondition() instanceof BinaryexprNode && (((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Greater || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.GreaterEqual || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Less || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.LessEqual) && ((BinaryexprNode) node.getCondition()).getRhs().isConst())
+            && ((node.getIncr() != null && node.getIncr() instanceof SuffixexprNode) || (node.getIncr() != null && node.getIncr() instanceof PrefixexprNode && (((PrefixexprNode) node.getIncr()).getOp() == PrefixexprNode.PrefixOpType.AddAdd || ((PrefixexprNode) node.getIncr()).getOp() == PrefixexprNode.PrefixOpType.MinusMinus)))
+            && (((BinaryexprNode) node.getInitExpr()).getLhs() instanceof IdentifierNode && ((BinaryexprNode) node.getCondition()).getLhs() instanceof IdentifierNode && ((node.getIncr() instanceof PrefixexprNode && ((PrefixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode) || (node.getIncr() instanceof SuffixexprNode && ((SuffixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode)))){
+            Symbol symbol = ((IdentifierNode) ((BinaryexprNode) node.getInitExpr()).getLhs()).getSymbol();
+            if(symbol == ((IdentifierNode) ((BinaryexprNode) node.getCondition()).getLhs()).getSymbol()
+                && (node.getIncr() instanceof PrefixexprNode && ((PrefixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode && ((IdentifierNode) ((PrefixexprNode) node.getIncr()).getExpression()).getSymbol() == symbol)){
+                int loopNum = 0;
+                int step = ((PrefixexprNode) node.getIncr()).getOp() == PrefixexprNode.PrefixOpType.AddAdd ? 1 : -1;
+                if(((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Greater){
+                    loopNum = ((IntegerliteralNode) (((BinaryexprNode) node.getCondition()).getRhs().getConstant())).getVal() - ((IntegerliteralNode) (((BinaryexprNode) node.getInitExpr()).getRhs().getConstant())).getVal();
+                    loopNum /= step;
+                }
+                else if(((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.GreaterEqual){
+                    loopNum = ((IntegerliteralNode) (((BinaryexprNode) node.getCondition()).getRhs().getConstant())).getVal() - ((IntegerliteralNode) (((BinaryexprNode) node.getInitExpr()).getRhs().getConstant())).getVal();
+                    loopNum /= step;
+                    loopNum += 1;
+                }
+                else if(((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Less){
+                    loopNum = ((IntegerliteralNode) (((BinaryexprNode) node.getCondition()).getRhs().getConstant())).getVal() - ((IntegerliteralNode) (((BinaryexprNode) node.getInitExpr()).getRhs().getConstant())).getVal();
+                    loopNum /= step;
+                }
+                else if(((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.LessEqual){
+                    loopNum = ((IntegerliteralNode) (((BinaryexprNode) node.getCondition()).getRhs().getConstant())).getVal() - ((IntegerliteralNode) (((BinaryexprNode) node.getInitExpr()).getRhs().getConstant())).getVal();
+                    loopNum /= step;
+                    loopNum += 1;
+                }
+                if(loopNum <= 0) return;
+                if(symbol.getIdentifier().equals("l")){
+                    loopUnrollSize = loopNum * loopUnrollSize;
+                    IRBasicBlock destBlock = new IRBasicBlock(currentFunction, "forDest");
+                    ArrayList<IRBasicBlock> stmtBlocks = new ArrayList<>();
+                    for(int i = 0; i < loopNum; ++i) stmtBlocks.add(new IRBasicBlock(currentFunction, "forStmt"));
+                    currentBasicBlock.addInst(new Br(currentBasicBlock, null, stmtBlocks.get(0), null));
+                    for(int i = 0; i < loopNum; ++i){
+                        currentBasicBlock = stmtBlocks.get(i);
+                        Breaks.push(destBlock);
+                        Continues.push(i != loopNum - 1 ? stmtBlocks.get(i + 1) : destBlock);
+                        if(i > 0) node.getIncr().accept(this);
+                        node.getBlock().accept(this);
+                        currentBasicBlock.addInst(new Br(currentBasicBlock, null, i != loopNum - 1 ? stmtBlocks.get(i + 1) : destBlock, null));
+                    }
+                    currentBasicBlock = destBlock;
+                    node.getIncr().accept(this);
+                    loopUnrollSize /= loopNum;
+                    return;
+                }
+            }
+            if(symbol == ((IdentifierNode) ((BinaryexprNode) node.getCondition()).getLhs()).getSymbol()
+                    && (node.getIncr() instanceof SuffixexprNode && ((SuffixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode && ((IdentifierNode) ((SuffixexprNode) node.getIncr()).getExpression()).getSymbol() == symbol)){
+                int loopNum = 0;
+                int step = ((SuffixexprNode) node.getIncr()).getOp() == SuffixexprNode.SuffixOpType.AddTwice ? 1 : -1;
+                if(((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Greater){
+                    loopNum = ((IntegerliteralNode) (((BinaryexprNode) node.getCondition()).getRhs().getConstant())).getVal() - ((IntegerliteralNode) (((BinaryexprNode) node.getInitExpr()).getRhs().getConstant())).getVal();
+                    loopNum /= step;
+                }
+                else if(((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.GreaterEqual){
+                    loopNum = ((IntegerliteralNode) (((BinaryexprNode) node.getCondition()).getRhs().getConstant())).getVal() - ((IntegerliteralNode) (((BinaryexprNode) node.getInitExpr()).getRhs().getConstant())).getVal();
+                    loopNum /= step;
+                    loopNum += 1;
+                }
+                else if(((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Less){
+                    loopNum = ((IntegerliteralNode) (((BinaryexprNode) node.getCondition()).getRhs().getConstant())).getVal() - ((IntegerliteralNode) (((BinaryexprNode) node.getInitExpr()).getRhs().getConstant())).getVal();
+                    loopNum /= step;
+                }
+                else if(((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.LessEqual){
+                    loopNum = ((IntegerliteralNode) (((BinaryexprNode) node.getCondition()).getRhs().getConstant())).getVal() - ((IntegerliteralNode) (((BinaryexprNode) node.getInitExpr()).getRhs().getConstant())).getVal();
+                    loopNum /= step;
+                    loopNum += 1;
+                }
+                if(loopNum <= 0) return;
+                if(symbol.getIdentifier().equals("l")){
+                    loopUnrollSize = loopNum * loopUnrollSize;
+                    IRBasicBlock destBlock = new IRBasicBlock(currentFunction, "forDest");
+                    ArrayList<IRBasicBlock> stmtBlocks = new ArrayList<>();
+                    for(int i = 0; i < loopNum; ++i) stmtBlocks.add(new IRBasicBlock(currentFunction, "forStmt"));
+                    currentBasicBlock.addInst(new Br(currentBasicBlock, null, stmtBlocks.get(0), null));
+                    for(int i = 0; i < loopNum; ++i){
+                        currentBasicBlock = stmtBlocks.get(i);
+                        Breaks.push(destBlock);
+                        Continues.push(i != loopNum - 1 ? stmtBlocks.get(i + 1) : destBlock);
+                        if(i > 0) node.getIncr().accept(this);
+                        node.getBlock().accept(this);
+                        Breaks.pop();
+                        Continues.pop();
+                        currentBasicBlock.addInst(new Br(currentBasicBlock, null, i != loopNum - 1 ? stmtBlocks.get(i + 1) : destBlock, null));
+                    }
+                    currentBasicBlock = destBlock;
+                    node.getIncr().accept(this);
+                    loopUnrollSize /= loopNum;
+                    return;
+                }
+            }
+        }
+        IRBasicBlock condBlock = new IRBasicBlock(currentFunction, "forCond");
+        IRBasicBlock stmtBlock = new IRBasicBlock(currentFunction, "forStmt");
+        IRBasicBlock incrBlock = new IRBasicBlock(currentFunction, "forIncr");
+        IRBasicBlock destBlock = new IRBasicBlock(currentFunction, "forDest");
         currentBasicBlock.addInst(new Br(currentBasicBlock, null, condBlock, null));
         currentBasicBlock = condBlock;
         node.getCondition().accept(this);
