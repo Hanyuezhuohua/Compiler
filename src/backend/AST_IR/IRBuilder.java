@@ -1097,7 +1097,7 @@ public class IRBuilder implements ASTVisitor {
             currentBasicBlock.addInst(new Call(currentBasicBlock, module.getFunction("malloc"), functionArgs, mallocResult));
             currentBasicBlock.addInst(new BitCast(currentBasicBlock, mallocResult, node.getResult()));
             if(node.getFuncSymbol() != null){
-                currentBasicBlock.addInst(new Call(currentBasicBlock, node.getFuncSymbol().getIrFunction(), new ArrayList<>(), new IRLocalRegister(node.getFuncSymbol().getIrFunction().getReturnType(), "ConstructRet")));
+                currentBasicBlock.addInst(new Call(currentBasicBlock, node.getFuncSymbol().getIrFunction(), new ArrayList<>() {{ add(node.getResult());}}, new IRLocalRegister(node.getFuncSymbol().getIrFunction().getReturnType(), "ConstructRet")));
             }
         }
         else throw new ErrorMessage("IRBuilder Visit NewExprNode Error!");
