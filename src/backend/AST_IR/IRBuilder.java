@@ -185,6 +185,7 @@ public class IRBuilder implements ASTVisitor {
                     IRType memberType = Type_Change(classMember.getSymbol().getType(), true);
                     classType.addMember(memberType);
                     ((VarSymbol)(classMember.getSymbol())).setIndex(classType.getIndex());
+                    classMember.accept(this);
                 }
                 for (FundefNode ClassFunc : ((ClassdefNode) tmp).getFuncList()){
                     IRType returnType = Type_Change(ClassFunc.getSymbol().getType(), false);
@@ -230,6 +231,7 @@ public class IRBuilder implements ASTVisitor {
         }
         for (ASTNode tmp: node.getDefinition()){
             tmp.accept(this);
+//            System.out.println("QWQ");
         }
 
         IRInit.getExit().addInst(new Ret(IRInit.getExit(), new IRConstVoid()));
@@ -381,9 +383,9 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(ClassdefNode node) {
-        for(VardefNode var : node.getVarList()){
-            var.accept(this);
-        }
+ //       for(VardefNode var : node.getVarList()){
+ //           var.accept(this);
+ //       }
         for(FundefNode func : node.getFuncList()){
             func.accept(this);
         }

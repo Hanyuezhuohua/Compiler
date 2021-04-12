@@ -3,13 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ASTNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/BinaryexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/BinaryexprNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/BoolliteralNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/BoolliteralNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/ExprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ExprNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/FuncexprNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/FuncexprNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/IdentifierNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/IdentifierNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/AST/SimpleLoopCSE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/AST/SimpleLoopCSE.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -169,8 +164,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
-          <line>695</line>
+          <line>697</line>
           <option name="timeStamp" value="244" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>1130</line>
+          <option name="timeStamp" value="250" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>306</line>
+          <option name="timeStamp" value="251" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>232</line>
+          <option name="timeStamp" value="254" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>233</line>
+          <option name="timeStamp" value="258" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

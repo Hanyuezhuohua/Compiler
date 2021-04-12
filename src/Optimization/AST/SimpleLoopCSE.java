@@ -87,7 +87,6 @@ public class SimpleLoopCSE implements ASTVisitor {
                 value.setType(new BoolType());
                 value.setScope(exprNode.getScope());
                 ((BinaryexprNode) exprNode).setRhs(value);
-                System.out.println("WWW");
             });
         }
     }

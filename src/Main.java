@@ -29,7 +29,7 @@ import java.io.PrintStream;
 public class Main {
     public static void main(String[] args) throws Exception {
         boolean codegen = true;
-        boolean optimize = false;
+        boolean optimize = true;
         if(args.length > 0){
             for (String arg : args){
                 switch (arg){
