@@ -23,6 +23,9 @@ public class ASMOptimize {
             RedundantCodeRemove Opt3 = new RedundantCodeRemove();
             Opt3.run(module);
             modified |= Opt3.hasNewRedundantCodeRemove();
+            ImmediateInstMerge Opt4 = new ImmediateInstMerge();
+            Opt4.visit(module);
+            modified |= Opt4.hasImmediateInstMerge();
         }while (modified);
     }
 }

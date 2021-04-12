@@ -25,6 +25,7 @@ public class SCCP implements IRVisitor {
         module.getExternalFunctionMap().forEach((id, func) -> {
             new FuncBlockCollection().BlockCollecting(func);
             new DominatorTree(func).Lengauer_Tarjan();
+  //          DominatorTree.Lengauer_Tarjan(func);
             new UseClear().visit(func);
             new UseCollection().visit(func);
         });

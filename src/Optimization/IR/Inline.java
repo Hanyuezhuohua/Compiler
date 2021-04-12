@@ -104,5 +104,6 @@ public class Inline {
         }while (newInline);
         collection.run();
         inlined.forEach(func -> new DominatorTree(func).Lengauer_Tarjan());
+    //    inlined.forEach(func -> DominatorTree.Lengauer_Tarjan(func));
     }
 }

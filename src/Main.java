@@ -53,7 +53,7 @@ public class Main {
             new Memory_Register().run(irBuilder.getModule());
             IRFile = new PrintStream( "out1.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
-            if(optimize) new Inline(irBuilder.getModule()).run();
+            new Inline(irBuilder.getModule()).run();
             new DCE().visit(irBuilder.getModule());
             new ADCE(irBuilder.getModule()).run();
             IRFile = new PrintStream( "out2.ll");

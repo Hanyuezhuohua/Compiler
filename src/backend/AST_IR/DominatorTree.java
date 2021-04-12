@@ -2,10 +2,10 @@ package backend.AST_IR;
 
 import IR.IRbasicblock.IRBasicBlock;
 import IR.IRfunction.IRFunction;
+import IR.IRutility.BlockDFS;
+import IR.IRutility.BlockEdge;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 // learn from TA yzh
 
@@ -23,7 +23,7 @@ public class DominatorTree {
     public DominatorTree(IRFunction func){
         dom = new ArrayList<>();
         num = 0;
-        dfn = new HashMap<>();
+        dfn = new LinkedHashMap<>();
         rak = new ArrayList<>();
         sdom = new HashMap<>();
         union = new HashMap<>();
@@ -31,7 +31,7 @@ public class DominatorTree {
         fa = new HashMap<>();
         this.func = func;
     }
-
+/*
     private void BlockDFS(IRBasicBlock block){
         block.setIdom(null);
         block.setDomFrontiers(new HashSet<>());
@@ -46,6 +46,47 @@ public class DominatorTree {
                 fa.put(next, block);
             }
         });
+    }
+*/
+    public class data{
+        public IRBasicBlock child;
+        public IRBasicBlock parent;
+        public int ra;
+
+        public data(IRBasicBlock child, IRBasicBlock parent, int ra){
+            this.child = child;
+            this.parent = parent;
+            this.ra = ra;
+        }
+    }
+
+    private void BlockDFS(IRBasicBlock block){
+        Stack<data> S = new Stack<>();
+        S.push(new data(block, null, 0));
+        while(!S.empty()){
+            data now = S.pop();
+            IRBasicBlock child = now.child;
+            IRBasicBlock parent = now.parent;
+            int ra = now.ra;
+            if(ra == 0){
+                child.setIdom(null);
+                child.setDomFrontiers(new HashSet<>());
+                dfn.put(child, num++);
+                rak.add(child);
+                sdom.put(child, child);
+                union.put(child, child);
+                var.put(child, child);
+                S.push(new data(child, parent, 1));
+                child.getNext().forEach(next -> {
+                    if(!dfn.containsKey(next)){
+                        S.push(new data(next, child, 0));
+                    }
+                });
+            }
+            else{
+                fa.put(child, parent);
+            }
+        }
     }
 
     public IRBasicBlock find(IRBasicBlock block){

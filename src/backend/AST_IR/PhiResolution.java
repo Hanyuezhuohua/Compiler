@@ -145,7 +145,7 @@ public class PhiResolution {
             FuncBlockCollection collector = new FuncBlockCollection();
             currentFunc.setBlockContain(collector.BlockCollecting(currentFunc));
             new DominatorTree(currentFunc).Lengauer_Tarjan();
- //           currentFunc.getBlockContain().forEach(this::updateBlock);
+     //       DominatorTree.Lengauer_Tarjan(currentFunc);
             currentFunc = null;
         });
     }

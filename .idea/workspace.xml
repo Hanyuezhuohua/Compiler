@@ -2,8 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/IR/IRutility/BlockDFS.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Optimization/ASM/ImmediateInstMerge.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Optimization/IR/InstCombination.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRutility/SideEffectCollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRutility/SideEffectCollection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/ASM/ASMOptimize.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/ASM/ASMOptimize.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/ADCE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/ADCE.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/CSE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/CSE.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/DCE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/DCE.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/Inline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/Inline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/SCCP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/SCCP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Binary/ImmediateBinary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVinstruction/Binary/ImmediateBinary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RISCV/RISCVoperand/RISCVimmediate/RISCVImmediate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RISCV/RISCVoperand/RISCVimmediate/RISCVImmediate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/DominatorTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/DominatorTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/PhiResolution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/PhiResolution.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/SemanticChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/SemanticChecker.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,11 +147,6 @@
           <option name="timeStamp" value="146" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/ASM/RedundantCodeRemove.java</url>
-          <line>96</line>
-          <option name="timeStamp" value="147" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/backend/IR_ASM/ASMBuilder.java</url>
           <line>408</line>
           <option name="timeStamp" value="162" />
@@ -147,28 +158,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Optimization/IR/ADCE.java</url>
-          <line>204</line>
+          <line>205</line>
           <option name="timeStamp" value="174" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/ADCE.java</url>
-          <line>151</line>
-          <option name="timeStamp" value="184" />
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>363</line>
+          <option name="timeStamp" value="191" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Optimization/IR/ADCE.java</url>
-          <line>164</line>
-          <option name="timeStamp" value="185" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/ADCE.java</url>
-          <line>166</line>
-          <option name="timeStamp" value="186" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/ADCE.java</url>
-          <line>167</line>
-          <option name="timeStamp" value="187" />
+          <line>195</line>
+          <option name="timeStamp" value="193" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

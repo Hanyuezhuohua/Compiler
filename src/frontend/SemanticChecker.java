@@ -116,9 +116,9 @@ public class SemanticChecker implements ASTVisitor {
         node.setScope(currentScope);
         for(ASTNode tmp: node.getDefinition()){
             if(tmp instanceof ClassdefNode){
-                if(((ClassdefNode) tmp).getIdentifier().equals("main")){
+ /*               if(((ClassdefNode) tmp).getIdentifier().equals("main")){
                     throw new ErrorMessage("main cannot be the class name", node.getPos());
-                }
+                }*/
                 ClassSymbol classSymbol = new ClassSymbol(tmp.getPos(), ((ClassdefNode) tmp).getIdentifier(), new ClassType(((ClassdefNode) tmp).getIdentifier()), new LocalScope(currentScope));
                 currentScope.registerClass(classSymbol);
                 ((ClassdefNode) tmp).setSymbol(classSymbol);
@@ -256,9 +256,9 @@ public class SemanticChecker implements ASTVisitor {
         if(node.isConstructor() && node.ReturnExistence() == 2){
             throw new ErrorMessage("Constructor has no Return", node.getPos());
         }
-        else if(node.getIdentifier().equals("main") && !(currentScope.getParent() instanceof GlobalScope)){
+/*        else if(node.getIdentifier().equals("main") && !(currentScope.getParent() instanceof GlobalScope)){
             throw new ErrorMessage("Main cannot be a class function", node.getPos());
-        }
+        }*/
         else if(!node.isConstructor() && node.ReturnExistence() == 0 && !node.getIdentifier().equals("main") && !(node.getSymbol().getType() instanceof VoidType)){
             throw new ErrorMessage("simple function without Return ERROR", node.getPos());
         }

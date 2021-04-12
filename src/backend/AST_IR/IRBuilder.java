@@ -363,6 +363,7 @@ public class IRBuilder implements ASTVisitor {
         currentFunction.setBlockContain(collector.BlockCollecting(currentFunction));
         DominatorTree tree = new DominatorTree(currentFunction);
         tree.Lengauer_Tarjan();
+      //  DominatorTree.Lengauer_Tarjan(currentFunction);
         currentFunction = null;
         currentBasicBlock = null;
         RetBlock = null;

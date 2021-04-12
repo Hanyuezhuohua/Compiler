@@ -40,6 +40,82 @@ public class ImmediateBinary extends RISCVInstruction {
         return op;
     }
 
+    public boolean mergeInst(){
+        RISCVInstruction inst = this.next;
+        if(inst != null && inst instanceof ImmediateBinary){
+            if(this.op == ImmediateBinaryOp.addi && ((ImmediateBinary) inst).op == ImmediateBinaryOp.addi && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor()){
+                int value = this.imm.getValue() + ((ImmediateBinary) inst).getImm().getValue();
+                if(-(1 << 11) <= value && value <= (1 << 11) - 1){
+                    this.rd.setColor(((ImmediateBinary) inst).rd.color);
+                    this.imm.setValue(value);
+                    inst.remove();
+                    return true;
+                }
+            }
+            else if(this.op == ImmediateBinaryOp.slli && ((ImmediateBinary) inst).op == ImmediateBinaryOp.slli && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor()){
+                int value = this.imm.getValue() + ((ImmediateBinary) inst).getImm().getValue();
+                if(-(1 << 11) <= value && value <= (1 << 11) - 1){
+                    this.rd.setColor(((ImmediateBinary) inst).rd.color);
+                    this.imm.setValue(value);
+                    inst.remove();
+                    return true;
+                }
+            }
+            else if(this.op == ImmediateBinaryOp.srai && ((ImmediateBinary) inst).op == ImmediateBinaryOp.srai && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor()){
+                int value = this.imm.getValue() + ((ImmediateBinary) inst).getImm().getValue();
+                if(-(1 << 11) <= value && value <= (1 << 11) - 1){
+                    this.rd.setColor(((ImmediateBinary) inst).rd.color);
+                    this.imm.setValue(value);
+                    inst.remove();
+                    return true;
+                }
+            }
+            else if(this.op == ImmediateBinaryOp.slli && ((ImmediateBinary) inst).op == ImmediateBinaryOp.srai && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor()){
+                int value = this.imm.getValue() - ((ImmediateBinary) inst).getImm().getValue();
+                if(value >= 0){
+                    if(-(1 << 11) <= value && value <= (1 << 11) - 1){
+                        this.rd.setColor(((ImmediateBinary) inst).rd.color);
+                        this.imm.setValue(value);
+                        inst.remove();
+                        return true;
+                    }
+                }
+                else if(value < 0){
+                    value = -value;
+                    if(-(1 << 11) <= value && value <= (1 << 11) - 1){
+                        this.rd.setColor(((ImmediateBinary) inst).rd.color);
+                        this.imm.setValue(value);
+                        this.op = ImmediateBinaryOp.srai;
+                        inst.remove();
+                        return true;
+                    }
+                }
+            }
+            else if(this.op == ImmediateBinaryOp.srai && ((ImmediateBinary) inst).op == ImmediateBinaryOp.slli && this.rd.getColor() == ((ImmediateBinary) inst).getRs().getColor()){
+                int value = this.imm.getValue() - ((ImmediateBinary) inst).getImm().getValue();
+                if(value >= 0){
+                    if(-(1 << 11) <= value && value <= (1 << 11) - 1){
+                        this.rd.setColor(((ImmediateBinary) inst).rd.color);
+                        this.imm.setValue(value);
+                        inst.remove();
+                        return true;
+                    }
+                }
+                else if(value < 0){
+                    value = -value;
+                    if(-(1 << 11) <= value && value <= (1 << 11) - 1){
+                        this.rd.setColor(((ImmediateBinary) inst).rd.color);
+                        this.imm.setValue(value);
+                        this.op = ImmediateBinaryOp.slli;
+                        inst.remove();
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public HashSet<RISCVRegister> Uses() {
         HashSet<RISCVRegister> res = new HashSet<>();

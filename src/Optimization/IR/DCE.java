@@ -25,6 +25,7 @@ public class DCE implements IRVisitor {
         module.getExternalFunctionMap().forEach((id, func) -> {
             new FuncBlockCollection().BlockCollecting(func);
             new DominatorTree(func).Lengauer_Tarjan();
+      //      DominatorTree.Lengauer_Tarjan(func);
         });
     }
 
