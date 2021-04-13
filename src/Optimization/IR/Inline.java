@@ -21,17 +21,24 @@ public class Inline {
     private HashMap<IRFunction, Integer> instNum;
     private HashMap<Call, IRFunction> inlines;
     private HashSet<IRFunction> inlined;
+    private HashMap<IRFunction, Integer> inlineTime;
     private boolean newInline;
     private static int inlineINF = 750;
-    private  boolean flag;
+    private boolean flag;
+    private boolean inlineRecursion;
 
-    public Inline(IRModule module){
+    public Inline(IRModule module, boolean inlineRecursion){
+        this.inlineRecursion = inlineRecursion;
         this.module = module;
         this.collection = new FuncCallCollection(module);
         inlineFunc = new LinkedHashSet<>();
         instNum = new LinkedHashMap<>();
         inlines = new LinkedHashMap<>();
         inlined = new LinkedHashSet<>();
+        inlineTime = new LinkedHashMap<>();
+        module.getExternalFunctionMap().forEach((id, func) -> {
+            inlineTime.put(func, 0);
+        });
         newInline = false;
         flag = false;
     }
@@ -47,7 +54,7 @@ public class Inline {
         newInline = false;
         collection.run();
         module.getExternalFunctionMap().forEach((id, func) -> {
-            if(func.getCallee().size() == 0 || (!inlineFunc.contains(func) && func.getCallee().size() == 1 && func.getCallee().contains(func))) inlineFunc.add(func);
+            if(func.getCallee().size() == 0 || (inlineRecursion && !inlineFunc.contains(func) && func.getCallee().size() == 1 && func.getCallee().contains(func))) inlineFunc.add(func);
             int cnt = 0;
             for (IRBasicBlock block : func.getBlockContain()){
                 for (IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) cnt++;
@@ -66,7 +73,9 @@ public class Inline {
         for(Map.Entry<Call, IRFunction> entry : inlines.entrySet()){
             Call inst = entry.getKey();
             IRFunction func = entry.getValue();
-            if(instNum.get(func) + instNum.get(inst.getFnptrval()) >= inlineINF) continue;
+            if(instNum.get(func) + instNum.get(inst.getFnptrval()) >= inlineINF || (func == inst.getFnptrval() && inlineTime.get(func) > 3)) continue;
+            int num = inlineTime.get(func);
+            inlineTime.put(func, ++num);
             newInline = true;
             flag = true;
             inlined.add(func);
@@ -104,10 +113,15 @@ public class Inline {
         }
     }
 
+    private int bound = 5;
+
     public void run(){
+        int cnt = 0;
         do{
             init();
             inline();
+            cnt++;
+            if(cnt > bound && inlineRecursion) break;
         }while (newInline);
         collection.run();
         inlined.forEach(func -> new DominatorTree(func).Lengauer_Tarjan());

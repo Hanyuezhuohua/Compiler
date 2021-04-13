@@ -57,12 +57,14 @@ public class Main {
       //      new GlobalToLocal(irBuilder.getModule()).run();
             new Memory_Register().run(irBuilder.getModule());
             IRFile = new PrintStream( "out3.ll");
-       //     new IRPrinter(IRFile).run(irBuilder.getModule());
+            new IRPrinter(IRFile).run(irBuilder.getModule());
+            new Inline(irBuilder.getModule(), true).run();
+            new InstCombination().visit(irBuilder.getModule());
             boolean modified = false;
             int i = 0;
             do{
                 modified = false;
-                Inline Opt1 = new Inline(irBuilder.getModule());
+                Inline Opt1 = new Inline(irBuilder.getModule(), false);
                 Opt1.run();
                 modified |= Opt1.Flag();
                 InstCombination Opt2 = new InstCombination();
