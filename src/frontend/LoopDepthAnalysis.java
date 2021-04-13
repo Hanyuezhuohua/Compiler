@@ -80,7 +80,7 @@ public class LoopDepthAnalysis implements ASTVisitor {
 
     @Override
     public void visit(ExprstatementNode node) {
-
+        node.getExpression().accept(this);
     }
 
     @Override
@@ -160,7 +160,9 @@ public class LoopDepthAnalysis implements ASTVisitor {
 
     @Override
     public void visit(MemberexprNode node) {
-
+        LoopDepth += 3;
+        maxLoopDepth = Integer.max(LoopDepth, maxLoopDepth);
+        LoopDepth -= 3;
     }
 
     @Override
