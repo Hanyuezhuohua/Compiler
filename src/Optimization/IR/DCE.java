@@ -10,11 +10,16 @@ import backend.AST_IR.DominatorTree;
 
 public class DCE implements IRVisitor {
     private boolean newDCE;
+    private boolean flag;
 
     public DCE(){
         newDCE = false;
+        flag = false;
     }
 
+    public boolean Flag() {
+        return flag;
+    }
 
     @Override
     public void visit(IRModule module) {
@@ -32,6 +37,7 @@ public class DCE implements IRVisitor {
     @Override
     public void visit(IRFunction func) {
         do{
+            if(newDCE = true) flag = true;
             newDCE = false;
             func.getBlockContain().forEach(block -> block.accept(this));
         }while (newDCE);

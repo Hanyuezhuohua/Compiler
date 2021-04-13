@@ -18,11 +18,17 @@ public class ADCE {
     private IRModule module;
     private HashSet<IRInstruction> Instructions;
     private HashSet<IROperand> Operands;
+    private boolean flag;
 
     public ADCE(IRModule module){
         this.module = module;
         Instructions = new LinkedHashSet<>();
         Operands = new LinkedHashSet<>();
+        flag = false;
+    }
+
+    public boolean Flag() {
+        return flag;
     }
 
     public void collectOperands(IROperand operand){
@@ -285,6 +291,7 @@ public class ADCE {
                 for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
                     if(!Instructions.contains(inst)){
                         inst.Remove();
+                        flag = true;
                     }
                 }
             });
