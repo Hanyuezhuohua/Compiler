@@ -82,7 +82,7 @@ public class Main {
             new ADCE(irBuilder.getModule()).run();
             new CSE().visit(irBuilder.getModule());
             IRFile = new PrintStream( "out4.ll");
-     //       new IRPrinter(IRFile).run(irBuilder.getModule());
+            new IRPrinter(IRFile).run(irBuilder.getModule());
       //      new GlobalToLocal(irBuilder.getModule()).run();
             new PhiResolution().run(irBuilder.getModule());
             ASMBuilder asmBuilder = new ASMBuilder();

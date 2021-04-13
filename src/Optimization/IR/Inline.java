@@ -47,7 +47,7 @@ public class Inline {
         newInline = false;
         collection.run();
         module.getExternalFunctionMap().forEach((id, func) -> {
-            if(func.getCallee().size() == 0) inlineFunc.add(func);
+            if(func.getCallee().size() == 0 || (!inlineFunc.contains(func) && func.getCallee().size() == 1 && func.getCallee().contains(func))) inlineFunc.add(func);
             int cnt = 0;
             for (IRBasicBlock block : func.getBlockContain()){
                 for (IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) cnt++;
