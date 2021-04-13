@@ -26,7 +26,7 @@ import java.io.PrintStream;
 public class Main {
     public static void main(String[] args) throws Exception {
         boolean codegen = true;
-        boolean optimize = false;
+        boolean optimize = true;
         if(args.length > 0){
             for (String arg : args){
                 switch (arg){
@@ -48,8 +48,8 @@ public class Main {
             if(!codegen) return;
             IRBuilder irBuilder = new IRBuilder(optimize);
             irBuilder.visit(ast);
-    //        PrintStream IRFile = new PrintStream( "out.ll");
-    //        new IRPrinter(IRFile).run(irBuilder.getModule());
+            PrintStream IRFile = new PrintStream( "out.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
       //      new Inline(irBuilder.getModule()).run();
      //       IRFile = new PrintStream( "out1.ll");
       //      new IRPrinter(IRFile).run(irBuilder.getModule());

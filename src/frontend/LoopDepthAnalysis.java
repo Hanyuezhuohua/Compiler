@@ -175,9 +175,9 @@ public class LoopDepthAnalysis implements ASTVisitor {
 
     @Override
     public void visit(NewexprNode node) {
-        LoopDepth += node.getNewtype().getBasetype().dim;
+        LoopDepth += 3;
         maxLoopDepth = Integer.max(LoopDepth, maxLoopDepth);
-        LoopDepth -= node.getNewtype().getBasetype().dim;
+        LoopDepth -= 3;
     }
 
     @Override
