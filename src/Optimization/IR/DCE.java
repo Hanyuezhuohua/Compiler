@@ -37,7 +37,7 @@ public class DCE implements IRVisitor {
     @Override
     public void visit(IRFunction func) {
         do{
-            if(newDCE = true) flag = true;
+            if(newDCE == true) flag = true;
             newDCE = false;
             func.getBlockContain().forEach(block -> block.accept(this));
         }while (newDCE);
