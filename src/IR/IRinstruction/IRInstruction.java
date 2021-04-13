@@ -106,6 +106,10 @@ public abstract class IRInstruction {
 
     public abstract boolean CSEChecker(IRInstruction other);
 
+    public boolean merge(){
+        return false;
+    }
+
     @Override
     public String toString() {
         return PrintInst();

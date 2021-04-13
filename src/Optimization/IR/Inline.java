@@ -23,6 +23,7 @@ public class Inline {
     private HashSet<IRFunction> inlined;
     private boolean newInline;
     private static int inlineINF = 750;
+    private  boolean flag;
 
     public Inline(IRModule module){
         this.module = module;
@@ -32,6 +33,11 @@ public class Inline {
         inlines = new LinkedHashMap<>();
         inlined = new LinkedHashSet<>();
         newInline = false;
+        flag = false;
+    }
+
+    public boolean Flag() {
+        return flag;
     }
 
     private void init(){
@@ -62,6 +68,7 @@ public class Inline {
             IRFunction func = entry.getValue();
             if(instNum.get(func) + instNum.get(inst.getFnptrval()) >= inlineINF) continue;
             newInline = true;
+            flag = true;
             inlined.add(func);
             IRCopy copy = new IRCopy();
             if(inst.getFnptrval().getClassPtr() != null){

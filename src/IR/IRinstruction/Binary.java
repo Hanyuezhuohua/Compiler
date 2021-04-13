@@ -1,8 +1,10 @@
 package IR.IRinstruction;
 
 import IR.IRbasicblock.IRBasicBlock;
+import IR.IRoperand.IRConstInt;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
+import IR.IRtype.IRIntType;
 import IR.IRutility.IRCopy;
 import IR.IRutility.IRVisitor;
 
@@ -122,5 +124,18 @@ public class Binary extends IRInstruction{
             else return false;
         }
         else return false;
+    }
+
+    @Override
+    public boolean merge() {
+        if(next instanceof Binary){
+            if(op == IRBinaryOpType.add && ((Binary) next).getOp() == IRBinaryOpType.add && op2 instanceof IRConstInt && ((Binary) next).op2 instanceof IRConstInt && result == ((Binary) next).op1){
+                result = next.getResult();
+                op2 = new IRConstInt(((IRConstInt) op2).getValue() + ((IRConstInt) ((Binary) next).op2).getValue(), IRIntType.IntTypeBytes.Int32);
+                next.Remove();
+                return true;
+            }
+        }
+        return false;
     }
 }

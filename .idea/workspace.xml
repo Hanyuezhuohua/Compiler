@@ -3,8 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRbasicblock/IRBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRbasicblock/IRBasicBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Binary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/IRInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/IRInstruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Load.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Load.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Store.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Optimization/AST/SimpleLoopCSE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/AST/SimpleLoopCSE.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/Inline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/Inline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/InstCombination.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/InstCombination.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -118,21 +124,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/Inline.java</url>
-          <line>91</line>
-          <option name="timeStamp" value="139" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/Inline.java</url>
-          <line>83</line>
-          <option name="timeStamp" value="145" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/Inline.java</url>
-          <line>84</line>
-          <option name="timeStamp" value="146" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/backend/IR_ASM/ASMBuilder.java</url>
           <line>408</line>
           <option name="timeStamp" value="162" />
@@ -153,39 +144,44 @@
           <option name="timeStamp" value="193" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/Inline.java</url>
-          <line>67</line>
-          <option name="timeStamp" value="194" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>50</line>
-          <option name="timeStamp" value="225" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
-          <line>697</line>
-          <option name="timeStamp" value="244" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
-          <line>1130</line>
+          <line>1131</line>
           <option name="timeStamp" value="250" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
-          <line>306</line>
+          <line>307</line>
           <option name="timeStamp" value="251" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
-          <line>232</line>
-          <option name="timeStamp" value="254" />
+          <url>file://$PROJECT_DIR$/src/Optimization/IR/GlobalToLocal.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="261" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
-          <line>233</line>
-          <option name="timeStamp" value="258" />
+          <url>file://$PROJECT_DIR$/src/Optimization/IR/GlobalToLocal.java</url>
+          <line>106</line>
+          <option name="timeStamp" value="263" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>50</line>
+          <option name="timeStamp" value="264" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>69</line>
+          <option name="timeStamp" value="266" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Optimization/IR/Inline.java</url>
+          <line>107</line>
+          <option name="timeStamp" value="268" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Optimization/IR/Inline.java</url>
+          <line>108</line>
+          <option name="timeStamp" value="269" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

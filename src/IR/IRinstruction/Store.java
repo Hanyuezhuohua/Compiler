@@ -84,4 +84,8 @@ public class Store extends IRInstruction{
     public boolean CSEChecker(IRInstruction other) {
         return false;
     }
+
+    public void setPointer(IROperand pointer) {
+        this.pointer = pointer;
+    }
 }

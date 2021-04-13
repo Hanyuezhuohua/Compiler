@@ -8,6 +8,7 @@ import IR.IRmodule.IRModule;
 import IR.IRoperand.*;
 import IR.IRtype.*;
 import IR.IRutility.FuncBlockCollection;
+import Optimization.IR.GlobalToLocal;
 import Util.error.ErrorMessage;
 import Util.scope.GlobalScope;
 import Util.symbol.ClassSymbol;
@@ -231,13 +232,13 @@ public class IRBuilder implements ASTVisitor {
         }
         for (ASTNode tmp: node.getDefinition()){
             tmp.accept(this);
-//            System.out.println("QWQ");
         }
 
         IRInit.getExit().addInst(new Ret(IRInit.getExit(), new IRConstVoid()));
         FuncBlockCollection collector = new FuncBlockCollection();
         currentFunction = IRInit;
         currentFunction.setBlockContain(collector.BlockCollecting(currentFunction));
+   //     new GlobalToLocal(module).run();
     }
 
     @Override

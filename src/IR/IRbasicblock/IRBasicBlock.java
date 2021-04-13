@@ -80,6 +80,54 @@ public class IRBasicBlock {
         }
     }
 
+    public void addInstBefore(IRInstruction inst){
+        if(head == null){
+            head = tail = inst;
+        }
+        else{
+            if(head instanceof Alloca || head instanceof Phi){
+                IRInstruction prev = head;
+                if(prev != tail){
+                    while(prev.getNext() instanceof Alloca || prev.getNext() instanceof Phi){
+                        prev = prev.getNext();
+                    }
+                }
+                if(prev == tail){
+                    tail.setNext(inst);
+                    inst.setPrev(tail);
+                    tail = inst;
+                }
+                else{
+                    IRInstruction next = prev.getNext();
+                    prev.setNext(inst);
+                    next.setPrev(inst);
+                    inst.setPrev(prev);
+                    inst.setNext(next);
+                }
+            }
+            else{
+                inst.setNext(head);
+                head.setPrev(inst);
+                head = inst;
+            }
+        }
+    }
+
+    public void addInstBeforeTail(IRInstruction inst){
+        if(head == tail){
+            head = inst;
+            inst.setNext(tail);
+            tail.setPrev(inst);
+        }
+        else{
+            IRInstruction prev = tail.getPrev();
+            inst.setPrev(prev);
+            inst.setNext(tail);
+            prev.setNext(inst);
+            tail.setPrev(inst);
+        }
+    }
+
     public IRFunction getBlockIn() {
         return blockIn;
     }
