@@ -39,7 +39,7 @@ public class Main {
         String fileName = "./testcase/code.mx";
         try {
             InputStream file = System.in;
-  //          InputStream file = new FileInputStream(fileName);
+   //        InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new SemanticChecker().visit(ast);
             //new ASTOptimize(ast).run();
@@ -48,16 +48,16 @@ public class Main {
             if(!codegen) return;
             IRBuilder irBuilder = new IRBuilder(optimize);
             irBuilder.visit(ast);
-            PrintStream IRFile = new PrintStream( "out.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
+    //        PrintStream IRFile = new PrintStream( "out.ll");
+    //        new IRPrinter(IRFile).run(irBuilder.getModule());
       //      new Inline(irBuilder.getModule()).run();
-            IRFile = new PrintStream( "out1.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
+     //       IRFile = new PrintStream( "out1.ll");
+      //      new IRPrinter(IRFile).run(irBuilder.getModule());
       //      new Inline(irBuilder.getModule()).run();
       //      new GlobalToLocal(irBuilder.getModule()).run();
             new Memory_Register().run(irBuilder.getModule());
-            IRFile = new PrintStream( "out3.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
+      //      IRFile = new PrintStream( "out3.ll");
+      //      new IRPrinter(IRFile).run(irBuilder.getModule());
             new Inline(irBuilder.getModule(), true).run();
             new InstCombination().visit(irBuilder.getModule());
             boolean modified = false;
@@ -70,7 +70,7 @@ public class Main {
                 InstCombination Opt2 = new InstCombination();
                 Opt2.visit(irBuilder.getModule());
                 modified |= Opt2.NewInstCombination();
-                IRFile = new PrintStream( "output" + i++ + ".ll");
+ //               IRFile = new PrintStream( "output" + i++ + ".ll");
 ///                new IRPrinter(IRFile).run(irBuilder.getModule());
             }while (modified);
           //  new Inline(irBuilder.getModule()).run();
@@ -78,13 +78,13 @@ public class Main {
           //  new Inline(irBuilder.getModule()).run();
           //  new InstCombination().visit(irBuilder.getModule());
           //  new RemoveLoadStore(irBuilder.getModule()).run();
-            IRFile = new PrintStream( "out2.ll");
-   //         new IRPrinter(IRFile).run(irBuilder.getModule());
+      //      IRFile = new PrintStream( "out2.ll");
+      //      new IRPrinter(IRFile).run(irBuilder.getModule());
             new DCE().visit(irBuilder.getModule());
             new ADCE(irBuilder.getModule()).run();
             new CSE().visit(irBuilder.getModule());
-            IRFile = new PrintStream( "out4.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
+      //      IRFile = new PrintStream( "out4.ll");
+      //      new IRPrinter(IRFile).run(irBuilder.getModule());
       //      new GlobalToLocal(irBuilder.getModule()).run();
             new PhiResolution().run(irBuilder.getModule());
             ASMBuilder asmBuilder = new ASMBuilder();
