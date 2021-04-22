@@ -135,12 +135,10 @@ public class IRPrinter {
         while(!blockQueue.isEmpty()){
             IRBasicBlock block = blockQueue.poll();
             block.setIdentifier(Integer.toString(SymbolNum++));
-//            out.println(block.getIdentifier() + ":");
             for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
                 if(inst.getResult() != null && !(inst.getResult().getOperandType() instanceof IRVoidType)){
                     inst.getResult().ChangeIdentifier(Integer.toString(SymbolNum++));
                 }
-//                out.println("\t" + inst.PrintInst());
             }
             for(IRBasicBlock next: block.getNext()){
                 if(next != null && !blocks.contains(next)){

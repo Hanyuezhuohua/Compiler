@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+//learn from TA yzh
+
 public class PhiResolution {
     private HashSet<BlockEdge> edges;
     private HashMap<IRBasicBlock, ParallelCopy> copies;
@@ -29,23 +31,12 @@ public class PhiResolution {
         currentFunc = null;
     }
 
-    private void Collect(IRBasicBlock block){
-        if(block.getNext().size() > 1){
-            block.getNext().forEach(next -> {
-                if(next.getPrev().size() > 1){
-                    edges.add(new BlockEdge(block, next));
-                }
-            });
-        }
-    }
 
     private void Connect(BlockEdge edge){
         IRBasicBlock transfer = new IRBasicBlock(currentFunc, "transfer_station");
         currentFunc.addBlockContain(transfer);
         transfer.addInst(new Br(transfer, null, edge.getNext(), null));
-        for(IRInstruction inst = edge.getNext().getHead(); inst instanceof Phi; inst = inst.getNext()){
-            for(int i = 0; i < ((Phi)inst).getLabels().size(); ++i) if(((Phi)inst).getLabels().get(i) == edge.getPrev()) ((Phi)inst).getLabels().set(i, transfer);
-        }
+        for(IRInstruction inst = edge.getNext().getHead(); inst instanceof Phi; inst = inst.getNext()) for(int i = 0; i < ((Phi)inst).getLabels().size(); ++i) if(((Phi)inst).getLabels().get(i) == edge.getPrev()) ((Phi)inst).getLabels().set(i, transfer);
         edge.getPrev().updateBlock(edge.getNext(), transfer);
     }
 
@@ -55,12 +46,14 @@ public class PhiResolution {
     }
 
     private IRBasicBlock update(IRBasicBlock block){
-        if(block.getHead() != block.getTail() || !(block.getTail() instanceof Br && ((Br) block.getTail()).getCond() == null)) {
-            return block;
-        }
+        if(block.getHead() != block.getTail() || !(block.getTail() instanceof Br && ((Br) block.getTail()).getCond() == null)) return block;
         IRBasicBlock New = update(((Br) block.getTail()).getIfTrue());
         if(!((Br) block.getTail()).getIfTrue().equals(New)) ((Br) block.getTail()).updateBlock(((Br) block.getTail()).getIfTrue(), New);
         return New;
+    }
+
+    private void Collect(IRBasicBlock block){
+        if(block.getNext().size() > 1) block.getNext().forEach(next -> { if(next.getPrev().size() > 1) edges.add(new BlockEdge(block, next)); });
     }
 
     private boolean blockCond(ParallelCopy copy){
@@ -145,7 +138,6 @@ public class PhiResolution {
             FuncBlockCollection collector = new FuncBlockCollection();
             currentFunc.setBlockContain(collector.BlockCollecting(currentFunc));
             new DominatorTree(currentFunc).Lengauer_Tarjan();
-     //       DominatorTree.Lengauer_Tarjan(currentFunc);
             currentFunc = null;
         });
     }

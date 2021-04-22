@@ -24,8 +24,7 @@ public class RedundantCodeRemove {
     }
 
     public boolean sameAssign(RISCVInstruction inst){
-        if(inst.getPrev() != null && inst.getPrev().Defs().size() == 1 && inst.Defs().size() == 1 && inst.getPrev().Defs().iterator().next().getColor() == inst.Defs().iterator().next().getColor()) return true;
-        return false;
+        return inst.getPrev() != null && inst.getPrev().Defs().size() == 1 && inst.Defs().size() == 1 && inst.getPrev().Defs().iterator().next().getColor() == inst.Defs().iterator().next().getColor();
     }
 
     public void removeAssign(RISCVInstruction inst){

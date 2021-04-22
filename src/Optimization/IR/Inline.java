@@ -36,9 +36,7 @@ public class Inline {
         inlines = new LinkedHashMap<>();
         inlined = new LinkedHashSet<>();
         inlineTime = new LinkedHashMap<>();
-        module.getExternalFunctionMap().forEach((id, func) -> {
-            inlineTime.put(func, 0);
-        });
+        module.getExternalFunctionMap().forEach((id, func) -> inlineTime.put(func, 0));
         newInline = false;
         flag = false;
     }
@@ -56,16 +54,12 @@ public class Inline {
         module.getExternalFunctionMap().forEach((id, func) -> {
             if(func.getCallee().size() == 0 || (inlineRecursion && !inlineFunc.contains(func) && func.getCallee().size() == 1 && func.getCallee().contains(func))) inlineFunc.add(func);
             int cnt = 0;
-            for (IRBasicBlock block : func.getBlockContain()){
-                for (IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) cnt++;
-            }
+            for (IRBasicBlock block : func.getBlockContain()) for (IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) cnt++;
             instNum.put(func, cnt);
         });
         module.getInternalFunctionMap().forEach((id, func) -> instNum.put(func, inlineINF));
         module.getExternalFunctionMap().forEach((id, func) -> func.getBlockContain().forEach(block -> {
-            for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
-                if(inst instanceof Call && inlineFunc.contains(((Call) inst).getFnptrval()) && instNum.get(((Call) inst).getFnptrval()) < inlineINF) inlines.put((Call) inst, func);
-            }
+            for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) if(inst instanceof Call && inlineFunc.contains(((Call) inst).getFnptrval()) && instNum.get(((Call) inst).getFnptrval()) < inlineINF) inlines.put((Call) inst, func);
         }));
     }
 
@@ -82,15 +76,9 @@ public class Inline {
             IRCopy copy = new IRCopy();
             if(inst.getFnptrval().getClassPtr() != null){
                 copy.put(inst.getFnptrval().getClassPtr(), inst.getFunctionArgs().get(0));
-                for(int i = 1; i < inst.getFunctionArgs().size(); ++i){
-                    copy.put(inst.getFnptrval().getParameters().get(i - 1), inst.getFunctionArgs().get(i));
-                }
+                for(int i = 1; i < inst.getFunctionArgs().size(); ++i) copy.put(inst.getFnptrval().getParameters().get(i - 1), inst.getFunctionArgs().get(i));
             }
-            else{
-                for (int i = 0; i < inst.getFunctionArgs().size(); ++i){
-                    copy.put(inst.getFnptrval().getParameters().get(i), inst.getFunctionArgs().get(i));
-                }
-            }
+            else for (int i = 0; i < inst.getFunctionArgs().size(); ++i) copy.put(inst.getFnptrval().getParameters().get(i), inst.getFunctionArgs().get(i));
             copy.init(inst.getFnptrval());
             copy.connect();
             IRBasicBlock newSplit = new IRBasicBlock(func, inst.getInstIn().getIdentifier() + "_split");
@@ -100,15 +88,11 @@ public class Inline {
             copy.get(inst.getFnptrval().getExit()).merge(newSplit);
             inst.getInstIn().merge(copy.get(inst.getFnptrval().getEntry()));
 
-            if(inst.getInstIn().equals(func.getExit()) && copy.get(inst.getFnptrval().getEntry()) != copy.get(inst.getFnptrval().getExit())){
-                func.setExit(copy.get(inst.getFnptrval().getExit()));
-            }
+            if(inst.getInstIn().equals(func.getExit()) && copy.get(inst.getFnptrval().getEntry()) != copy.get(inst.getFnptrval().getExit())) func.setExit(copy.get(inst.getFnptrval().getExit()));
 
             func.setBlockContain(new FuncBlockCollection().BlockCollecting(func));
             int cnt = 0;
-            for (IRBasicBlock block : func.getBlockContain()){
-                for (IRInstruction instruction = block.getHead(); instruction != null; instruction = instruction.getNext()) cnt++;
-            }
+            for (IRBasicBlock block : func.getBlockContain()) for (IRInstruction instruction = block.getHead(); instruction != null; instruction = instruction.getNext()) cnt++;
             instNum.put(func, cnt);
         }
     }
@@ -125,6 +109,5 @@ public class Inline {
         }while (newInline);
         collection.run();
         inlined.forEach(func -> new DominatorTree(func).Lengauer_Tarjan());
-    //    inlined.forEach(func -> DominatorTree.Lengauer_Tarjan(func));
     }
 }

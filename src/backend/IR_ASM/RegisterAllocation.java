@@ -117,7 +117,6 @@ public class RegisterAllocation {
         return !nodeMoves(n).isEmpty();
     }
     void enableMoves(HashSet<RISCVRegister> nodes) {
-        //if nothing in active moves, it is not needed
         nodes.forEach(node -> nodeMoves(node).forEach(move -> {
             if (activeMoves.contains(move)) {
                 activeMoves.remove(move);

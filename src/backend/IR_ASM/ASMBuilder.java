@@ -370,6 +370,16 @@ public class ASMBuilder implements IRVisitor {
     @Override
     public void visit(IRFunction func) {
         currentFunction = functionMap.get(func);
+        func.getBlockContain().forEach(block -> {
+            RISCVBasicBlock RISCVBasicBlock = new RISCVBasicBlock("." + func.getIdentifier() + "_" + block.getIdentifier());
+            blockMap.put(block, RISCVBasicBlock);
+            currentFunction.addBlock(RISCVBasicBlock);
+        });
+        currentFunction.setEntry(blockMap.get(func.getEntry()));
+        currentFunction.setExit(blockMap.get(func.getExit()));
+        if(func.getClassPtr() != null){ currentFunction.addParameter(getRegister(func.getClassPtr())); }
+        func.getParameters().forEach(parameter -> currentFunction.addParameter(getRegister(parameter)));
+        module.addExternalFunctionSet(currentFunction);
         currentFunction.getEntry().addInst(new ImmediateBinary(module.getPhysicalRegister("sp"), new RISCVStackOffset(0, true), ImmediateBinary.ImmediateBinaryOp.addi, module.getPhysicalRegister("sp"), currentFunction.getEntry()));
         ArrayList<RISCVVirtualRegister> callee = new ArrayList<>();
         module.getCalleeSavedRegs().forEach(rs -> {
@@ -398,20 +408,7 @@ public class ASMBuilder implements IRVisitor {
             module.addInternalFunctionSet(RISCVFunction);
             functionMap.put(function, RISCVFunction);
         }));
-        Module.getExternalFunctionMap().forEach((id, function) -> {
-            RISCVFunction RISCVFunction = new RISCVFunction(module, id);
-            function.getBlockContain().forEach(block -> {
-                RISCVBasicBlock RISCVBasicBlock = new RISCVBasicBlock("." + function.getIdentifier() + "_" + block.getIdentifier());
-                blockMap.put(block, RISCVBasicBlock);
-                RISCVFunction.addBlock(RISCVBasicBlock);
-            });
-            RISCVFunction.setEntry(blockMap.get(function.getEntry()));
-            RISCVFunction.setExit(blockMap.get(function.getExit()));
-            if(function.getClassPtr() != null){ RISCVFunction.addParameter(getRegister(function.getClassPtr())); }
-            function.getParameters().forEach(parameter -> RISCVFunction.addParameter(getRegister(parameter)));
-            module.addExternalFunctionSet(RISCVFunction);
-            functionMap.put(function, RISCVFunction);
-        });
+        Module.getExternalFunctionMap().forEach((id, function) -> functionMap.put(function, new RISCVFunction(module, id)));
         Module.getExternalFunctionMap().forEach(((id, function) -> visit(function)));
     }
 

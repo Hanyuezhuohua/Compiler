@@ -28,7 +28,7 @@ public class CFGSimplification implements RISCVVisitor {
 
     @Override
     public void visit(RISCVFunction function) {
-        boolean change = false;
+        boolean change;
         do{
             change = false;
             for(RISCVBasicBlock block: function.getBlockContain()){

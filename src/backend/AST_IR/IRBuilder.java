@@ -239,7 +239,6 @@ public class IRBuilder implements ASTVisitor {
         FuncBlockCollection collector = new FuncBlockCollection();
         currentFunction = IRInit;
         currentFunction.setBlockContain(collector.BlockCollecting(currentFunction));
-   //     new GlobalToLocal(module).run();
     }
 
     @Override
@@ -369,7 +368,7 @@ public class IRBuilder implements ASTVisitor {
         currentFunction.setBlockContain(collector.BlockCollecting(currentFunction));
         DominatorTree tree = new DominatorTree(currentFunction);
         tree.Lengauer_Tarjan();
-      //  DominatorTree.Lengauer_Tarjan(currentFunction);
+        //  DominatorTree.Lengauer_Tarjan(currentFunction);
         currentFunction = null;
         currentBasicBlock = null;
         RetBlock = null;
@@ -385,9 +384,9 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(ClassdefNode node) {
- //       for(VardefNode var : node.getVarList()){
- //           var.accept(this);
- //       }
+        //       for(VardefNode var : node.getVarList()){
+        //           var.accept(this);
+        //       }
         for(FundefNode func : node.getFuncList()){
             func.accept(this);
         }
@@ -429,12 +428,12 @@ public class IRBuilder implements ASTVisitor {
             return;
         }
         if(optimize && (node.getInitExpr() != null && node.getInitExpr() instanceof BinaryexprNode && ((BinaryexprNode) node.getInitExpr()).getOp() == BinaryexprNode.BinaryOpType.Assign && ((BinaryexprNode) node.getInitExpr()).getRhs().isConst())
-            && (node.getCondition() instanceof BinaryexprNode && (((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Greater || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.GreaterEqual || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Less || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.LessEqual) && ((BinaryexprNode) node.getCondition()).getRhs().isConst())
-            && ((node.getIncr() != null && node.getIncr() instanceof SuffixexprNode) || (node.getIncr() != null && node.getIncr() instanceof PrefixexprNode && (((PrefixexprNode) node.getIncr()).getOp() == PrefixexprNode.PrefixOpType.AddAdd || ((PrefixexprNode) node.getIncr()).getOp() == PrefixexprNode.PrefixOpType.MinusMinus)))
-            && (((BinaryexprNode) node.getInitExpr()).getLhs() instanceof IdentifierNode && ((BinaryexprNode) node.getCondition()).getLhs() instanceof IdentifierNode && ((node.getIncr() instanceof PrefixexprNode && ((PrefixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode) || (node.getIncr() instanceof SuffixexprNode && ((SuffixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode)))){
+                && (node.getCondition() instanceof BinaryexprNode && (((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Greater || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.GreaterEqual || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Less || ((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.LessEqual) && ((BinaryexprNode) node.getCondition()).getRhs().isConst())
+                && ((node.getIncr() != null && node.getIncr() instanceof SuffixexprNode) || (node.getIncr() != null && node.getIncr() instanceof PrefixexprNode && (((PrefixexprNode) node.getIncr()).getOp() == PrefixexprNode.PrefixOpType.AddAdd || ((PrefixexprNode) node.getIncr()).getOp() == PrefixexprNode.PrefixOpType.MinusMinus)))
+                && (((BinaryexprNode) node.getInitExpr()).getLhs() instanceof IdentifierNode && ((BinaryexprNode) node.getCondition()).getLhs() instanceof IdentifierNode && ((node.getIncr() instanceof PrefixexprNode && ((PrefixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode) || (node.getIncr() instanceof SuffixexprNode && ((SuffixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode)))){
             Symbol symbol = ((IdentifierNode) ((BinaryexprNode) node.getInitExpr()).getLhs()).getSymbol();
             if(symbol == ((IdentifierNode) ((BinaryexprNode) node.getCondition()).getLhs()).getSymbol()
-                && (node.getIncr() instanceof PrefixexprNode && ((PrefixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode && ((IdentifierNode) ((PrefixexprNode) node.getIncr()).getExpression()).getSymbol() == symbol)){
+                    && (node.getIncr() instanceof PrefixexprNode && ((PrefixexprNode) node.getIncr()).getExpression() instanceof IdentifierNode && ((IdentifierNode) ((PrefixexprNode) node.getIncr()).getExpression()).getSymbol() == symbol)){
                 int loopNum = 0;
                 int step = ((PrefixexprNode) node.getIncr()).getOp() == PrefixexprNode.PrefixOpType.AddAdd ? 1 : -1;
                 if(((BinaryexprNode) node.getCondition()).getOp() == BinaryexprNode.BinaryOpType.Greater){
@@ -1330,7 +1329,7 @@ public class IRBuilder implements ASTVisitor {
 
             currentBasicBlock = condBlock;
             currentBasicBlock.addInst(new Phi(currentBasicBlock, values, labels, CurrentIndex));
- //           currentBasicBlock.addInst(new Binary(currentBasicBlock, Binary.IRBinaryOpType.add, CurrentIndex, new IRConstInt(1, IRIntType.IntTypeBytes.Int32), NextIndex));
+            //           currentBasicBlock.addInst(new Binary(currentBasicBlock, Binary.IRBinaryOpType.add, CurrentIndex, new IRConstInt(1, IRIntType.IntTypeBytes.Int32), NextIndex));
             currentBasicBlock.addInst(new Icmp(currentBasicBlock, Icmp.IRIcmpOpType.slt, CurrentIndex, newArraySize, IcmpResult));
             currentBasicBlock.addInst(new Br(currentBasicBlock, IcmpResult, stmtBlock, destBlock));
 

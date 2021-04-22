@@ -31,23 +31,6 @@ public class DominatorTree {
         fa = new HashMap<>();
         this.func = func;
     }
-/*
-    private void BlockDFS(IRBasicBlock block){
-        block.setIdom(null);
-        block.setDomFrontiers(new HashSet<>());
-        dfn.put(block, num++);
-        rak.add(block);
-        sdom.put(block, block);
-        union.put(block, block);
-        var.put(block, block);
-        block.getNext().forEach(next -> {
-            if(!dfn.containsKey(next)){
-                BlockDFS(next);
-                fa.put(next, block);
-            }
-        });
-    }
-*/
     public class data{
         public IRBasicBlock child;
         public IRBasicBlock parent;

@@ -9,6 +9,8 @@ import IR.IRoperand.IROperand;
 
 import java.util.*;
 
+//learn from TA yzh
+
 public class Memory_Register {
     private HashSet<IRLocalRegister> varAlloc;
     private HashMap<IROperand, IROperand> edge;
@@ -133,7 +135,7 @@ public class Memory_Register {
             AllocatePhi();
             func.getBlockContain().forEach(this::addEdge);
             edge.forEach((start, end) -> ((IRLocalRegister)start).update(find(end)));
-            while (func.getEntry().getHead() instanceof Alloca)func.getEntry().getHead().Remove();
+            while (func.getEntry().getHead() instanceof Alloca) func.getEntry().getHead().Remove();
             currentFunc = null;
         });
     }

@@ -1,6 +1,5 @@
 package backend.IR_ASM;
 
-import IR.IRbasicblock.IRBasicBlock;
 import RISCV.RISCVinstruction.Branch.BinaryBranch;
 import RISCV.RISCVinstruction.Branch.UnaryBranch;
 import RISCV.RISCVinstruction.RISCVInstruction;
@@ -12,66 +11,39 @@ import RISCV.RISCVmodule.RISCVModule;
 import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Stack;
 
 public class ASMPrinter {
     RISCVModule root;
     PrintStream out;
     boolean flag;
+    HashSet<RISCVBasicBlock> visited;
+    int blockCount;
+    RISCVFunction currentFunction;
+
     public ASMPrinter(RISCVModule root, PrintStream out, boolean flag) {
         this.root = root;
         this.out = out;
         this.flag = flag;
+        visited = new LinkedHashSet<>();
+        blockCount = 0;
+        currentFunction = null;
     }
 
-    HashSet<RISCVBasicBlock> visited;
-    int blockCount;
-    RISCVFunction currentFunction;
-/*
-    boolean Dfs(RISCVBasicBlock block) {
-        if (visited.contains(block)) return false;
-        visited.add(block);
-        block.setIdentifier("." + currentFunction.getIdentifier() + "_." + blockCount++);
-        if (block.getTail() instanceof UnaryBranch) {
-            if (Dfs(((UnaryBranch) block.getTail()).jumpTo) && flag) {
-                block.getTail().remove();
-            }
-        }
-        for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
-            if (inst instanceof BinaryBranch) {
-                Dfs(((BinaryBranch) inst).offset);
-            }
-        }
-        return true;
-    }*/
-
     void Dfs(RISCVBasicBlock block){
-        if (visited.contains(block)) return;
         visited.add(block);
-        block.setIdentifier("." + currentFunction.getIdentifier() + "_." + blockCount++);
+        block.setIdentifier("." + currentFunction.getIdentifier() + "_b." + blockCount++);
         if (block.getTail() instanceof UnaryBranch) {
             if (!visited.contains(((UnaryBranch) block.getTail()).jumpTo) && flag) {
                 Dfs(((UnaryBranch) block.getTail()).jumpTo);
                 block.getTail().remove();
             }
         }
-        for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
-            if (inst instanceof BinaryBranch) {
-                Dfs(((BinaryBranch) inst).offset);
-            }
-        }
-    }
-
-    void ChangeName(RISCVFunction function) {
-        blockCount = 0;
-        currentFunction = function;
-        visited = new LinkedHashSet<>();
-        Dfs(function.getEntry());
+        for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) if (inst instanceof BinaryBranch && !visited.contains(((BinaryBranch) inst).offset)) Dfs(((BinaryBranch) inst).offset);
     }
 
     void PrintBlock(RISCVBasicBlock block) {
-        out.println(block.getIdentifier() + ": " /*+ " # " + block.comment*/);
-        for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) out.println("\t" + inst.toString() /*+ (inst.comment == null ? "" : " # " + inst.comment)*/);
+        out.println(block.getIdentifier() + ": ");
+        for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) out.println("\t" + inst.toString());
     }
 
     void PrintFunction(RISCVFunction function) {
@@ -79,7 +51,10 @@ public class ASMPrinter {
         out.println("\t.p2align\t1");
         out.println("\t.type\t" + function.getIdentifier() +",@function");
         out.println(function.getIdentifier() + ":");
-        ChangeName(function);
+        blockCount = 0;
+        currentFunction = function;
+        visited.clear();
+        Dfs(function.getEntry());
         visited.forEach(this::PrintBlock);
         out.println();
     }

@@ -31,29 +31,7 @@ public class LiveAnalysis {
         block.setLiveIn(new LinkedHashSet<>());
         block.setLiveOut(new HashSet<>());
     }
-/*
 
-    static void runBackward(RISCVBasicBlock block) {
-        if (visited.contains(block)) return;
-        visited.add(block);
-        HashSet<RISCVRegister> liveOut = new HashSet<>();
-        for (RISCVBasicBlock successor : block.getNext()) {
-            liveOut.addAll(successor.getLiveIn());
-        }
-        HashSet<RISCVRegister> liveIn = new HashSet<>(liveOut);
-        liveIn.removeAll(blockDefs.get(block));
-        liveIn.addAll(blockUses.get(block));
-        block.addLiveOut(liveOut);
-        liveIn.removeAll(block.getLiveIn());
-        if (!liveIn.isEmpty()) {
-            block.addLiveIn(liveIn);
-            visited.removeAll(block.getPrev());
-        }
-        for (RISCVBasicBlock precursor : block.getPrev()) {
-            runBackward(precursor);
-        }
-    }
-*/
     static void runBackward(RISCVBasicBlock block){
         Stack<RISCVBasicBlock> S = new Stack<>();
         S.push(block);

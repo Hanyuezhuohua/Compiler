@@ -87,82 +87,6 @@ public class ADCE {
             }
         });
     }
-/*
-    public void collectInstructions(IRInstruction inst){
-        inst.getOperands().forEach(operand -> {
-            if(operand.getDef() != null && !Instructions.contains(operand.getDef())){
-                Instructions.add(operand.getDef());
-                collectInstructions(operand.getDef());
-            }
-            if(operand.getOperandType() instanceof IRPointerType){
-                operand.getInstructions().forEach(use -> {
-                    if(!Instructions.contains(use)){
-                        if(use instanceof Store){
-                            Instructions.add(use);
-                            collectInstructions(use);
-                        }
-                        else if(use instanceof BitCast){
-                            Instructions.add(use);
-                            collectInstructions(use);
-                        }
-                        else if(use instanceof GetElementPtr){
-                            Instructions.add(use);
-                            collectInstructions(use);
-                        }
-                        else if(use instanceof Phi){
-                            Instructions.add(use);
-                            collectInstructions(use);
-                        }
-                        else if(use instanceof Load && use.getResult().getOperandType() instanceof IRPointerType){
-                            Instructions.add(use);
-                            collectInstructions(use);
-                        }
-                    }
-                });
-            }
-        });
-        if(inst.getResult() != null && inst.getResult().getOperandType() instanceof IRPointerType){
-            inst.getResult().getInstructions().forEach(use -> {
-                if(!Instructions.contains(use)){
-                    if(use instanceof Store){
-                        Instructions.add(use);
-                        collectInstructions(use);
-                    }
-                    else if(use instanceof BitCast){
-                        Instructions.add(use);
-                        collectInstructions(use);
-                    }
-                    else if(use instanceof GetElementPtr){
-                        Instructions.add(use);
-                        collectInstructions(use);
-                    }
-                    else if(use instanceof Phi){
-                        Instructions.add(use);
-                        collectInstructions(use);
-                    }
-                    else if(use instanceof Load && use.getResult().getOperandType() instanceof IRPointerType){
-                        Instructions.add(use);
-                        collectInstructions(use);
-                    }
-                }
-            });
-        }
-        inst.getInstIn().getPrev().forEach(prev -> {
-            if(!Instructions.contains(prev.getTail())){
-                Instructions.add(prev.getTail());
-                collectInstructions(prev.getTail());
-            }
-        });
-    }
-*/
-    public class InstData{
-        public IRInstruction inst;
-        public int ra;
-        public InstData(IRInstruction inst, int ra){
-            this.inst = inst;
-            this.ra = ra;
-        }
-    }
 
     public void collectInstructions(IRInstruction instruction){
         Stack<IRInstruction> S = new Stack<>();
@@ -172,7 +96,6 @@ public class ADCE {
             inst.getOperands().forEach(operand -> {
                 if(operand.getDef() != null && !Instructions.contains(operand.getDef())){
                     Instructions.add(operand.getDef());
-                 //   collectInstructions(operand.getDef());
                     S.push(operand.getDef());
                 }
                 if(operand.getOperandType() instanceof IRPointerType){
@@ -180,27 +103,22 @@ public class ADCE {
                         if(!Instructions.contains(use)){
                             if(use instanceof Store){
                                 Instructions.add(use);
-                         //       collectInstructions(use);
                                 S.push(use);
                             }
                             else if(use instanceof BitCast){
                                 Instructions.add(use);
-                         //       collectInstructions(use);
                                 S.push(use);
                             }
                             else if(use instanceof GetElementPtr){
                                 Instructions.add(use);
-                         //       collectInstructions(use);
                                 S.push(use);
                             }
                             else if(use instanceof Phi){
                                 Instructions.add(use);
-                          //      collectInstructions(use);
                                 S.push(use);
                             }
                             else if(use instanceof Load && use.getResult().getOperandType() instanceof IRPointerType){
                                 Instructions.add(use);
-                          //      collectInstructions(use);
                                 S.push(use);
                             }
                         }
@@ -212,27 +130,22 @@ public class ADCE {
                     if(!Instructions.contains(use)){
                         if(use instanceof Store){
                             Instructions.add(use);
-                      //      collectInstructions(use);
                             S.push(use);
                         }
                         else if(use instanceof BitCast){
                             Instructions.add(use);
-                       //     collectInstructions(use);
                             S.push(use);
                         }
                         else if(use instanceof GetElementPtr){
                             Instructions.add(use);
-                       //     collectInstructions(use);
                             S.push(use);
                         }
                         else if(use instanceof Phi){
                             Instructions.add(use);
-                      //      collectInstructions(use);
                             S.push(use);
                         }
                         else if(use instanceof Load && use.getResult().getOperandType() instanceof IRPointerType){
                             Instructions.add(use);
-                      //      collectInstructions(use);
                             S.push(use);
                         }
                     }
@@ -241,7 +154,6 @@ public class ADCE {
             inst.getInstIn().getPrev().forEach(prev -> {
                 if(!Instructions.contains(prev.getTail())){
                     Instructions.add(prev.getTail());
-               //     collectInstructions(prev.getTail());
                     S.push(prev.getTail());
                 }
             });
@@ -297,7 +209,6 @@ public class ADCE {
             });
             new FuncBlockCollection().BlockCollecting(func);
             new DominatorTree(func).Lengauer_Tarjan();
-          //  DominatorTree.Lengauer_Tarjan(func);
         });
     }
 

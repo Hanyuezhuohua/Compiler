@@ -19,20 +19,17 @@ public class CFGSimplification implements IRVisitor {
 
     @Override
     public void visit(IRModule module) {
-        module.getExternalFunctionMap().forEach((id, func) -> {
-            new FuncBlockCollection().BlockCollecting(func);
-            new DominatorTree(func).Lengauer_Tarjan();
-     //       DominatorTree.Lengauer_Tarjan(func);
-            func.accept(this);
-        });
+        module.getExternalFunctionMap().forEach((id, func) -> func.accept(this));
     }
 
     @Override
     public void visit(IRFunction func) {
         do{
+            new FuncBlockCollection().BlockCollecting(func);
+            new DominatorTree(func).Lengauer_Tarjan();
             newCFGSimplification = false;
             for(IRBasicBlock block : func.getBlockContain()){
-                if(block.getNext().size() == 1 && block.getNext().get(0).getPrev().size() == 1 && !block.equals(block.getNext().get(0))){
+                if(block.canMerge()){
                     newCFGSimplification = true;
                     IRBasicBlock next = block.getNext().get(0);
                     for(IRInstruction inst = next.getHead(); inst != null && inst instanceof Phi; inst = inst.getNext()){
@@ -41,7 +38,6 @@ public class CFGSimplification implements IRVisitor {
                     }
                     block.getTail().Remove();
                     block.merge(next);
-                    func.getBlockContain().remove(next);
                     if(next.equals(func.getExit())) func.setExit(block);
                     break;
                 }
@@ -86,11 +82,6 @@ public class CFGSimplification implements IRVisitor {
                         }
                     }
                 }
-            }
-            if(newCFGSimplification){
-                new FuncBlockCollection().BlockCollecting(func);
-                new DominatorTree(func).Lengauer_Tarjan();
-         //       DominatorTree.Lengauer_Tarjan(func);
             }
         }while (newCFGSimplification);
     }

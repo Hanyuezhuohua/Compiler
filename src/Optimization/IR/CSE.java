@@ -28,7 +28,6 @@ public class CSE implements IRVisitor {
     public void visit(IRFunction func) {
         new FuncBlockCollection().BlockCollecting(func);
         new DominatorTree(func).Lengauer_Tarjan();
-     //   DominatorTree.Lengauer_Tarjan(func);
         func.getBlockContain().forEach(block -> block.accept(this));
     }
 
@@ -53,9 +52,7 @@ public class CSE implements IRVisitor {
                 }
             }
             block.getNext().forEach(next -> {
-                if(next.DomBy(block)){
-                    IDomCSE(next, 0, instructions);
-                }
+                if(next.DomBy(block)) IDomCSE(next, 0, instructions);
             });
         }while (newCSE);
     }
