@@ -14,9 +14,14 @@ import java.util.ArrayList;
 public class CSE implements IRVisitor {
     private boolean newCSE;
     private static int CSELimit = 30;
+    private boolean flag = false;
 
     public CSE(){
         newCSE = false;
+    }
+
+    public boolean Flag() {
+        return flag;
     }
 
     @Override
@@ -48,7 +53,10 @@ public class CSE implements IRVisitor {
                         }
                     }
                     if(!same) instructions.add(inst);
-                    else newCSE = true;
+                    else{
+                        newCSE = true;
+                        flag = true;
+                    }
                 }
             }
             block.getNext().forEach(next -> {
@@ -65,6 +73,7 @@ public class CSE implements IRVisitor {
                         ((IRLocalRegister) inst.getResult()).update(collected.getResult());
                         inst.Remove();
                         newCSE = true;
+                        flag = true;
                         break;
                     }
                 }

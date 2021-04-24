@@ -1,5 +1,6 @@
 package backend.IR_ASM;
 
+import RISCV.RISCVUtility.RegEdge;
 import RISCV.RISCVoperand.RISCVregister.RISCVVirtualRegister;
 import RISCV.RISCVbasicblock.RISCVBasicBlock;
 import RISCV.RISCVfunction.RISCVFunction;
@@ -13,21 +14,6 @@ import java.util.*;
 
 import static java.lang.Integer.min;
 public class RegisterAllocation {
-    static class Edge {
-        public RISCVRegister u, v;
-        public Edge(RISCVRegister u, RISCVRegister v) {
-            this.u = u;
-            this.v = v;
-        }
-        @Override
-        public boolean equals(Object obj) {
-            return obj instanceof Edge && ((Edge) obj).u.equals(u) && ((Edge) obj).v.equals(v);
-        }
-        @Override
-        public int hashCode() {
-            return u.hashCode() ^ v.hashCode();
-        }
-    }
     HashSet<RISCVRegister> preColored = new LinkedHashSet<>();
     HashSet<RISCVRegister> initial = new LinkedHashSet<>();
     HashSet<RISCVRegister> simplifyWorkList = new LinkedHashSet<>();
@@ -36,7 +22,7 @@ public class RegisterAllocation {
     HashSet<RISCVRegister> spilledNodes = new LinkedHashSet<>();
     HashSet<RISCVRegister> coalescedNodes = new LinkedHashSet<>();
     HashSet<RISCVRegister> coloredNodes = new LinkedHashSet<>();
-    HashSet<Edge> adjSet = new LinkedHashSet<>();
+    HashSet<RegEdge> adjSet = new LinkedHashSet<>();
     Stack<RISCVRegister> selectStack = new Stack<>();
     int offset, K;
     RISCVFunction currentFunction;
@@ -53,6 +39,59 @@ public class RegisterAllocation {
         this.root = root;
         preColored.addAll(root.getPhysicalRegisters());
         K = root.getColors().size();
+    }
+
+    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockUses;
+    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockDefs;
+    private HashSet<RISCVBasicBlock> visited;
+
+    private void runForBlock(RISCVBasicBlock block) {
+        HashSet<RISCVRegister> uses = new LinkedHashSet<>();
+        HashSet<RISCVRegister> defs = new LinkedHashSet<>();
+        for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
+            HashSet<RISCVRegister> instUses = inst.Uses();
+            instUses.removeAll(defs);
+            uses.addAll(instUses);
+            defs.addAll(inst.Defs());
+        }
+        blockUses.put(block, uses);
+        blockDefs.put(block, defs);
+        block.setLiveIn(new LinkedHashSet<>());
+        block.setLiveOut(new LinkedHashSet<>());
+    }
+
+    private void runBackward(RISCVBasicBlock block){
+        Stack<RISCVBasicBlock> S = new Stack<>();
+        S.push(block);
+        while(!S.empty()){
+            RISCVBasicBlock now = S.pop();
+            if (visited.contains(now)) continue;
+            visited.add(now);
+            HashSet<RISCVRegister> liveOut = new HashSet<>();
+            for (RISCVBasicBlock successor : now.getNext()) {
+                liveOut.addAll(successor.getLiveIn());
+            }
+            HashSet<RISCVRegister> liveIn = new HashSet<>(liveOut);
+            liveIn.removeAll(blockDefs.get(now));
+            liveIn.addAll(blockUses.get(now));
+            now.addLiveOut(liveOut);
+            liveIn.removeAll(now.getLiveIn());
+            if (!liveIn.isEmpty()) {
+                now.addLiveIn(liveIn);
+                visited.removeAll(now.getPrev());
+            }
+            for (RISCVBasicBlock precursor : now.getPrev()) {
+                S.push(precursor);
+            }
+        }
+    }
+
+    private void LiveAnalysis(RISCVFunction function) {
+        blockUses = new LinkedHashMap<>();
+        blockDefs = new LinkedHashMap<>();
+        visited = new LinkedHashSet<>();
+        function.getBlockContain().forEach(this::runForBlock);
+        runBackward(function.getExit());
     }
 
     void init() {
@@ -93,9 +132,9 @@ public class RegisterAllocation {
         }
     }
     private void addEdge(RISCVRegister u, RISCVRegister v) {
-        if (u != v && !adjSet.contains(new Edge(u, v))) {
-            adjSet.add(new Edge(u, v));
-            adjSet.add(new Edge(v, u));
+        if (u != v && !adjSet.contains(new RegEdge(u, v))) {
+            adjSet.add(new RegEdge(u, v));
+            adjSet.add(new RegEdge(v, u));
             if (!preColored.contains(u)) {
                 u.addAdj(v);
             }
@@ -186,7 +225,7 @@ public class RegisterAllocation {
     }
 
     boolean OK(RISCVRegister t, RISCVRegister r) {
-        return t.degree < K || preColored.contains(t) || adjSet.contains(new Edge(t, r));
+        return t.degree < K || preColored.contains(t) || adjSet.contains(new RegEdge(t, r));
     }
 
     boolean forAllOK(RISCVRegister u, RISCVRegister v) {
@@ -244,7 +283,7 @@ public class RegisterAllocation {
         if (u == v) {
             coalescedMoves.add(move);
             addWorkList(u);
-        } else if (preColored.contains(v) || adjSet.contains(new Edge(u, v))) {
+        } else if (preColored.contains(v) || adjSet.contains(new RegEdge(u, v))) {
             constrainedMoves.add(move);
             addWorkList(u);
             addWorkList(v);
@@ -329,10 +368,11 @@ public class RegisterAllocation {
     }
 
     void runForFunction(RISCVFunction function) {
+        offset = 0;
         currentFunction = function;
         for ( ; ; ) {
             init();
-            LiveAnalysis.runForFunction(function);
+            LiveAnalysis(function);
             build();
             for (RISCVRegister node : initial) {
                 if (node.degree >= K) {
@@ -366,12 +406,13 @@ public class RegisterAllocation {
             }
             rewriteProgram();
         }
+        offset += function.getOffset();
+        offset = (offset + 15) / 16 * 16;
+        updateOffset();
     }
 
-    int spilledCount = 0;
     void rewriteProgram() {
         HashSet<RISCVRegister> newTemps = new LinkedHashSet<>();
-        spilledCount += spilledNodes.size();
         spilledNodes.forEach(v -> {
             v.offset = new RISCVStackOffset(-offset - 4, false);
             offset += 4;
@@ -460,15 +501,6 @@ public class RegisterAllocation {
         }
     }
 
-    public void run() {
-        spilledCount = 0;
-        for (RISCVFunction function : root.getExternalFunctionSet()) {
-            offset = 0;
-            runForFunction(function);
-            offset += function.getOffset();
-            offset = (offset + 15) / 16 * 16;
-            updateOffset();
-        }
-    }
+    public void run() { root.getExternalFunctionSet().forEach(func -> runForFunction(func)); }
 }
 

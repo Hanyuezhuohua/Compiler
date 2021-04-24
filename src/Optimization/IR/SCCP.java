@@ -81,7 +81,7 @@ public class SCCP implements IRVisitor {
             }
             else if(inst.getOp() == Binary.IRBinaryOpType.srem){
                 if(inst.getOp2().isZero()) result = new IRConstInt(0, IRIntType.IntTypeBytes.Int32);
-                result = new IRConstInt(IntConst(inst.getOp1()) % IntConst(inst.getOp2()), IRIntType.IntTypeBytes.Int32);
+                else result = new IRConstInt(IntConst(inst.getOp1()) % IntConst(inst.getOp2()), IRIntType.IntTypeBytes.Int32);
                 ((IRLocalRegister) inst.getResult()).update(result);
                 newSCCP = true;
             }

@@ -61,7 +61,6 @@ public class Main {
             new Inline(irBuilder.getModule(), true).run();
             new InstCombination().visit(irBuilder.getModule());
             boolean modified = false;
-            int i = 0;
             do{
                 modified = false;
                 Inline Opt1 = new Inline(irBuilder.getModule(), false);
@@ -76,8 +75,9 @@ public class Main {
                 ADCE Opt4 = new ADCE(irBuilder.getModule());
                 Opt4.run();
                 modified |= Opt4.Flag();
- //               IRFile = new PrintStream( "output" + i++ + ".ll");
-///                new IRPrinter(IRFile).run(irBuilder.getModule());
+                CSE Opt5 = new CSE();
+                Opt5.visit(irBuilder.getModule());
+                modified |= Opt5.Flag();
             }while (modified);
       //      IRFile = new PrintStream( "out2.ll");
       //      new IRPrinter(IRFile).run(irBuilder.getModule());
@@ -103,7 +103,6 @@ public class Main {
             System.err.println(err.getMessage());
             throw new RuntimeException();
         }
-        System.err.println("[Compile Finished]");
     }
 
     public static RootNode buildAST(InputStream file) throws Exception {
