@@ -87,7 +87,7 @@ public class Main {
            //     Opt7.visit(irBuilder.getModule());
                 modified |= Opt7.Flag();
                 LICM Opt8 = new LICM();
-   //             Opt8.run(irBuilder.getModule());
+                Opt8.run(irBuilder.getModule());
                 modified |= Opt8.NewLICM();
             }while (modified);
             do{

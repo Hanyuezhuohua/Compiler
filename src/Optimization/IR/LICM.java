@@ -71,7 +71,7 @@ public class LICM {
                         if(inst instanceof Binary){
                             boolean canMove = true;
                             for(IROperand operand: inst.getOperands()){
-                                if(operand instanceof IRLocalRegister && loopBlocks.contains(operand.getDef().getInstIn())){
+                                if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){
                                     canMove = false;
                                     break;
                                 }
@@ -86,7 +86,7 @@ public class LICM {
                         else if(inst instanceof BitwiseBinary){
                             boolean canMove = true;
                             for(IROperand operand: inst.getOperands()){
-                                if(operand instanceof IRLocalRegister && loopBlocks.contains(operand.getDef().getInstIn())){
+                                if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){
                                     canMove = false;
                                     break;
                                 }
@@ -100,7 +100,7 @@ public class LICM {
                         else if(inst instanceof BitCast){
                             boolean canMove = true;
                             for(IROperand operand: inst.getOperands()){
-                                if(operand instanceof IRLocalRegister && loopBlocks.contains(operand.getDef().getInstIn())){
+                                if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){
                                     canMove = false;
                                     break;
                                 }
@@ -115,7 +115,7 @@ public class LICM {
                         else if(inst instanceof GetElementPtr){
                             boolean canMove = true;
                             for(IROperand operand: inst.getOperands()){
-                                if(operand instanceof IRLocalRegister && loopBlocks.contains(operand.getDef().getInstIn())){
+                                if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){
                                     canMove = false;
                                     break;
                                 }
