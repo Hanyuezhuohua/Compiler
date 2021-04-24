@@ -83,7 +83,14 @@ public class Main {
                 SCCP Opt6 = new SCCP();
                 Opt6.visit(irBuilder.getModule());
                 modified |= Opt6.NewSCCP();
+                CFGSimplification Opt7 = new CFGSimplification();
+            //    Opt7.visit(irBuilder.getModule());
+                modified |= Opt7.Flag();
             }while (modified);
+            IRFile = new PrintStream( "out6.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
+            CFGSimplification Opt7 = new CFGSimplification();
+         //   Opt7.visit(irBuilder.getModule());
             IRFile = new PrintStream( "out4.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
       //      new GlobalToLocal(irBuilder.getModule()).run();

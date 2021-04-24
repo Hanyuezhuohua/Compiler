@@ -12,9 +12,14 @@ import backend.AST_IR.DominatorTree;
 
 public class CFGSimplification implements IRVisitor {
     private boolean newCFGSimplification;
+    private boolean flag = false;
 
     public CFGSimplification(){
         newCFGSimplification = false;
+    }
+
+    public boolean Flag() {
+        return flag;
     }
 
     @Override
@@ -31,6 +36,7 @@ public class CFGSimplification implements IRVisitor {
             for(IRBasicBlock block : func.getBlockContain()){
                 if(block.canMerge()){
                     newCFGSimplification = true;
+                    flag = true;
                     IRBasicBlock next = block.getNext().get(0);
                     for(IRInstruction inst = next.getHead(); inst != null && inst instanceof Phi; inst = inst.getNext()){
                         ((IRLocalRegister) inst.getResult()).update(((Phi) inst).getValues().get(0));
@@ -44,6 +50,7 @@ public class CFGSimplification implements IRVisitor {
                 else if(block.getTail() instanceof Br && ((Br) block.getTail()).getCond() != null){
                     if(((Br) block.getTail()).getIfTrue().equals(((Br) block.getTail()).getIfFalse())){
                         newCFGSimplification = true;
+                        flag = true;
                         Br tmp = (Br) block.getTail();
                         block.getTail().Remove();
                         block.addInst(new Br(block, null, tmp.getIfTrue(), null));
@@ -51,6 +58,7 @@ public class CFGSimplification implements IRVisitor {
                     }
                     else if(((Br) block.getTail()).getCond() instanceof IRConstBool){
                         newCFGSimplification = true;
+                        flag = true;
                         Br tmp = (Br) block.getTail();
                         if(tmp.getCond().isZero()){
                             for(IRInstruction inst = tmp.getIfTrue().getHead(); inst != null && inst instanceof Phi; inst = inst.getNext()){

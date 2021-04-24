@@ -500,7 +500,7 @@ public class IRBuilder implements ASTVisitor {
                 }
                 if(loopNum <= 0) return;
                 int loopDepth = new LoopDepthAnalysis(node).run();
-                if(loopDepth <= 2 && loopNum <= 10){
+                if(loopDepth <= 1 && loopNum <= 10){
                     loopUnrollSize = loopNum * loopUnrollSize;
                     IRBasicBlock destBlock = new IRBasicBlock(currentFunction, "forDest");
                     ArrayList<IRBasicBlock> stmtBlocks = new ArrayList<>();
