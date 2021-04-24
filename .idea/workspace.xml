@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Binary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/DCE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/DCE.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/SCCP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/SCCP.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,14 +117,19 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/RISCV/RISCVfunction/RISCVFunction.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="163" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/frontend/LoopDepthAnalysis.java</url>
           <line>180</line>
           <option name="timeStamp" value="273" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/IR/IRinstruction/Binary.java</url>
+          <line>132</line>
+          <option name="timeStamp" value="315" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/IR/IRinstruction/Binary.java</url>
+          <line>135</line>
+          <option name="timeStamp" value="318" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
