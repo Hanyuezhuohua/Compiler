@@ -161,6 +161,8 @@ public class IRPrinter {
                 out.print("\n;DomFrontiers: ");
                 block.getDomFrontiers().forEach(domFrontier -> out.print(domFrontier.getIdentifier() + " "));
             }
+            out.print("\n;tail: ");
+            if(block.getTail() != null) out.println(block.getTail().PrintInst());
             out.print("\n");
             for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
                 out.println("\t" + inst.PrintInst());

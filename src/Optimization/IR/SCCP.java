@@ -43,6 +43,9 @@ public class SCCP implements IRVisitor {
             new UseClear().visit(func);
             new UseCollection().visit(func);
             func.getBlockContain().forEach(block -> block.accept(this));
+            new FuncBlockCollection().BlockCollecting(func);
+            new UseClear().visit(func);
+            new UseCollection().visit(func);
    //     } while (newSCCP);
     }
 
