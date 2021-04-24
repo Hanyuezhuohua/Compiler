@@ -129,7 +129,7 @@ public class Binary extends IRInstruction{
     @Override
     public boolean merge() {
         if(next instanceof Binary){
-            if(op == IRBinaryOpType.add && ((Binary) next).getOp() == IRBinaryOpType.add && op2 instanceof IRConstInt && ((Binary) next).op2 instanceof IRConstInt && result == ((Binary) next).op1){
+            if(op == IRBinaryOpType.add && ((Binary) next).getOp() == IRBinaryOpType.add && op2 instanceof IRConstInt && ((Binary) next).op2 instanceof IRConstInt && result == ((Binary) next).op1 && !(((IRConstInt) op2).getValue() % 10 == 0 && ((IRConstInt) op2).getValue() < 100 )){
                 result = next.getResult();
                 op2 = new IRConstInt(((IRConstInt) op2).getValue() + ((IRConstInt) ((Binary) next).op2).getValue(), IRIntType.IntTypeBytes.Int32);
                 next.Remove();

@@ -84,7 +84,7 @@ public class Main {
                 Opt6.visit(irBuilder.getModule());
                 modified |= Opt6.NewSCCP();
                 CFGSimplification Opt7 = new CFGSimplification();
-            //    Opt7.visit(irBuilder.getModule());
+           //     Opt7.visit(irBuilder.getModule());
                 modified |= Opt7.Flag();
             }while (modified);
             IRFile = new PrintStream( "out6.ll");
@@ -95,11 +95,13 @@ public class Main {
             new IRPrinter(IRFile).run(irBuilder.getModule());
       //      new GlobalToLocal(irBuilder.getModule()).run();
             new PhiResolution().run(irBuilder.getModule());
+            IRFile = new PrintStream( "out7.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
             ASMBuilder asmBuilder = new ASMBuilder();
             asmBuilder.visit(irBuilder.getModule());
             RISCVModule riscvModule = asmBuilder.getModule();
-       //     PrintStream ASMFile1 = new PrintStream( "output1.s");
-      //      new ASMPrinter(riscvModule, new PrintStream(ASMFile1), false).run();
+            PrintStream ASMFile1 = new PrintStream( "output1.s");
+            new ASMPrinter(riscvModule, new PrintStream(ASMFile1), false).run();
          //   RISCVModule riscvModule = (new ASMBuilder(irBuilder.getModule())).run();
             new RegisterAllocation(riscvModule).run();
             new ASMOptimize(riscvModule).run();
