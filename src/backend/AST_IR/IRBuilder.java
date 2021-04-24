@@ -239,6 +239,8 @@ public class IRBuilder implements ASTVisitor {
         FuncBlockCollection collector = new FuncBlockCollection();
         currentFunction = IRInit;
         currentFunction.setBlockContain(collector.BlockCollecting(currentFunction));
+
+        new GlobalToLocal(module).run();
     }
 
     @Override
