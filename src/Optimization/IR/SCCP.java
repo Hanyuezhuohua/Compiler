@@ -280,7 +280,8 @@ public class SCCP implements IRVisitor {
             }
             else if(!((IRConstBool)inst.getCond()).getValue()){
                 inst.Remove();
-                inst.getInstIn().addInst(new Br(inst.getInstIn(), null, inst.getIfFalse(), null));
+                if(inst.getIfFalse() != null)inst.getInstIn().addInst(new Br(inst.getInstIn(), null, inst.getIfFalse(), null));
+                else inst.getInstIn().addInst(new Br(inst.getInstIn(), null, inst.getIfTrue().getNext().get(0), null));
                 newSCCP = true;
             }
         }

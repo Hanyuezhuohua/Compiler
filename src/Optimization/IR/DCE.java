@@ -128,6 +128,14 @@ public class DCE implements IRVisitor {
             inst.Remove();
             newDCE = true;
         }
+        for(int i = 0; i < inst.getLabels().size(); i++){
+            if(!inst.getInstIn().getPrev().contains(inst.getLabels().get(i))){
+                inst.getLabels().remove(i);
+                inst.getValues().remove(i);
+                i--;
+                newDCE = true;
+            }
+        }
     }
 
     @Override
