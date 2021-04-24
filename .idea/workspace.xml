@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/Binary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/Binary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,21 +119,6 @@
           <url>file://$PROJECT_DIR$/src/frontend/LoopDepthAnalysis.java</url>
           <line>180</line>
           <option name="timeStamp" value="273" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java</url>
-          <line>37</line>
-          <option name="timeStamp" value="319" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java</url>
-          <line>47</line>
-          <option name="timeStamp" value="320" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java</url>
-          <line>46</line>
-          <option name="timeStamp" value="321" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/IR/IRinstruction/Binary.java</url>

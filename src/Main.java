@@ -58,8 +58,8 @@ public class Main {
             new Memory_Register().run(irBuilder.getModule());
             IRFile = new PrintStream( "out3.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
-        //    new Inline(irBuilder.getModule(), true).run();
-        //    new InstCombination().visit(irBuilder.getModule());
+            new Inline(irBuilder.getModule(), true).run();
+            new InstCombination().visit(irBuilder.getModule());
             IRFile = new PrintStream( "out5.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
             boolean modified = false;
