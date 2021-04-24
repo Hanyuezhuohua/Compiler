@@ -19,6 +19,10 @@ public class SCCP implements IRVisitor {
         newSCCP = false;
     }
 
+    public boolean NewSCCP() {
+        return newSCCP;
+    }
+
     @Override
     public void visit(IRModule module) {
         module.getExternalFunctionMap().forEach((id, func) -> func.accept(this));
@@ -33,13 +37,13 @@ public class SCCP implements IRVisitor {
 
     @Override
     public void visit(IRFunction func) {
-        do{
+   //     do{
             newSCCP = false;
             new FuncBlockCollection().BlockCollecting(func);
             new UseClear().visit(func);
             new UseCollection().visit(func);
             func.getBlockContain().forEach(block -> block.accept(this));
-        } while (newSCCP);
+   //     } while (newSCCP);
     }
 
     @Override

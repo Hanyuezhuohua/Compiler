@@ -38,8 +38,8 @@ public class Main {
         }
         String fileName = "./testcase/code.mx";
         try {
-            InputStream file = System.in;
-    //        InputStream file = new FileInputStream(fileName);
+    //        InputStream file = System.in;
+            InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new SemanticChecker().visit(ast);
             //new ASTOptimize(ast).run();
@@ -78,12 +78,10 @@ public class Main {
                 CSE Opt5 = new CSE();
                 Opt5.visit(irBuilder.getModule());
                 modified |= Opt5.Flag();
+                SCCP Opt6 = new SCCP();
+                Opt6.visit(irBuilder.getModule());
+                modified |= Opt6.NewSCCP();
             }while (modified);
-      //      IRFile = new PrintStream( "out2.ll");
-      //      new IRPrinter(IRFile).run(irBuilder.getModule());
-      //      new DCE().visit(irBuilder.getModule());
-      //      new ADCE(irBuilder.getModule()).run();
-            new CSE().visit(irBuilder.getModule());
             IRFile = new PrintStream( "out4.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
       //      new GlobalToLocal(irBuilder.getModule()).run();
