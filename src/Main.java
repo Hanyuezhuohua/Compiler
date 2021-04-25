@@ -88,11 +88,11 @@ public class Main {
                 LICM Opt8 = new LICM();
        //         Opt8.run(irBuilder.getModule());
                 modified |= Opt8.NewLICM();
-                new MemoryAccess(irBuilder.getModule()).run();
+  //              new MemoryAccess(irBuilder.getModule()).run();
             }while (modified);
             IRFile = new PrintStream( "out9.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
-      //      new MemoryAccess(irBuilder.getModule()).run();;
+            new MemoryAccess(irBuilder.getModule()).run();;
       /*      for(int i = 0; i < 10; ++i){
                 modified = false;
                 CSE Opt5 = new CSE();
