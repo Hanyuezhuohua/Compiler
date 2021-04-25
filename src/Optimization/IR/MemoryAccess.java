@@ -40,7 +40,7 @@ public class MemoryAccess {
                                 IRInstruction newInst = new Store(block, value, var);
                                 newInst.setPrev(inst.getPrev());
                                 newInst.setNext(inst);
-                                inst.getPrev().setNext(newInst);
+                                if(inst.getPrev() != null) inst.getPrev().setNext(newInst);
                                 inst.setPrev(newInst);
                             }
                             value = null;
