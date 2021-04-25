@@ -135,7 +135,7 @@ public class Binary extends IRInstruction{
                 next.Remove();
                 return true;
             }
-            else if(op == IRBinaryOpType.add && ((Binary) next).getOp() == IRBinaryOpType.add && op1 instanceof IRConstInt && ((Binary) next).op2 instanceof IRConstInt && result == ((Binary) next).op1){
+         /*   else if(op == IRBinaryOpType.add && ((Binary) next).getOp() == IRBinaryOpType.add && op1 instanceof IRConstInt && ((Binary) next).op2 instanceof IRConstInt && result == ((Binary) next).op1){
                 result = next.getResult();
                 op1 = new IRConstInt(((IRConstInt) op1).getValue() + ((IRConstInt) ((Binary) next).op2).getValue(), IRIntType.IntTypeBytes.Int32);
                 next.Remove();
@@ -176,7 +176,7 @@ public class Binary extends IRInstruction{
                 op2 = new IRConstInt(((IRConstInt) op2).getValue() + ((IRConstInt) ((Binary) next).op1).getValue(), IRIntType.IntTypeBytes.Int32);
                 next.Remove();
                 return true;
-            }
+            }*/
         }
         return false;
     }

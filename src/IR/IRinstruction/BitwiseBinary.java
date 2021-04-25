@@ -128,7 +128,7 @@ public class BitwiseBinary extends IRInstruction{
 
     @Override
     public boolean merge() {
-        if(next instanceof BitwiseBinary && op == IRBitwiseBinaryOpType.shl && ((BitwiseBinary) next).op == IRBitwiseBinaryOpType.shl && op2 instanceof IRConstInt && ((BitwiseBinary) next).op2 instanceof IRConstInt && result == ((BitwiseBinary) next).op1){
+      /*  if(next instanceof BitwiseBinary && op == IRBitwiseBinaryOpType.shl && ((BitwiseBinary) next).op == IRBitwiseBinaryOpType.shl && op2 instanceof IRConstInt && ((BitwiseBinary) next).op2 instanceof IRConstInt && result == ((BitwiseBinary) next).op1){
             result = next.getResult();
             op2 = new IRConstInt(((IRConstInt) op2).getValue() + ((IRConstInt) ((BitwiseBinary) next).op2).getValue(), IRIntType.IntTypeBytes.Int32);
             next.Remove();
@@ -139,7 +139,7 @@ public class BitwiseBinary extends IRInstruction{
             op2 = new IRConstInt(((IRConstInt) op2).getValue() + ((IRConstInt) ((BitwiseBinary) next).op2).getValue(), IRIntType.IntTypeBytes.Int32);
             next.Remove();
             return true;
-        }
+        }*/
         return false;
     }
 }
