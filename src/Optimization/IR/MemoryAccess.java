@@ -2,6 +2,7 @@ package Optimization.IR;
 
 import IR.IRinstruction.*;
 import IR.IRmodule.IRModule;
+import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
 
 public class MemoryAccess {
@@ -22,6 +23,9 @@ public class MemoryAccess {
                             if(value == null) value = inst.getResult();
                             else{
                                IRInstruction newInst = new Move(block, inst.getResult(), value);
+                          //      for(IRInstruction instruction: inst.getResult().getInstructions()){
+                          //          instruction.update((IRLocalRegister) inst.getResult(), value);
+                          //      }
                                inst.Remove();
                                newInst.setPrev(inst.getPrev());
                                newInst.setNext(inst.getNext());
@@ -43,6 +47,9 @@ public class MemoryAccess {
                                 newInst.setNext(inst);
                                 if(inst.getPrev() != null) inst.getPrev().setNext(newInst);
                                 inst.setPrev(newInst);
+                                if(inst == block.getHead()){
+                                    block.setHead(newInst);
+                                }
                             }
                             value = null;
                         }

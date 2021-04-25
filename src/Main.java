@@ -92,6 +92,7 @@ public class Main {
             }while (modified);
             IRFile = new PrintStream( "out9.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
+      //      new MemoryAccess(irBuilder.getModule()).run();;
       /*      for(int i = 0; i < 10; ++i){
                 modified = false;
                 CSE Opt5 = new CSE();
@@ -102,7 +103,7 @@ public class Main {
                 modified |= Opt8.NewLICM();
             }*/
             CFGSimplification Opt7 = new CFGSimplification();
-            Opt7.visit(irBuilder.getModule());
+         //   Opt7.visit(irBuilder.getModule());
          //   new LICM().run(irBuilder.getModule());
          //   CSE Opt5 = new CSE();
          //   Opt5.visit(irBuilder.getModule());
@@ -110,6 +111,7 @@ public class Main {
             new IRPrinter(IRFile).run(irBuilder.getModule());
       //      new GlobalToLocal(irBuilder.getModule()).run();
             new PhiResolution().run(irBuilder.getModule());
+      //      new MemoryAccess(irBuilder.getModule()).run();;
             IRFile = new PrintStream( "out7.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
             ASMBuilder asmBuilder = new ASMBuilder();
