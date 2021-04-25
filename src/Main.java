@@ -91,7 +91,7 @@ public class Main {
             }while (modified);
             IRFile = new PrintStream( "out9.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
-            for(int i = 0; i < 10; ++i){
+      /*      for(int i = 0; i < 10; ++i){
                 modified = false;
                 CSE Opt5 = new CSE();
                 Opt5.visit(irBuilder.getModule());
@@ -99,7 +99,7 @@ public class Main {
                 LICM Opt8 = new LICM();
                 Opt8.run(irBuilder.getModule());
                 modified |= Opt8.NewLICM();
-            }
+            }*/
             CFGSimplification Opt7 = new CFGSimplification();
          //   Opt7.visit(irBuilder.getModule());
          //   new LICM().run(irBuilder.getModule());
