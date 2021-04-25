@@ -56,8 +56,8 @@ public class Main {
       //      new Inline(irBuilder.getModule()).run();
       //      new GlobalToLocal(irBuilder.getModule()).run();
             new Memory_Register().run(irBuilder.getModule());
-            LICM Opt8 = new LICM();
-            Opt8.run(irBuilder.getModule());
+            LICM test = new LICM();
+            test.run(irBuilder.getModule());
 
             new Inline(irBuilder.getModule(), true).run();
             new InstCombination().visit(irBuilder.getModule());
