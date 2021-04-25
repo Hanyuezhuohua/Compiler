@@ -63,8 +63,7 @@ public class Main {
             new IRPrinter(IRFile).run(irBuilder.getModule());
             new Inline(irBuilder.getModule(), true).run();
             new InstCombination().visit(irBuilder.getModule());
-            IRFile = new PrintStream( "out5.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
+
             boolean modified = false;
             int t = 0;
             do{
@@ -91,18 +90,26 @@ public class Main {
          //       new IRPrinter(IRFile).run(irBuilder.getModule());
                 CFGSimplification Opt7 = new CFGSimplification();
                 Opt7.visit(irBuilder.getModule());
-        //        IRFile = new PrintStream( t++ + "out2.ll");
-        //        new IRPrinter(IRFile).run(irBuilder.getModule());
+           //     IRFile = new PrintStream( t++ + "out1.ll");
+           //     new IRPrinter(IRFile).run(irBuilder.getModule());
                 modified |= Opt7.Flag();
                 LICM Opt8 = new LICM();
                 Opt8.run(irBuilder.getModule());
                 modified |= Opt8.NewLICM();
-       //                 IRFile = new PrintStream( t++ + "out2.ll");
-       //                 new IRPrinter(IRFile).run(irBuilder.getModule());
+           //             IRFile = new PrintStream( t++ + "out2.ll");
+           //             new IRPrinter(IRFile).run(irBuilder.getModule());
                 new MemoryAccess(irBuilder.getModule()).run();
             }while (modified);
-            IRFile = new PrintStream( "out9.ll");
+         /*   for(int i = 0; i < 2; ++i){
+                new LICM().run(irBuilder.getModule());
+                new MemoryAccess(irBuilder.getModule()).run();
+            }
+            new LICM().run(irBuilder.getModule());
+            IRFile = new PrintStream( "out5.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
+            new MemoryAccess(irBuilder.getModule()).run();
+            IRFile = new PrintStream( "out9.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());*/
        //     new MemoryAccess(irBuilder.getModule()).run();;
       /*      for(int i = 0; i < 10; ++i){
                 modified = false;

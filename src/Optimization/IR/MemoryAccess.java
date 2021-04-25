@@ -4,6 +4,9 @@ import IR.IRinstruction.*;
 import IR.IRmodule.IRModule;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
+import IR.IRutility.DefCollection;
+import IR.IRutility.UseClear;
+import IR.IRutility.UseCollection;
 
 public class MemoryAccess {
     private IRModule module;
@@ -13,6 +16,9 @@ public class MemoryAccess {
     }
 
     public void run(){
+        new UseClear().visit(module);
+        new UseCollection().visit(module);
+        new DefCollection().visit(module);
         module.getExternalFunctionMap().forEach((id, func) -> {
             func.getBlockContain().forEach(block -> {
                 module.getGlobalVariableList().forEach(var -> {
