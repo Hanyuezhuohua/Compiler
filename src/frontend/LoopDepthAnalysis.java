@@ -144,6 +144,11 @@ public class LoopDepthAnalysis implements ASTVisitor {
 
     @Override
     public void visit(BinaryexprNode node) {
+        if(node.getLhs() instanceof MemberexprNode){
+            LoopDepth += 3;
+            maxLoopDepth = Integer.max(LoopDepth, maxLoopDepth);
+            LoopDepth -= 3;
+        }
         node.getLhs().accept(this);
         node.getRhs().accept(this);
     }
@@ -160,9 +165,7 @@ public class LoopDepthAnalysis implements ASTVisitor {
 
     @Override
     public void visit(MemberexprNode node) {
-        LoopDepth += 3;
-        maxLoopDepth = Integer.max(LoopDepth, maxLoopDepth);
-        LoopDepth -= 3;
+
     }
 
     @Override
