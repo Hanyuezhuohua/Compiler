@@ -62,6 +62,7 @@ public class Main {
             IRFile = new PrintStream( "out5.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
             boolean modified = false;
+            int t = 0;
             do{
                 modified = false;
                 Inline Opt1 = new Inline(irBuilder.getModule(), false);
@@ -70,6 +71,9 @@ public class Main {
                 InstCombination Opt2 = new InstCombination();
                 Opt2.visit(irBuilder.getModule());
                 modified |= Opt2.NewInstCombination();
+                SCCP Opt6 = new SCCP();
+                Opt6.visit(irBuilder.getModule());
+                modified |= Opt6.NewSCCP();
                 DCE Opt3 = new DCE();
                 Opt3.visit(irBuilder.getModule());
                 modified |= Opt3.Flag();
@@ -79,11 +83,12 @@ public class Main {
                 CSE Opt5 = new CSE();
                 Opt5.visit(irBuilder.getModule());
                 modified |= Opt5.Flag();
-                SCCP Opt6 = new SCCP();
-                Opt6.visit(irBuilder.getModule());
-                modified |= Opt6.NewSCCP();
+        //        IRFile = new PrintStream( t + "out1.ll");
+        //        new IRPrinter(IRFile).run(irBuilder.getModule());
                 CFGSimplification Opt7 = new CFGSimplification();
                 Opt7.visit(irBuilder.getModule());
+        //        IRFile = new PrintStream( t++ + "out2.ll");
+        //        new IRPrinter(IRFile).run(irBuilder.getModule());
                 modified |= Opt7.Flag();
                 LICM Opt8 = new LICM();
        //         Opt8.run(irBuilder.getModule());

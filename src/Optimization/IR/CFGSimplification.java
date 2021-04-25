@@ -44,7 +44,12 @@ public class CFGSimplification implements IRVisitor {
                     flag = true;
                     IRBasicBlock next = block.getNext().get(0);
                     for (IRInstruction inst = next.getHead(); inst != null && inst instanceof Phi; inst = inst.getNext()) {
-                        ((IRLocalRegister) inst.getResult()).update(((Phi) inst).getValues().get(0));
+                        for(int i = 0; i < ((Phi) inst).getValues().size(); ++i){
+                            if(((Phi) inst).getLabels().get(i) == block){
+                                ((IRLocalRegister) inst.getResult()).update(((Phi) inst).getValues().get(i));
+                                break;
+                            }
+                        }
                         inst.Remove();
                     }
                     block.getTail().Remove();
