@@ -30,7 +30,7 @@ public class CFGSimplification implements IRVisitor {
     @Override
     public void visit(IRFunction func) {
         do{
-            new FuncBlockCollection().BlockCollecting(func);
+            func.setBlockContain(new FuncBlockCollection().BlockCollecting(func));
             new DominatorTree(func).Lengauer_Tarjan();
             newCFGSimplification = false;
             for(IRBasicBlock block : func.getBlockContain()){
@@ -44,6 +44,10 @@ public class CFGSimplification implements IRVisitor {
                     }
                     block.getTail().Remove();
                     block.merge(next);
+                    if(!block.Terminal()){
+                        block.getPrev();
+                    }
+            //        func.getBlockContain().remove(next);
                     if(next.equals(func.getExit())) func.setExit(block);
                     break;
                 }

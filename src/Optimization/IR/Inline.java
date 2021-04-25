@@ -23,7 +23,7 @@ public class Inline {
     private HashSet<IRFunction> inlined;
     private HashMap<IRFunction, Integer> inlineTime;
     private boolean newInline;
-    private static int inlineINF = 1000;
+    private static int inlineINF = 750;
     private boolean flag;
     private boolean inlineRecursion;
 
@@ -97,7 +97,7 @@ public class Inline {
         }
     }
 
-    private int bound = 10;
+    private int bound = 6;
 
     public void run(){
         int cnt = 0;

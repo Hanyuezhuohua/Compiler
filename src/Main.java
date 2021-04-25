@@ -83,11 +83,12 @@ public class Main {
                 Opt6.visit(irBuilder.getModule());
                 modified |= Opt6.NewSCCP();
                 CFGSimplification Opt7 = new CFGSimplification();
-           //     Opt7.visit(irBuilder.getModule());
+         //       Opt7.visit(irBuilder.getModule());
                 modified |= Opt7.Flag();
                 LICM Opt8 = new LICM();
        //         Opt8.run(irBuilder.getModule());
                 modified |= Opt8.NewLICM();
+                new MemoryAccess(irBuilder.getModule()).run();
             }while (modified);
             IRFile = new PrintStream( "out9.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
@@ -101,7 +102,7 @@ public class Main {
                 modified |= Opt8.NewLICM();
             }*/
             CFGSimplification Opt7 = new CFGSimplification();
-         //   Opt7.visit(irBuilder.getModule());
+            Opt7.visit(irBuilder.getModule());
          //   new LICM().run(irBuilder.getModule());
          //   CSE Opt5 = new CSE();
          //   Opt5.visit(irBuilder.getModule());
