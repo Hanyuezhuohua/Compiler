@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Optimization/IR/MemoryAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/MemoryAccess.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

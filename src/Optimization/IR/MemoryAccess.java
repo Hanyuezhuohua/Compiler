@@ -19,7 +19,7 @@ public class MemoryAccess {
                     IROperand value = null;
                     for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
                         if(inst instanceof Load && ((Load) inst).getPointer() == var){
-                            if(value != null) value = inst.getResult();
+                            if(value == null) value = inst.getResult();
                             else{
                                IRInstruction newInst = new Move(block, inst.getResult(), value);
                                inst.Remove();
