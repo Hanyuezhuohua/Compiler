@@ -16,6 +16,7 @@ public class Call extends IRInstruction{
     private IRFunction fnptrval;
     private ArrayList<IROperand> functionArgs;
     private IROperand result;
+    public boolean tailCall;
 
     public Call(IRBasicBlock instIn, IRFunction fnptrval, ArrayList<IROperand> functionArgs, IROperand result){
         super(instIn);

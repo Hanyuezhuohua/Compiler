@@ -332,6 +332,20 @@ public class ASMBuilder implements IRVisitor {
 
     @Override
     public void visit(IR.IRinstruction.Call inst) {
+        if(inst.tailCall){
+            ArrayList<RISCVVirtualRegister> parameters = new ArrayList<>();
+            for (int i = 0; i < inst.getFunctionArgs().size(); ++i) parameters.add(new RISCVVirtualRegister(4));
+            for (int i = 0; i < inst.getFunctionArgs().size(); ++i){
+                RISCVRegister register = getRegister(inst.getFunctionArgs().get(i));
+                if(register instanceof RISCVGlobalRegister) currentBlock.addInst(new RISCVLa((RISCVGlobalRegister) register, parameters.get(i), currentBlock));
+                else currentBlock.addInst(new RISCVMove(register, parameters.get(i), currentBlock));
+            }
+            for (int i = 0; i < inst.getFunctionArgs().size(); ++i) currentBlock.addInst(new RISCVMove(parameters.get(i), currentFunction.getParameters().get(i), currentBlock));
+            currentBlock.addInst(new UnaryBranch(currentFunction.getTailCall(), currentBlock));
+            currentBlock.addNext(currentFunction.getTailCall());
+            currentFunction.getTailCall().addPrev(currentBlock);
+            return;
+        }
         for (int i = 0; i < min(8, inst.getFunctionArgs().size()); i++) {
             RISCVRegister tmp = getRegister(inst.getFunctionArgs().get(i));
             if (tmp instanceof RISCVGlobalRegister) currentBlock.addInst(new RISCVLa((RISCVGlobalRegister) tmp, module.getFuncArgs().get(i), currentBlock));
@@ -380,6 +394,8 @@ public class ASMBuilder implements IRVisitor {
         if(func.getClassPtr() != null){ currentFunction.addParameter(getRegister(func.getClassPtr())); }
         func.getParameters().forEach(parameter -> currentFunction.addParameter(getRegister(parameter)));
         module.addExternalFunctionSet(currentFunction);
+        currentFunction.setTailCall(currentFunction.getEntry());
+        currentFunction.setEntry(new RISCVBasicBlock("entry"));
         currentFunction.getEntry().addInst(new ImmediateBinary(module.getPhysicalRegister("sp"), new RISCVStackOffset(0, true), ImmediateBinary.ImmediateBinaryOp.addi, module.getPhysicalRegister("sp"), currentFunction.getEntry()));
         ArrayList<RISCVVirtualRegister> callee = new ArrayList<>();
         module.getCalleeSavedRegs().forEach(rs -> {
@@ -394,6 +410,10 @@ public class ASMBuilder implements IRVisitor {
         parameters.addAll(func.getParameters());
         for (int i = 0; i < min(8, parameters.size()); i++) currentFunction.getEntry().addInst(new RISCVMove(module.getFuncArgs().get(i), currentFunction.getParameters().get(i), currentFunction.getEntry()));
         for (int i = 8; i < parameters.size(); i++) currentFunction.getEntry().addInst(new RISCVLoad(module.getPhysicalRegister("sp"), new RISCVStackOffset((i - 8) * 4, false), currentFunction.getParameters().get(i), max(1, parameters.get(i).getOperandType().getSize() / 8), currentFunction.getEntry()));
+        currentFunction.getEntry().addInst(new UnaryBranch(currentFunction.getTailCall(), currentFunction.getEntry()));
+        currentFunction.getEntry().addNext(currentFunction.getTailCall());
+        currentFunction.getTailCall().addPrev(currentFunction.getEntry());
+        currentFunction.addBlock(currentFunction.getEntry());
         func.getBlockContain().forEach(this::visit);
         for (int i = 0; i < callee.size(); i++) currentFunction.getExit().addInst(new RISCVMove(callee.get(i), module.getCalleeSavedRegs().get(i), currentFunction.getExit()));
         currentFunction.getExit().addInst(new RISCVMove(ra, module.getPhysicalRegister("ra"), currentFunction.getExit()));

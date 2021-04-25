@@ -16,6 +16,7 @@ public class RISCVFunction {
     private ArrayList<RISCVRegister> parameters;
     private RISCVBasicBlock entry;
     private RISCVBasicBlock exit;
+    private RISCVBasicBlock tailCall;
     private int Offset;
     public RISCVFunction(RISCVModule functionIn, String identifier) {
         this.functionIn = functionIn;
@@ -24,7 +25,16 @@ public class RISCVFunction {
         parameters = new ArrayList<>();
         entry = null;
         exit = null;
+        tailCall = null;
         Offset = 0;
+    }
+
+    public void setTailCall(RISCVBasicBlock tailCall) {
+        this.tailCall = tailCall;
+    }
+
+    public RISCVBasicBlock getTailCall() {
+        return tailCall;
     }
 
     public String getIdentifier() {
