@@ -26,6 +26,7 @@ public class MemoryAccess {
                                newInst.setPrev(inst.getPrev());
                                newInst.setNext(inst.getNext());
                                if(inst.getPrev() != null) inst.getPrev().setNext(newInst);
+                               else block.setHead(newInst);
                                inst.getNext().setPrev(newInst);
                             }
                         }
