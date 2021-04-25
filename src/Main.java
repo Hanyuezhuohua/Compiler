@@ -107,7 +107,7 @@ public class Main {
                 Opt8.run(irBuilder.getModule());
                 modified |= Opt8.NewLICM();
             }*/
-            CFGSimplification Opt7 = new CFGSimplification();
+          //  CFGSimplification Opt7 = new CFGSimplification();
          //   Opt7.visit(irBuilder.getModule());
          //   new LICM().run(irBuilder.getModule());
          //   CSE Opt5 = new CSE();

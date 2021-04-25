@@ -135,6 +135,48 @@ public class Binary extends IRInstruction{
                 next.Remove();
                 return true;
             }
+            else if(op == IRBinaryOpType.add && ((Binary) next).getOp() == IRBinaryOpType.add && op1 instanceof IRConstInt && ((Binary) next).op2 instanceof IRConstInt && result == ((Binary) next).op1){
+                result = next.getResult();
+                op1 = new IRConstInt(((IRConstInt) op1).getValue() + ((IRConstInt) ((Binary) next).op2).getValue(), IRIntType.IntTypeBytes.Int32);
+                next.Remove();
+                return true;
+            }
+            else if(op == IRBinaryOpType.add && ((Binary) next).getOp() == IRBinaryOpType.add && op1 instanceof IRConstInt && ((Binary) next).op1 instanceof IRConstInt && result == ((Binary) next).op2){
+                result = next.getResult();
+                op1 = new IRConstInt(((IRConstInt) op1).getValue() + ((IRConstInt) ((Binary) next).op1).getValue(), IRIntType.IntTypeBytes.Int32);
+                next.Remove();
+                return true;
+            }
+            else if(op == IRBinaryOpType.add && ((Binary) next).getOp() == IRBinaryOpType.add && op2 instanceof IRConstInt && ((Binary) next).op1 instanceof IRConstInt && result == ((Binary) next).op2){
+                result = next.getResult();
+                op2 = new IRConstInt(((IRConstInt) op2).getValue() + ((IRConstInt) ((Binary) next).op1).getValue(), IRIntType.IntTypeBytes.Int32);
+                next.Remove();
+                return true;
+            }
+            else if(op == IRBinaryOpType.mul && ((Binary) next).getOp() == IRBinaryOpType.mul && op2 instanceof IRConstInt && ((Binary) next).op2 instanceof IRConstInt && result == ((Binary) next).op1){
+                result = next.getResult();
+                op2 = new IRConstInt(((IRConstInt) op2).getValue() * ((IRConstInt) ((Binary) next).op2).getValue(), IRIntType.IntTypeBytes.Int32);
+                next.Remove();
+                return true;
+            }
+            else if(op == IRBinaryOpType.mul && ((Binary) next).getOp() == IRBinaryOpType.mul && op1 instanceof IRConstInt && ((Binary) next).op2 instanceof IRConstInt && result == ((Binary) next).op1){
+                result = next.getResult();
+                op1 = new IRConstInt(((IRConstInt) op1).getValue() + ((IRConstInt) ((Binary) next).op2).getValue(), IRIntType.IntTypeBytes.Int32);
+                next.Remove();
+                return true;
+            }
+            else if(op == IRBinaryOpType.mul && ((Binary) next).getOp() == IRBinaryOpType.mul && op1 instanceof IRConstInt && ((Binary) next).op1 instanceof IRConstInt && result == ((Binary) next).op2){
+                result = next.getResult();
+                op1 = new IRConstInt(((IRConstInt) op1).getValue() + ((IRConstInt) ((Binary) next).op1).getValue(), IRIntType.IntTypeBytes.Int32);
+                next.Remove();
+                return true;
+            }
+            else if(op == IRBinaryOpType.mul && ((Binary) next).getOp() == IRBinaryOpType.mul && op2 instanceof IRConstInt && ((Binary) next).op1 instanceof IRConstInt && result == ((Binary) next).op2){
+                result = next.getResult();
+                op2 = new IRConstInt(((IRConstInt) op2).getValue() + ((IRConstInt) ((Binary) next).op1).getValue(), IRIntType.IntTypeBytes.Int32);
+                next.Remove();
+                return true;
+            }
         }
         return false;
     }

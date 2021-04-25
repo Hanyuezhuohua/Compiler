@@ -1,8 +1,10 @@
 package IR.IRinstruction;
 
 import IR.IRbasicblock.IRBasicBlock;
+import IR.IRoperand.IRConstInt;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
+import IR.IRtype.IRIntType;
 import IR.IRutility.IRCopy;
 import IR.IRutility.IRVisitor;
 
@@ -122,5 +124,22 @@ public class BitwiseBinary extends IRInstruction{
             else return false;
         }
         else return false;
+    }
+
+    @Override
+    public boolean merge() {
+        if(next instanceof BitwiseBinary && op == IRBitwiseBinaryOpType.shl && ((BitwiseBinary) next).op == IRBitwiseBinaryOpType.shl && op2 instanceof IRConstInt && ((BitwiseBinary) next).op2 instanceof IRConstInt && result == ((BitwiseBinary) next).op1){
+            result = next.getResult();
+            op2 = new IRConstInt(((IRConstInt) op2).getValue() + ((IRConstInt) ((BitwiseBinary) next).op2).getValue(), IRIntType.IntTypeBytes.Int32);
+            next.Remove();
+            return true;
+        }
+        else if(next instanceof BitwiseBinary && op == IRBitwiseBinaryOpType.ashr && ((BitwiseBinary) next).op == IRBitwiseBinaryOpType.ashr && op2 instanceof IRConstInt && ((BitwiseBinary) next).op2 instanceof IRConstInt && result == ((BitwiseBinary) next).op1){
+            result = next.getResult();
+            op2 = new IRConstInt(((IRConstInt) op2).getValue() + ((IRConstInt) ((BitwiseBinary) next).op2).getValue(), IRIntType.IntTypeBytes.Int32);
+            next.Remove();
+            return true;
+        }
+        return false;
     }
 }
