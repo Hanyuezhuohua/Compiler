@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/Inline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/Inline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/LoopDepthAnalysis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/LoopDepthAnalysis.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/LICM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/LICM.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,12 +123,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Optimization/IR/LICM.java</url>
-          <line>37</line>
+          <line>62</line>
           <option name="timeStamp" value="371" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Optimization/IR/LICM.java</url>
-          <line>32</line>
+          <line>57</line>
           <option name="timeStamp" value="372" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -156,6 +155,11 @@
           <url>file://$PROJECT_DIR$/src/IR/IRbasicblock/IRBasicBlock.java</url>
           <line>307</line>
           <option name="timeStamp" value="428" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Optimization/IR/LICM.java</url>
+          <line>92</line>
+          <option name="timeStamp" value="429" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

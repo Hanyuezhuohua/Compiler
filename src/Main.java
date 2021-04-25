@@ -56,8 +56,8 @@ public class Main {
       //      new Inline(irBuilder.getModule()).run();
       //      new GlobalToLocal(irBuilder.getModule()).run();
             new Memory_Register().run(irBuilder.getModule());
-      //      LICM test = new LICM();
-      //      test.run(irBuilder.getModule());
+       //     LICM test = new LICM();
+       //     test.run(irBuilder.getModule());
             new CFGSimplification().visit(irBuilder.getModule());
             IRFile = new PrintStream( "out10.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
@@ -95,8 +95,8 @@ public class Main {
         //        new IRPrinter(IRFile).run(irBuilder.getModule());
                 modified |= Opt7.Flag();
                 LICM Opt8 = new LICM();
-       //         Opt8.run(irBuilder.getModule());
-                modified |= Opt8.NewLICM();
+                Opt8.run(irBuilder.getModule());
+       //         modified |= Opt8.NewLICM();
                 new MemoryAccess(irBuilder.getModule()).run();
             }while (modified);
             new Inline(irBuilder.getModule(), true).run();

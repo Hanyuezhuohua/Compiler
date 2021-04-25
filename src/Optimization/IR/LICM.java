@@ -3,8 +3,10 @@ package Optimization.IR;
 import IR.IRbasicblock.IRBasicBlock;
 import IR.IRinstruction.*;
 import IR.IRmodule.IRModule;
+import IR.IRoperand.IRGlobalVariable;
 import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
+import IR.IRtype.IRPointerType;
 import IR.IRutility.DefCollection;
 import IR.IRutility.FuncBlockCollection;
 import IR.IRutility.UseClear;
@@ -27,6 +29,29 @@ public class LICM {
 
     public boolean NewLICM() {
         return newLICM;
+    }
+
+    public boolean check(IRInstruction inst){
+        assert inst instanceof Load;
+        if(!(((Load) inst).getPointer() instanceof IRLocalRegister || ((Load) inst).getPointer() instanceof IRGlobalVariable)) return true;
+        else if(((Load) inst).getPointer() instanceof IRGlobalVariable){
+            for(IRBasicBlock block: loopBlocks){
+                for(IRInstruction instruction = block.getHead(); instruction != null; instruction = instruction.getNext()){
+                    if(instruction instanceof Store && ((Store) instruction).getPointer() == ((Load) inst).getPointer()) return false;
+                }
+            }
+            return true;
+        }
+        else if(((Load) inst).getPointer().getOperandType() instanceof IRPointerType && ((IRPointerType) ((Load) inst).getPointer().getOperandType()).getPointTo() instanceof IRPointerType){
+            if(((Load) inst).getPointer().getDef() != null && loopBlocks.contains(((Load) inst).getPointer().getDef().getInstIn())) return false;
+            for(IRBasicBlock block: loopBlocks){
+                for(IRInstruction instruction = block.getHead(); instruction != null; instruction = instruction.getNext()){
+                    if(instruction instanceof Store && ((Store) instruction).getPointer().getOperandType() instanceof IRPointerType && ((IRPointerType) ((Store) instruction).getPointer().getOperandType()).getPointTo() instanceof IRPointerType) return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     public void run(IRModule module){
@@ -131,8 +156,12 @@ public class LICM {
                                 block.addInstBeforeTail(inst);
                             }
                         }
-                        else if(inst instanceof Load){
-
+                        if(inst instanceof Load){
+                            if(check(inst)){
+                                inst.Remove();
+                                inst.setInstIn(block);
+                                block.addInstBeforeTail(inst);
+                            }
                         }
                     }
                 }
