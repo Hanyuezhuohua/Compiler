@@ -30,26 +30,27 @@ public class CFGSimplification implements IRVisitor {
     @Override
     public void visit(IRFunction func) {
         do{
-            for(IRBasicBlock block : func.getBlockContain()){
-                if(block.getHead() != null && block.getHead().getPrev() != null) block.getHead().setPrev(null);
-                if(block.getTail() != null && block.getTail().getNext() != null) block.getTail().setNext(null);
-            }
+     //   for(int i = 0; i < 7; ++i) {
             func.setBlockContain(new FuncBlockCollection().BlockCollecting(func));
             new DominatorTree(func).Lengauer_Tarjan();
+            for (IRBasicBlock block : func.getBlockContain()) {
+                if (block.getHead() != null && block.getHead().getPrev() != null) block.getHead().setPrev(null);
+                if (block.getTail() != null && block.getTail().getNext() != null) block.getTail().setNext(null);
+            }
             newCFGSimplification = false;
-            for(IRBasicBlock block : func.getBlockContain()){
-                if(block.canMerge()){
+            for (IRBasicBlock block : func.getBlockContain()) {
+                if (block.canMerge()) {
                     newCFGSimplification = true;
                     flag = true;
                     IRBasicBlock next = block.getNext().get(0);
-                    for(IRInstruction inst = next.getHead(); inst != null && inst instanceof Phi; inst = inst.getNext()){
+                    for (IRInstruction inst = next.getHead(); inst != null && inst instanceof Phi; inst = inst.getNext()) {
                         ((IRLocalRegister) inst.getResult()).update(((Phi) inst).getValues().get(0));
                         inst.Remove();
                     }
                     block.getTail().Remove();
                     block.merge(next);
-            //        func.getBlockContain().remove(next);
-                    if(next.equals(func.getExit())) func.setExit(block);
+                    //        func.getBlockContain().remove(next);
+                    if (next.equals(func.getExit())) func.setExit(block);
                     break;
                 }
             /*    else if(block.getTail() instanceof Br && ((Br) block.getTail()).getCond() != null){
@@ -96,6 +97,7 @@ public class CFGSimplification implements IRVisitor {
                     }
                 }*/
             }
+     //   }
         }while (newCFGSimplification);
     }
 

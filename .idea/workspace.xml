@@ -4,9 +4,7 @@
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/IR/IRinstruction/IRInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRinstruction/IRInstruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Optimization/IR/MemoryAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/MemoryAccess.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,23 +158,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java</url>
-          <line>40</line>
-          <option name="timeStamp" value="404" />
+          <line>42</line>
+          <option name="timeStamp" value="414" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java</url>
-          <line>41</line>
-          <option name="timeStamp" value="406" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java</url>
-          <line>43</line>
-          <option name="timeStamp" value="408" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Optimization/IR/CFGSimplification.java</url>
-          <line>48</line>
-          <option name="timeStamp" value="409" />
+          <line>52</line>
+          <option name="timeStamp" value="416" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

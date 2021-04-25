@@ -50,14 +50,14 @@ public abstract class IRInstruction {
         }
         else{
             instIn.setHead(next);
-            if(next != null) next.setPrev(null);
+  //          if(next != null) next.setPrev(null);
         }
         if(next != null){
             next.prev = prev;
         }
         else{
             instIn.setTail(prev);
-            if(prev != null) prev.setNext(null);
+   //         if(prev != null) prev.setNext(null);
         }
         getOperands().forEach(operand -> {
             operand.removeInst(this);
