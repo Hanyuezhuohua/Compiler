@@ -85,7 +85,6 @@ public class LICM {
                                 inst.Remove();
                                 inst.setInstIn(block);
                                 block.addInstBeforeTail(inst);
-                                inst.setInstIn(block);
                             }
                         }
                         else if(inst instanceof BitwiseBinary){

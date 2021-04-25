@@ -56,9 +56,11 @@ public class Main {
       //      new Inline(irBuilder.getModule()).run();
       //      new GlobalToLocal(irBuilder.getModule()).run();
             new Memory_Register().run(irBuilder.getModule());
-            LICM test = new LICM();
-            test.run(irBuilder.getModule());
-
+      //      LICM test = new LICM();
+      //      test.run(irBuilder.getModule());
+            new CFGSimplification().visit(irBuilder.getModule());
+            IRFile = new PrintStream( "out10.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
             new Inline(irBuilder.getModule(), true).run();
             new InstCombination().visit(irBuilder.getModule());
             IRFile = new PrintStream( "out5.ll");
