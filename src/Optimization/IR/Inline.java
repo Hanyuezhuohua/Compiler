@@ -79,7 +79,7 @@ public class Inline {
                 for(int i = 1; i < inst.getFunctionArgs().size(); ++i) copy.put(inst.getFnptrval().getParameters().get(i - 1), inst.getFunctionArgs().get(i));
             }
             else for (int i = 0; i < inst.getFunctionArgs().size(); ++i) copy.put(inst.getFnptrval().getParameters().get(i), inst.getFunctionArgs().get(i));
-            copy.init(inst.getFnptrval());
+            copy.init(inst.getFnptrval(), func);
             copy.connect();
             IRBasicBlock newSplit = new IRBasicBlock(func, inst.getInstIn().getIdentifier() + "_split");
             inst.getInstIn().split(newSplit, inst);

@@ -118,6 +118,7 @@ public class IRBasicBlock {
             head = inst;
             inst.setNext(tail);
             tail.setPrev(inst);
+            inst.setPrev(null);
         }
         else{
             IRInstruction prev = tail.getPrev();

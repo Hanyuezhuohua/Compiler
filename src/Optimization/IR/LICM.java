@@ -7,6 +7,8 @@ import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
 import IR.IRutility.DefCollection;
 import IR.IRutility.FuncBlockCollection;
+import IR.IRutility.UseClear;
+import IR.IRutility.UseCollection;
 import backend.AST_IR.DominatorTree;
 
 import java.util.HashSet;
@@ -28,6 +30,8 @@ public class LICM {
     }
 
     public void run(IRModule module){
+        new UseClear().visit(module);
+        new UseCollection().visit(module);
         new DefCollection().visit(module);
         module.getExternalFunctionMap().forEach((id, func) -> {
             func.setBlockContain(new FuncBlockCollection().BlockCollecting(func));
@@ -81,6 +85,7 @@ public class LICM {
                                 inst.Remove();
                                 inst.setInstIn(block);
                                 block.addInstBeforeTail(inst);
+                                inst.setInstIn(block);
                             }
                         }
                         else if(inst instanceof BitwiseBinary){

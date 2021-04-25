@@ -56,8 +56,7 @@ public class Main {
       //      new Inline(irBuilder.getModule()).run();
       //      new GlobalToLocal(irBuilder.getModule()).run();
             new Memory_Register().run(irBuilder.getModule());
-            IRFile = new PrintStream( "out3.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
+
             new Inline(irBuilder.getModule(), true).run();
             new InstCombination().visit(irBuilder.getModule());
             IRFile = new PrintStream( "out5.ll");
@@ -87,23 +86,20 @@ public class Main {
            //     Opt7.visit(irBuilder.getModule());
                 modified |= Opt7.Flag();
                 LICM Opt8 = new LICM();
-            //    Opt8.run(irBuilder.getModule());
+                Opt8.run(irBuilder.getModule());
                 modified |= Opt8.NewLICM();
             }while (modified);
-            for(int i = 0; i < 10; ++i){
+            IRFile = new PrintStream( "out9.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
+    /*        for(int i = 0; i < 10; ++i){
                 modified = false;
-                ADCE Opt4 = new ADCE(irBuilder.getModule());
-  //              Opt4.run();
-                modified |= Opt4.Flag();
                 CSE Opt5 = new CSE();
                 Opt5.visit(irBuilder.getModule());
                 modified |= Opt5.Flag();
                 LICM Opt8 = new LICM();
                 Opt8.run(irBuilder.getModule());
                 modified |= Opt8.NewLICM();
-            }
-            IRFile = new PrintStream( "out6.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
+            }*/
             CFGSimplification Opt7 = new CFGSimplification();
          //   Opt7.visit(irBuilder.getModule());
          //   new LICM().run(irBuilder.getModule());

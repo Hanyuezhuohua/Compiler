@@ -17,9 +17,9 @@ public class IRCopy {
         blockMap = new HashMap<>();
     }
 
-    public void init(IRFunction func){
+    public void init(IRFunction func, IRFunction copyFunc){
         func.getBlockContain().forEach(block -> {
-            if(!blockMap.containsKey(block)) blockMap.put(block, new IRBasicBlock(block.getBlockIn(), block.getIdentifier() + "_copy"));
+            if(!blockMap.containsKey(block)) blockMap.put(block, new IRBasicBlock(copyFunc, block.getIdentifier() + "_copy"));
             for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
                 inst.instCopy(blockMap.get(block), this);
             }
