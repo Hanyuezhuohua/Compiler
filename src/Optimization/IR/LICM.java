@@ -91,6 +91,9 @@ public class LICM {
                             flag = true;
                             break;
                         }
+                        for(IRBasicBlock next: loopBlock.getNext()){
+                            if(loopBlock != head && !loopBlocks.contains(next)) flag = true;
+                        }
                     }
                     if(flag) break;
                 }
