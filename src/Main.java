@@ -62,13 +62,24 @@ public class Main {
             //    new CFGSimplification().visit(irBuilder.getModule());
             IRFile = new PrintStream( "out3.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
-            new Inline(irBuilder.getModule(), true).run();
-            new InstCombination().visit(irBuilder.getModule());
+         //   new Inline(irBuilder.getModule(), true).run();
+         //   new InstCombination().visit(irBuilder.getModule());
             IRFile = new PrintStream( "out10.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
             boolean modified = false;
             boolean check = false;
             int t = 0;
+ /*           for(int i = 0; i < 2; ++i){
+                modified = false;
+                CSE Opt5 = new CSE();
+                Opt5.visit(irBuilder.getModule());
+                IRFile = new PrintStream( i + "out1.ll");
+                new IRPrinter(IRFile).run(irBuilder.getModule());
+                modified |= Opt5.Flag();
+                modified |= new Peephole(irBuilder.getModule()).run();
+                IRFile = new PrintStream( i + "out2.ll");
+                new IRPrinter(IRFile).run(irBuilder.getModule());
+            }*/
             do{
                 modified = false;
                 Inline Opt1 = new Inline(irBuilder.getModule(), false);

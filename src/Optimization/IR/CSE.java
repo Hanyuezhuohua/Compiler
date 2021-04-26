@@ -5,15 +5,14 @@ import IR.IRfunction.IRFunction;
 import IR.IRinstruction.*;
 import IR.IRmodule.IRModule;
 import IR.IRoperand.IRLocalRegister;
-import IR.IRutility.FuncBlockCollection;
-import IR.IRutility.IRVisitor;
+import IR.IRutility.*;
 import backend.AST_IR.DominatorTree;
 
 import java.util.ArrayList;
 
 public class CSE implements IRVisitor {
     private boolean newCSE;
-    private static int CSELimit = 30;
+    private static int CSELimit = 25;
     private boolean flag = false;
 
     public CSE(){
@@ -26,6 +25,9 @@ public class CSE implements IRVisitor {
 
     @Override
     public void visit(IRModule module) {
+        new UseClear().visit(module);
+        new UseCollection().visit(module);
+        new DefCollection().visit(module);
         module.getExternalFunctionMap().forEach((id, func) -> func.accept(this));
     }
 
