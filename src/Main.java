@@ -113,6 +113,7 @@ public class Main {
                 irBuilder = new IRBuilder(optimize);
                 irBuilder.visit(ast);
                 new Memory_Register().run(irBuilder.getModule());
+                new TailCall(irBuilder.getModule()).run();
                 new Inline(irBuilder.getModule(), true).run();
                 new InstCombination().visit(irBuilder.getModule());
                 do{
@@ -141,7 +142,7 @@ public class Main {
                     new MemoryAccess(irBuilder.getModule()).run();
                 }while (modified);
             }
-            new TailCall(irBuilder.getModule()).run();
+      //      new TailCall(irBuilder.getModule()).run();
             new PhiResolution().run(irBuilder.getModule());
       //      new MemoryAccess(irBuilder.getModule()).run();;
             IRFile = new PrintStream( "out7.ll");
