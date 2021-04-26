@@ -40,7 +40,7 @@ public class Main {
         String fileName = "./testcase/code.mx";
         try {
             InputStream file = System.in;
-            //        InputStream file = new FileInputStream(fileName);
+           //         InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new SemanticChecker().visit(ast);
             //new ASTOptimize(ast).run();
@@ -60,7 +60,8 @@ public class Main {
             //     LICM test = new LICM();
             //     test.run(irBuilder.getModule());
             //    new CFGSimplification().visit(irBuilder.getModule());
-
+            IRFile = new PrintStream( "out3.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
             new Inline(irBuilder.getModule(), true).run();
             new InstCombination().visit(irBuilder.getModule());
             IRFile = new PrintStream( "out10.ll");
@@ -88,6 +89,7 @@ public class Main {
                 CSE Opt5 = new CSE();
                 Opt5.visit(irBuilder.getModule());
                 modified |= Opt5.Flag();
+                modified |= new Peephole(irBuilder.getModule()).run();
                 //      IRFile = new PrintStream( t + "out1.ll");
                 //       new IRPrinter(IRFile).run(irBuilder.getModule());
                 CFGSimplification Opt7 = new CFGSimplification();
@@ -142,7 +144,7 @@ public class Main {
                 }while (modified);
             }
             new TailCall(irBuilder.getModule()).run();
-            new MemoryAccess(irBuilder.getModule()).run();
+         //   new MemoryAccess(irBuilder.getModule()).run();
             CSE Opt5 = new CSE();
             Opt5.visit(irBuilder.getModule());
             modified |= Opt5.Flag();

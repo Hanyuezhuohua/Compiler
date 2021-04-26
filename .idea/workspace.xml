@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdfd3ebf-492a-4120-905e-63a5e34656d8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRConstBool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRConstBool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRConstInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRConstInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/IRoperand/IRConstNull.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/IRoperand/IRConstNull.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Optimization/IR/Inline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Optimization/IR/Inline.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -128,6 +133,31 @@
           <url>file://$PROJECT_DIR$/src/Optimization/IR/LICM.java</url>
           <line>115</line>
           <option name="timeStamp" value="452" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>459</line>
+          <option name="timeStamp" value="460" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>431</line>
+          <option name="timeStamp" value="461" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>435</line>
+          <option name="timeStamp" value="463" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>432</line>
+          <option name="timeStamp" value="464" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/backend/AST_IR/IRBuilder.java</url>
+          <line>433</line>
+          <option name="timeStamp" value="465" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -36,6 +36,6 @@ public class IRConstNull extends IROperand{
 
     @Override
     public boolean CSEChecker(IROperand other) {
-        return other instanceof IRConstNull;
+        return other instanceof IRConstNull || other instanceof IRConstVoid;
     }
 }

@@ -43,6 +43,6 @@ public class IRConstBool extends IROperand{
 
     @Override
     public boolean CSEChecker(IROperand other) {
-        return other instanceof IRConstBool && ((IRConstBool) other).getValue() == value;
+        return (other instanceof IRConstBool && ((IRConstBool) other).getValue() == value) || other instanceof IRConstVoid;
     }
 }
