@@ -59,10 +59,11 @@ public class Main {
        //     LICM test = new LICM();
        //     test.run(irBuilder.getModule());
         //    new CFGSimplification().visit(irBuilder.getModule());
-            IRFile = new PrintStream( "out10.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
+
             new Inline(irBuilder.getModule(), true).run();
             new InstCombination().visit(irBuilder.getModule());
+            IRFile = new PrintStream( "out10.ll");
+            new IRPrinter(IRFile).run(irBuilder.getModule());
 
             boolean modified = false;
             int t = 0;
@@ -94,22 +95,24 @@ public class Main {
            //     new IRPrinter(IRFile).run(irBuilder.getModule());
                 modified |= Opt7.Flag();
                 LICM Opt8 = new LICM();
-                Opt8.run(irBuilder.getModule());
+                Opt8.run(irBuilder.getModule(), true);
                 modified |= Opt8.NewLICM();
            //             IRFile = new PrintStream( t++ + "out2.ll");
            //             new IRPrinter(IRFile).run(irBuilder.getModule());
                 new MemoryAccess(irBuilder.getModule()).run();
             }while (modified);
-         /*   for(int i = 0; i < 2; ++i){
-                new LICM().run(irBuilder.getModule());
-                new MemoryAccess(irBuilder.getModule()).run();
-            }
-            new LICM().run(irBuilder.getModule());
-            IRFile = new PrintStream( "out5.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
-            new MemoryAccess(irBuilder.getModule()).run();
-            IRFile = new PrintStream( "out9.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());*/
+       /*     for(int i = 0; i < 2; ++i){
+
+                IRFile = new PrintStream( i + "out1.ll");
+                if(i == 0){
+                    new LICM().run(irBuilder.getModule(), true);
+                    new IRPrinter(IRFile).run(irBuilder.getModule());
+                }
+                else{
+                    new LICM().run(irBuilder.getModule(), false);
+                    new IRPrinter(IRFile).run(irBuilder.getModule());
+                }
+            }*/
        //     new MemoryAccess(irBuilder.getModule()).run();;
       /*      for(int i = 0; i < 10; ++i){
                 modified = false;

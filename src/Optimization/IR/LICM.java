@@ -54,7 +54,7 @@ public class LICM {
         return false;
     }
 
-    public void run(IRModule module){
+    public void run(IRModule module, boolean flag1){
         new UseClear().visit(module);
         new UseCollection().visit(module);
         new DefCollection().visit(module);
@@ -67,7 +67,7 @@ public class LICM {
                 if((block.getTail() instanceof Br && ((Br) block.getTail()).getCond() != null) || block.getTail() instanceof Ret) continue;
                 IRBasicBlock head = ((Br) block.getTail()).getIfTrue();
                 for(IRBasicBlock potentialTails: func.getBlockContain()){
-                    if(potentialTails.DomBy(head) && potentialTails.getTail() instanceof Br && ((Br) potentialTails.getTail()).getCond() == null && ((Br) potentialTails.getTail()).getIfTrue() == head){
+                    if(potentialTails != block && potentialTails.DomBy(head) && potentialTails.getTail() instanceof Br && ((Br) potentialTails.getTail()).getCond() == null && ((Br) potentialTails.getTail()).getIfTrue() == head){
                         tails.add(potentialTails);
                     }
                 }
@@ -91,16 +91,16 @@ public class LICM {
                             flag = true;
                             break;
                         }
-                        for(IRBasicBlock next: loopBlock.getNext()){
-                            if(loopBlock != head && !loopBlocks.contains(next)) flag = true;
-                        }
+                    }
+                    for(IRBasicBlock next: loopBlock.getNext()){
+                        if(loopBlock != head && !loopBlocks.contains(next)) flag = true;
                     }
                     if(flag) break;
                 }
                 if(flag) continue;
                 for(IRBasicBlock loopBlock : loopBlocks){
                     for (IRInstruction inst = loopBlock.getHead(); inst != null; inst = inst.getNext()){
-                        if(inst instanceof Binary){
+                        if(inst instanceof Binary && ((!flag1 && func.getIdentifier().equals("main")) || flag1)){
                             boolean canMove = true;
                             for(IROperand operand: inst.getOperands()){
                                 if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){
@@ -113,9 +113,10 @@ public class LICM {
                                 inst.Remove();
                                 inst.setInstIn(block);
                                 block.addInstBeforeTail(inst);
+                                inst.setInstIn(block);
                             }
                         }
-                        else if(inst instanceof BitwiseBinary){
+                        else if(inst instanceof BitwiseBinary && flag1){
                             boolean canMove = true;
                             for(IROperand operand: inst.getOperands()){
                                 if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){
@@ -127,24 +128,10 @@ public class LICM {
                                 inst.Remove();
                                 inst.setInstIn(block);
                                 block.addInstBeforeTail(inst);
-                            }
-                        }
-                        else if(inst instanceof BitCast){
-                            boolean canMove = true;
-                            for(IROperand operand: inst.getOperands()){
-                                if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){
-                                    canMove = false;
-                                    break;
-                                }
-                            }
-                            if(canMove){
-                                newLICM = true;
-                                inst.Remove();
                                 inst.setInstIn(block);
-                                block.addInstBeforeTail(inst);
                             }
                         }
-                        else if(inst instanceof GetElementPtr){
+                        else if(inst instanceof BitCast && flag1){
                             boolean canMove = true;
                             for(IROperand operand: inst.getOperands()){
                                 if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){
@@ -157,13 +144,31 @@ public class LICM {
                                 inst.Remove();
                                 inst.setInstIn(block);
                                 block.addInstBeforeTail(inst);
+                                inst.setInstIn(block);
                             }
                         }
-                        if(inst instanceof Load){
+                        else if(inst instanceof GetElementPtr && flag1){
+                            boolean canMove = true;
+                            for(IROperand operand: inst.getOperands()){
+                                if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){
+                                    canMove = false;
+                                    break;
+                                }
+                            }
+                            if(canMove){
+                                newLICM = true;
+                                inst.Remove();
+                                inst.setInstIn(block);
+                                block.addInstBeforeTail(inst);
+                                inst.setInstIn(block);
+                            }
+                        }
+                        if(inst instanceof Load && flag1){
                             if(check(inst)){
                                 inst.Remove();
                                 inst.setInstIn(block);
                                 block.addInstBeforeTail(inst);
+                                inst.setInstIn(block);
                             }
                         }
                     }
