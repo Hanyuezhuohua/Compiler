@@ -9,6 +9,7 @@ import IR.IRinstruction.Store;
 import IR.IRmodule.IRModule;
 import IR.IRoperand.IRGlobalVariable;
 import IR.IRoperand.IRLocalRegister;
+import IR.IRutility.FuncBlockCollection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -166,6 +167,7 @@ public class Peephole {
     }
 
     void runForFunction(IRFunction function) {
+        function.setBlockContain(new FuncBlockCollection().BlockCollecting(function));
         function.getBlockContain().forEach(this::runForBlock);
     }
 
