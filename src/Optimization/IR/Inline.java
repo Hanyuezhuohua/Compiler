@@ -101,7 +101,7 @@ public class Inline {
         }
     }
 
-    private int bound = 6;
+    private int bound = 3;
 
     public void run(){
         int cnt = 0;
