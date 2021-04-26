@@ -65,8 +65,8 @@ public class Main {
             new InstCombination().visit(irBuilder.getModule());
             IRFile = new PrintStream( "out10.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
-
             boolean modified = false;
+            boolean check = false;
             int t = 0;
             do{
                 modified = false;
@@ -95,7 +95,13 @@ public class Main {
            //     IRFile = new PrintStream( t++ + "out1.ll");
            //     new IRPrinter(IRFile).run(irBuilder.getModule());
                 modified |= Opt7.Flag();
-                irBuilder.getModule().getExternalFunctionMap().forEach((id, func) -> func.setBlockContain(new FuncBlockCollection().BlockCollecting(func)));
+          //      irBuilder.getModule().getExternalFunctionMap().forEach((id, func) -> func.setBlockContain(new FuncBlockCollection().BlockCollecting(func)));
+                TailCheck Check1 = new TailCheck();
+                Check1.visit(irBuilder.getModule());
+                if(Check1.isCheck()){
+                    check = true;
+                    break;
+                }
                 LICM Opt8 = new LICM();
                 Opt8.run(irBuilder.getModule(), true);
                 modified |= Opt8.NewLICM();
@@ -103,36 +109,38 @@ public class Main {
            //             new IRPrinter(IRFile).run(irBuilder.getModule());
                 new MemoryAccess(irBuilder.getModule()).run();
             }while (modified);
-       /*     for(int i = 0; i < 2; ++i){
-
-                IRFile = new PrintStream( i + "out1.ll");
-                if(i == 0){
-                    new LICM().run(irBuilder.getModule(), true);
-                    new IRPrinter(IRFile).run(irBuilder.getModule());
-                }
-                else{
-                    new LICM().run(irBuilder.getModule(), false);
-                    new IRPrinter(IRFile).run(irBuilder.getModule());
-                }
-            }*/
-       //     new MemoryAccess(irBuilder.getModule()).run();;
-      /*      for(int i = 0; i < 10; ++i){
-                modified = false;
-                CSE Opt5 = new CSE();
-                Opt5.visit(irBuilder.getModule());
-                modified |= Opt5.Flag();
-                LICM Opt8 = new LICM();
-                Opt8.run(irBuilder.getModule());
-                modified |= Opt8.NewLICM();
-            }*/
-          //  CFGSimplification Opt7 = new CFGSimplification();
-         //   Opt7.visit(irBuilder.getModule());
-         //   new LICM().run(irBuilder.getModule());
-         //   CSE Opt5 = new CSE();
-         //   Opt5.visit(irBuilder.getModule());
-            IRFile = new PrintStream( "out4.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
-      //      new GlobalToLocal(irBuilder.getModule()).run();
+            if(check){
+                irBuilder = new IRBuilder(optimize);
+                irBuilder.visit(ast);
+                new Memory_Register().run(irBuilder.getModule());
+                new Inline(irBuilder.getModule(), true).run();
+                new InstCombination().visit(irBuilder.getModule());
+                do{
+                    modified = false;
+                    Inline Opt1 = new Inline(irBuilder.getModule(), false);
+                    Opt1.run();
+                    modified |= Opt1.Flag();
+                    InstCombination Opt2 = new InstCombination();
+                    Opt2.visit(irBuilder.getModule());
+                    modified |= Opt2.NewInstCombination();
+                    SCCP Opt6 = new SCCP();
+                    Opt6.visit(irBuilder.getModule());
+                    modified |= Opt6.NewSCCP();
+                    DCE Opt3 = new DCE();
+                    Opt3.visit(irBuilder.getModule());
+                    modified |= Opt3.Flag();
+                    ADCE Opt4 = new ADCE(irBuilder.getModule());
+                    Opt4.run();
+                    modified |= Opt4.Flag();
+                    CSE Opt5 = new CSE();
+                    Opt5.visit(irBuilder.getModule());
+                    modified |= Opt5.Flag();
+                    CFGSimplification Opt7 = new CFGSimplification();
+                    Opt7.visit(irBuilder.getModule());
+                    modified |= Opt7.Flag();
+                    new MemoryAccess(irBuilder.getModule()).run();
+                }while (modified);
+            }
             new TailCall(irBuilder.getModule()).run();
             new PhiResolution().run(irBuilder.getModule());
       //      new MemoryAccess(irBuilder.getModule()).run();;
