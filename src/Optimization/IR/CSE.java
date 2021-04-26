@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class CSE implements IRVisitor {
     private boolean newCSE;
-    private static int CSELimit = 80;
+    private static int CSELimit = 30;
     private boolean flag = false;
 
     public CSE(){

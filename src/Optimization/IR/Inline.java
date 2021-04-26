@@ -52,7 +52,7 @@ public class Inline {
         newInline = false;
         collection.run();
         module.getExternalFunctionMap().forEach((id, func) -> {
- //           if(func.getCallee().size() == 0 || (inlineRecursion && !inlineFunc.contains(func) && func.getCallee().size() == 1 && func.getCallee().contains(func))) inlineFunc.add(func);
+            //           if(func.getCallee().size() == 0 || (inlineRecursion && !inlineFunc.contains(func) && func.getCallee().size() == 1 && func.getCallee().contains(func))) inlineFunc.add(func);
             if(func.getCallee().size() == 0 || (inlineRecursion && !inlineFunc.contains(func) && func.getCallee().size() == 1 && func.getCallee().contains(func))) inlineFunc.add(func);
             int cnt = 0;
             for (IRBasicBlock block : func.getBlockContain()) for (IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) cnt++;
@@ -60,11 +60,11 @@ public class Inline {
         });
         module.getInternalFunctionMap().forEach((id, func) -> instNum.put(func, inlineINF));
         module.getExternalFunctionMap().forEach((id, func) -> func.getBlockContain().forEach(block -> {
-            for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) if(inst instanceof Call && inlineFunc.contains(((Call) inst).getFnptrval()) && instNum.get(((Call) inst).getFnptrval()) < inlineINF && !((Call) inst).tailCall) inlines.put((Call) inst, func);
+            for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) if(inst instanceof Call && inlineFunc.contains(((Call) inst).getFnptrval()) && instNum.get(((Call) inst).getFnptrval()) < inlineINF) inlines.put((Call) inst, func);
         }));
-     //   module.getExternalFunctionMap().forEach((id, func) -> func.getBlockContain().forEach(block -> {
-     //       for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) if(inst instanceof Call && (((Call) inst).getFnptrval() != func || inlineRecursion) && instNum.get(((Call) inst).getFnptrval()) < inlineINF) inlines.put((Call) inst, func);
-     //   }));
+        //   module.getExternalFunctionMap().forEach((id, func) -> func.getBlockContain().forEach(block -> {
+        //       for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) if(inst instanceof Call && (((Call) inst).getFnptrval() != func || inlineRecursion) && instNum.get(((Call) inst).getFnptrval()) < inlineINF) inlines.put((Call) inst, func);
+        //   }));
     }
 
     private void inline(){
@@ -101,7 +101,7 @@ public class Inline {
         }
     }
 
-    private int bound = 3;
+    private int bound = 5;
 
     public void run(){
         int cnt = 0;

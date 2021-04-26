@@ -45,7 +45,7 @@ public class MemoryAccess {
                             flag = true;
                             inst.Remove();
                         }
-                        else if(inst instanceof Call || inst == block.getTail()){
+                        else if((inst instanceof Call && module.getExternalFunctionMap().containsKey(((Call) inst).getFnptrval().getIdentifier())) || inst == block.getTail()){
                             if(flag){
                                 flag = false;
                                 IRInstruction newInst = new Store(block, value, var);
