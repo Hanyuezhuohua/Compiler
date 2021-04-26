@@ -1,4 +1,5 @@
 import AST.RootNode;
+import IR.IRutility.FuncBlockCollection;
 import Optimization.ASM.ASMOptimize;
 import Optimization.AST.ConstantFolding;
 import Optimization.AST.SimpleLoopCSE;
@@ -94,6 +95,7 @@ public class Main {
            //     IRFile = new PrintStream( t++ + "out1.ll");
            //     new IRPrinter(IRFile).run(irBuilder.getModule());
                 modified |= Opt7.Flag();
+                irBuilder.getModule().getExternalFunctionMap().forEach((id, func) -> func.setBlockContain(new FuncBlockCollection().BlockCollecting(func)));
                 LICM Opt8 = new LICM();
                 Opt8.run(irBuilder.getModule(), true);
                 modified |= Opt8.NewLICM();
