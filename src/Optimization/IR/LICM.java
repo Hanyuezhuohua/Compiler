@@ -131,7 +131,7 @@ public class LICM {
                                 inst.setInstIn(block);
                             }
                         }
-                        else if(inst instanceof BitCast && flag1){
+                        else if(inst instanceof BitCast || inst instanceof Zext || inst instanceof Trunc){
                             boolean canMove = true;
                             for(IROperand operand: inst.getOperands()){
                                 if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){
