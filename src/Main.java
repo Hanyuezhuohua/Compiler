@@ -131,7 +131,7 @@ public class Main {
             IRFile = new PrintStream( "out4.ll");
             new IRPrinter(IRFile).run(irBuilder.getModule());
       //      new GlobalToLocal(irBuilder.getModule()).run();
-      //      new TailCall(irBuilder.getModule()).run();
+            new TailCall(irBuilder.getModule()).run();
             new PhiResolution().run(irBuilder.getModule());
       //      new MemoryAccess(irBuilder.getModule()).run();;
             IRFile = new PrintStream( "out7.ll");
