@@ -31,134 +31,6 @@ public class ADCE {
         return flag;
     }
 
-    public void collectOperands(IROperand operand){
-        operand.getInstructions().forEach(inst -> {
-            if(inst instanceof Store){
-                if(((Store) inst).getValue().getOperandType() instanceof IRPointerType){
-                    if(!Operands.contains(((Store) inst).getValue())){
-                        Operands.add(((Store) inst).getValue());
-                        collectOperands(((Store) inst).getValue());
-                    }
-                    if(!Operands.contains(((Store) inst).getPointer())){
-                        Operands.add(((Store) inst).getPointer());
-                        collectOperands(((Store) inst).getPointer());
-                    }
-                }
-            }
-            else if(inst instanceof BitCast){
-                if(inst.getResult().getOperandType() instanceof IRPointerType){
-                    if(!Operands.contains(inst.getResult())){
-                        Operands.add(inst.getResult());
-                        collectOperands(inst.getResult());
-                    }
-                }
-            }
-            else if(inst instanceof GetElementPtr){
-                if(inst.getResult().getOperandType() instanceof IRPointerType){
-                    if(!Operands.contains(inst.getResult())){
-                        Operands.add(inst.getResult());
-                        collectOperands(inst.getResult());
-                    }
-                }
-            }
-            else if(inst instanceof Call){
-                if(inst.getResult().getOperandType() instanceof IRPointerType){
-                    if(!Operands.contains(inst.getResult())){
-                        Operands.add(inst.getResult());
-                        collectOperands(inst.getResult());
-                    }
-                }
-            }
-            else if(inst instanceof Load){
-                if(inst.getResult().getOperandType() instanceof IRPointerType){
-                    if(!Operands.contains(inst.getResult())){
-                        Operands.add(inst.getResult());
-                        collectOperands(inst.getResult());
-                    }
-                }
-            }
-            else if(inst instanceof Phi){
-                if(inst.getResult().getOperandType() instanceof IRPointerType){
-                    if(!Operands.contains(inst.getResult())){
-                        Operands.add(inst.getResult());
-                        collectOperands(inst.getResult());
-                    }
-                }
-            }
-        });
-    }
-
-    public void collectInstructions(IRInstruction instruction){
-        Stack<IRInstruction> S = new Stack<>();
-        S.push(instruction);
-        while(!S.empty()){
-            IRInstruction inst = S.pop();
-            inst.getOperands().forEach(operand -> {
-                if(operand.getDef() != null && !Instructions.contains(operand.getDef())){
-                    Instructions.add(operand.getDef());
-                    S.push(operand.getDef());
-                }
-                if(operand.getOperandType() instanceof IRPointerType){
-                    operand.getInstructions().forEach(use -> {
-                        if(!Instructions.contains(use)){
-                            if(use instanceof BitCast){
-                                Instructions.add(use);
-                                S.push(use);
-                            }
-                            else if(use instanceof GetElementPtr){
-                                Instructions.add(use);
-                                S.push(use);
-                            }
-                            else if(use instanceof Phi){
-                                Instructions.add(use);
-                                S.push(use);
-                            }
-                            else if(use instanceof Load && use.getResult().getOperandType() instanceof IRPointerType){
-                                Instructions.add(use);
-                                S.push(use);
-                            }
-                            else if(use instanceof Store){
-                                Instructions.add(use);
-                                S.push(use);
-                            }
-                        }
-                    });
-                }
-            });
-            if(inst.getResult() != null && inst.getResult().getOperandType() instanceof IRPointerType){
-                inst.getResult().getInstructions().forEach(use -> {
-                    if(!Instructions.contains(use)){
-                        if(use instanceof BitCast){
-                            Instructions.add(use);
-                            S.push(use);
-                        }
-                        else if(use instanceof GetElementPtr){
-                            Instructions.add(use);
-                            S.push(use);
-                        }
-                        else if(use instanceof Phi){
-                            Instructions.add(use);
-                            S.push(use);
-                        }
-                        else if(use instanceof Load && use.getResult().getOperandType() instanceof IRPointerType){
-                            Instructions.add(use);
-                            S.push(use);
-                        }
-                        else if(use instanceof Store){
-                            Instructions.add(use);
-                            S.push(use);
-                        }
-                    }
-                });
-            }
-            inst.getInstIn().getPrev().forEach(prev -> {
-                if(!Instructions.contains(prev.getTail())){
-                    Instructions.add(prev.getTail());
-                    S.push(prev.getTail());
-                }
-            });
-        }
-    }
 
     public void collect(){
         Operands.addAll(module.getGlobalVariableList());
@@ -166,10 +38,7 @@ public class ADCE {
             if(func.getClassPtr() != null && func.getClassPtr().getOperandType() instanceof IRPointerType) Operands.add(func.getClassPtr());
             func.getParameters().forEach(parameter -> {if(parameter.getOperandType() instanceof IRPointerType) Operands.add(parameter);});
             if(!(((Ret) func.getExit().getTail()).getValue().getOperandType() instanceof IRVoidType)){Operands.add(((Ret) func.getExit().getTail()).getValue());}
-     //       func.setSideEffect(false);
         });
-     //   HashSet<IROperand> OperandCopy = new LinkedHashSet<>(Operands);
-     //   OperandCopy.forEach(operand -> collectOperands(operand));
         Stack<IROperand> OperandStack = new Stack<>();
         Operands.forEach(operand -> OperandStack.push(operand));
         while(!OperandStack.empty()){
@@ -203,7 +72,7 @@ public class ADCE {
                     if(inst.getResult().getOperandType() instanceof IRPointerType){
                         if(!Operands.contains(inst.getResult())){
                             Operands.add(inst.getResult());
-                            collectOperands(inst.getResult());
+                            OperandStack.push(inst.getResult());
                         }
                     }
                 }
@@ -234,8 +103,6 @@ public class ADCE {
             for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) if((inst instanceof Call && ((Call) inst).getFnptrval().hasSideEffect()) || (inst instanceof Store && Operands.contains(((Store) inst).getPointer())) || inst instanceof Ret) Instructions.add(inst);
         }));
         new DefCollection().visit(module);
-      //  HashSet<IRInstruction> InstructionCopy = new LinkedHashSet<>(Instructions);
-      //  InstructionCopy.forEach(this::collectInstructions);
         Stack<IRInstruction> InstStack = new Stack<>();
         Instructions.forEach(inst -> InstStack.push(inst));
         while(!InstStack.empty()){

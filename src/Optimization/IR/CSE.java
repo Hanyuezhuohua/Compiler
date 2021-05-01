@@ -59,9 +59,7 @@ public class CSE implements IRVisitor {
                     }
                 }
             }
-            block.getNext().forEach(next -> {
-                if(next.DomBy(block)) IDomCSE(next, 0, instructions);
-            });
+            block.getNext().forEach(next -> {if(next.DomBy(block)) IDomCSE(next, 0, instructions); });
         }while (newCSE);
     }
 
@@ -80,13 +78,7 @@ public class CSE implements IRVisitor {
             }
             else if(inst instanceof Call) num += 12;
         }
-        if(num < CSELimit){
-            for(IRBasicBlock next : block.getNext()){
-                if(next.DomBy(block)){
-                    IDomCSE(next, num, instructions);
-                }
-            }
-        }
+        if(num < CSELimit) for(IRBasicBlock next : block.getNext()) if(next.DomBy(block)) IDomCSE(next, num, instructions);
     }
 
     @Override

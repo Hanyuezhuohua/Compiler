@@ -35,23 +35,25 @@ public class LICM {
         assert inst instanceof Load;
         if(!(((Load) inst).getPointer() instanceof IRLocalRegister || ((Load) inst).getPointer() instanceof IRGlobalVariable)) return true;
         else if(((Load) inst).getPointer() instanceof IRGlobalVariable){
-            for(IRBasicBlock block: loopBlocks){
-                for(IRInstruction instruction = block.getHead(); instruction != null; instruction = instruction.getNext()){
-                    if(instruction instanceof Store && ((Store) instruction).getPointer() == ((Load) inst).getPointer()) return false;
-                }
-            }
+            for(IRBasicBlock block: loopBlocks) for(IRInstruction instruction = block.getHead(); instruction != null; instruction = instruction.getNext()) if(instruction instanceof Store && ((Store) instruction).getPointer() == ((Load) inst).getPointer()) return false;
             return true;
         }
         else if(((Load) inst).getPointer().getOperandType() instanceof IRPointerType && ((IRPointerType) ((Load) inst).getPointer().getOperandType()).getPointTo() instanceof IRPointerType){
             if(((Load) inst).getPointer().getDef() != null && loopBlocks.contains(((Load) inst).getPointer().getDef().getInstIn())) return false;
-            for(IRBasicBlock block: loopBlocks){
-                for(IRInstruction instruction = block.getHead(); instruction != null; instruction = instruction.getNext()){
-                    if(instruction instanceof Store && ((Store) instruction).getPointer().getOperandType() instanceof IRPointerType && ((IRPointerType) ((Store) instruction).getPointer().getOperandType()).getPointTo() instanceof IRPointerType) return false;
-                }
-            }
+            for(IRBasicBlock block: loopBlocks) for(IRInstruction instruction = block.getHead(); instruction != null; instruction = instruction.getNext()) if(instruction instanceof Store && ((Store) instruction).getPointer().getOperandType() instanceof IRPointerType && ((IRPointerType) ((Store) instruction).getPointer().getOperandType()).getPointTo() instanceof IRPointerType) return false;
             return true;
         }
         return false;
+    }
+
+    public void collectLoop(IRBasicBlock head){
+        loopBlocks.add(head);
+        loopBlocks.addAll(tails);
+        Queue<IRBasicBlock> BlcokQueue = new LinkedList<>(tails);
+        while (!BlcokQueue.isEmpty()){
+            IRBasicBlock top = BlcokQueue.poll();
+            top.getPrev().forEach(prev -> { if(!loopBlocks.contains(prev)){loopBlocks.add(prev); BlcokQueue.add(prev); } });
+        }
     }
 
     public void run(IRModule module, boolean flag1){
@@ -71,33 +73,15 @@ public class LICM {
                         tails.add(potentialTails);
                     }
                 }
-                if(tails.isEmpty()) continue;
-                loopBlocks.add(head);
-                loopBlocks.addAll(tails);
-                Queue<IRBasicBlock> q = new LinkedList<>(tails);
-                while (!q.isEmpty()){
-                    IRBasicBlock top = q.poll();
-                    top.getPrev().forEach(prev -> {
-                        if(!loopBlocks.contains(prev)){
-                            loopBlocks.add(prev);
-                            q.add(prev);
-                        }
-                    });
-                }
+             //   if(tails.isEmpty()) continue;
+                collectLoop(head);
                 boolean flag = false;
                 for(IRBasicBlock loopBlock : loopBlocks){
-                    for (IRInstruction inst = loopBlock.getHead(); inst != null; inst = inst.getNext()){
-                        if(inst instanceof Call){
-                            flag = true;
-                            break;
-                        }
-                    }
-                    for(IRBasicBlock next: loopBlock.getNext()){
-                        if(loopBlock != head && !loopBlocks.contains(next)) flag = true;
-                    }
+                    for (IRInstruction inst = loopBlock.getHead(); inst != null; inst = inst.getNext()) if(inst instanceof Call) flag = true;
+                    for(IRBasicBlock next: loopBlock.getNext()) if(loopBlock != head && !loopBlocks.contains(next)) flag = true;
                     if(flag) break;
                 }
-                if(flag) continue;
+                if(flag || tails.isEmpty()) continue;
                 for(IRBasicBlock loopBlock : loopBlocks){
                     for (IRInstruction inst = loopBlock.getHead(); inst != null; inst = inst.getNext()){
                         if(inst instanceof Binary){
