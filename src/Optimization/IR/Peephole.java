@@ -136,8 +136,8 @@ public class Peephole {
                             if (((Store) inst).getPointer() instanceof IRGlobalVariable) GlobalVarMap.put((IRGlobalVariable) ((Store) inst).getPointer(), inst);
                             else{
                                 if(StoreRemove(inst)) newLoadStoreRemove = true;
-                                InstMap.put(inst, cnt);
                                 uselessRemove(inst);
+                                InstMap.put(inst, cnt);
                             }
                         }
                         else if(inst instanceof Call){ GlobalVarMap.clear(); InstMap.clear(); }
