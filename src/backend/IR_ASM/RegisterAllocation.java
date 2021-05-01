@@ -33,37 +33,36 @@ public class RegisterAllocation {
     HashSet<RISCVMove> activeMoves = new LinkedHashSet<>();
 
     HashSet<RISCVRegister> spillTemps = new LinkedHashSet<>();
-    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockUses;
-    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockDefs;
-    private HashSet<RISCVBasicBlock> visited;
 
     RISCVModule root;
     public RegisterAllocation (RISCVModule root) {
         this.root = root;
         preColored.addAll(root.getPhysicalRegisters());
         K = root.getColors().size();
-        blockUses = new LinkedHashMap<>();
-        blockDefs = new LinkedHashMap<>();
-        visited = new LinkedHashSet<>();
     }
 
-    private void LiveAnalysis(RISCVFunction function) {
-        function.getBlockContain().forEach(block -> {
-            HashSet<RISCVRegister> uses = new LinkedHashSet<>();
-            HashSet<RISCVRegister> defs = new LinkedHashSet<>();
-            for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
-                HashSet<RISCVRegister> instUses = inst.Uses();
-                instUses.removeAll(defs);
-                uses.addAll(instUses);
-                defs.addAll(inst.Defs());
-            }
-            blockUses.put(block, uses);
-            blockDefs.put(block, defs);
-            block.setLiveIn(new LinkedHashSet<>());
-            block.setLiveOut(new LinkedHashSet<>());
-        });
+    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockUses;
+    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockDefs;
+    private HashSet<RISCVBasicBlock> visited;
+
+    private void runForBlock(RISCVBasicBlock block) {
+        HashSet<RISCVRegister> uses = new LinkedHashSet<>();
+        HashSet<RISCVRegister> defs = new LinkedHashSet<>();
+        for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
+            HashSet<RISCVRegister> instUses = inst.Uses();
+            instUses.removeAll(defs);
+            uses.addAll(instUses);
+            defs.addAll(inst.Defs());
+        }
+        blockUses.put(block, uses);
+        blockDefs.put(block, defs);
+        block.setLiveIn(new LinkedHashSet<>());
+        block.setLiveOut(new LinkedHashSet<>());
+    }
+
+    private void runBackward(RISCVBasicBlock block){
         Stack<RISCVBasicBlock> S = new Stack<>();
-        S.push(function.getExit());
+        S.push(block);
         while(!S.empty()){
             RISCVBasicBlock now = S.pop();
             if (visited.contains(now)) continue;
@@ -85,6 +84,14 @@ public class RegisterAllocation {
                 S.push(precursor);
             }
         }
+    }
+
+    private void LiveAnalysis(RISCVFunction function) {
+        blockUses = new LinkedHashMap<>();
+        blockDefs = new LinkedHashMap<>();
+        visited = new LinkedHashSet<>();
+        function.getBlockContain().forEach(this::runForBlock);
+        runBackward(function.getExit());
     }
 
     void init() {
@@ -496,4 +503,3 @@ public class RegisterAllocation {
 
     public void run() { root.getExternalFunctionSet().forEach(func -> runForFunction(func)); }
 }
-
