@@ -28,16 +28,10 @@ public class MemoryAccess {
                         if(inst instanceof Load && ((Load) inst).getPointer() == var){
                             if(value == null) value = inst.getResult();
                             else{
-                         //      IRInstruction newInst = new Move(block, inst.getResult(), value);
                                for(IRInstruction instruction: inst.getResult().getInstructions()){
                                     instruction.update((IRLocalRegister) inst.getResult(), value);
                                 }
                                inst.Remove();
-                          //     newInst.setPrev(inst.getPrev());
-                          //     newInst.setNext(inst.getNext());
-                          //     if(inst.getPrev() != null) inst.getPrev().setNext(newInst);
-                          //     else block.setHead(newInst);
-                          //     inst.getNext().setPrev(newInst);
                             }
                         }
                         else if(inst instanceof Store &&  ((Store) inst).getPointer() == var){

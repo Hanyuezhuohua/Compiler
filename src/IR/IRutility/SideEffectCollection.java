@@ -92,20 +92,20 @@ public class SideEffectCollection {
 
         new FuncCallCollection(module).run();
 
-        module.getExternalFunctionMap().forEach((id, func) -> {
-            func.getBlockContain().forEach(block -> {
-                for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
-                    if(inst instanceof Call && ((Call) inst).getFnptrval().hasSideEffect()){
-                        SideEffect(func);
-                        break;
-                    }
-                    else if(inst instanceof Store && operands.contains(((Store) inst).getPointer())){
-                        SideEffect(func);
-                        break;
-                    }
+        module.getExternalFunctionMap().forEach((id, func) -> func.setSideEffect(false));
+
+        module.getExternalFunctionMap().forEach((id, func) -> func.getBlockContain().forEach(block -> {
+            for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
+                if(inst instanceof Call && ((Call) inst).getFnptrval().hasSideEffect()){
+                    SideEffect(func);
+                    break;
                 }
-            });
-        });
+                else if(inst instanceof Store && operands.contains(((Store) inst).getPointer())){
+                    SideEffect(func);
+                    break;
+                }
+            }
+        }));
     }
 
     public void SideEffect(IRFunction func){

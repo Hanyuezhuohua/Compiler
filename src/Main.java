@@ -43,32 +43,16 @@ public class Main {
             //         InputStream file = new FileInputStream(fileName);
             RootNode ast = buildAST(file);
             new SemanticChecker().visit(ast);
-            //new ASTOptimize(ast).run();
             new ConstantFolding().visit(ast);
             if(optimize) new SimpleLoopCSE().visit(ast);
             if(!codegen) return;
             IRBuilder irBuilder = new IRBuilder(optimize);
             irBuilder.visit(ast);
-            PrintStream IRFile = new PrintStream( "out.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
-            //      new Inline(irBuilder.getModule()).run();
-            IRFile = new PrintStream( "out1.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
-            //      new Inline(irBuilder.getModule()).run();
-            //      new GlobalToLocal(irBuilder.getModule()).run();
             new Memory_Register().run(irBuilder.getModule());
-            //     LICM test = new LICM();
-            //     test.run(irBuilder.getModule());
-            //    new CFGSimplification().visit(irBuilder.getModule());
-            IRFile = new PrintStream( "out3.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
             new Inline(irBuilder.getModule(), true).run();
             new InstCombination().visit(irBuilder.getModule());
-            IRFile = new PrintStream( "out10.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
-            boolean modified = false;
+            boolean modified;
             boolean check = false;
-            int t = 0;
             do{
                 modified = false;
                 Inline Opt1 = new Inline(irBuilder.getModule(), false);
@@ -90,14 +74,9 @@ public class Main {
                 Opt5.visit(irBuilder.getModule());
                 modified |= Opt5.Flag();
                 modified |= new Peephole(irBuilder.getModule()).run();
-                //      IRFile = new PrintStream( t + "out1.ll");
-                //       new IRPrinter(IRFile).run(irBuilder.getModule());
                 CFGSimplification Opt7 = new CFGSimplification();
                 Opt7.visit(irBuilder.getModule());
-                //     IRFile = new PrintStream( t++ + "out1.ll");
-                //     new IRPrinter(IRFile).run(irBuilder.getModule());
                 modified |= Opt7.Flag();
-                //      irBuilder.getModule().getExternalFunctionMap().forEach((id, func) -> func.setBlockContain(new FuncBlockCollection().BlockCollecting(func)));
                 TailCheck Check1 = new TailCheck();
                 Check1.visit(irBuilder.getModule());
                 if(Check1.isCheck()){
@@ -107,9 +86,8 @@ public class Main {
                 LICM Opt8 = new LICM();
                 Opt8.run(irBuilder.getModule(), true);
                 modified |= Opt8.NewLICM();
-                //             IRFile = new PrintStream( t++ + "out2.ll");
-                //             new IRPrinter(IRFile).run(irBuilder.getModule());
                 new MemoryAccess(irBuilder.getModule()).run();
+                new StrengthDeduction().visit(irBuilder.getModule());
             }while (modified);
             if(check){
                 irBuilder = new IRBuilder(optimize);
@@ -141,25 +119,18 @@ public class Main {
                     Opt7.visit(irBuilder.getModule());
                     modified |= Opt7.Flag();
                     new MemoryAccess(irBuilder.getModule()).run();
+                    new StrengthDeduction().visit(irBuilder.getModule());
                 }while (modified);
             }
             new TailCall(irBuilder.getModule()).run();
-            //   new MemoryAccess(irBuilder.getModule()).run();
             CSE Opt5 = new CSE();
             Opt5.visit(irBuilder.getModule());
-            modified |= Opt5.Flag();
-            IRFile = new PrintStream( "out2.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
+            PrintStream test = new PrintStream("out.ll");
+            new IRPrinter(test).run(irBuilder.getModule());
             new PhiResolution().run(irBuilder.getModule());
-            //      new MemoryAccess(irBuilder.getModule()).run();;
-            IRFile = new PrintStream( "out7.ll");
-            new IRPrinter(IRFile).run(irBuilder.getModule());
             ASMBuilder asmBuilder = new ASMBuilder();
             asmBuilder.visit(irBuilder.getModule());
             RISCVModule riscvModule = asmBuilder.getModule();
-            PrintStream ASMFile1 = new PrintStream( "output1.s");
-            new ASMPrinter(riscvModule, new PrintStream(ASMFile1), false).run();
-            //   RISCVModule riscvModule = (new ASMBuilder(irBuilder.getModule())).run();
             new RegisterAllocation(riscvModule).run();
             new ASMOptimize(riscvModule).run();
             PrintStream ASMFile = new PrintStream( "output.s");

@@ -29,9 +29,9 @@ public class Peephole {
         boolean changed;
         do {
             changed = false;
-            HashMap<IRGlobalVariable, IRInstruction> globalLoadStore = new HashMap<>(); // globals never have aliases
-            HashMap <IRInstruction, Integer> available = new HashMap<>(); // used as pair, store the time stamp
-            ArrayList<Store> protectedStore = new ArrayList<>(); // should not delete cross-block store
+            HashMap<IRGlobalVariable, IRInstruction> globalLoadStore = new HashMap<>();
+            HashMap <IRInstruction, Integer> available = new HashMap<>();
+            ArrayList<Store> protectedStore = new ArrayList<>();
             int timeStamp = 0;
             if (block.getPrev().contains(block.getIdom()) && block.getPrev().size() == 1) {
                 for (IRInstruction inst = block.getIdom().getTail().getPrev(); inst != null; inst = inst.getPrev()) {

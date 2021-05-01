@@ -100,7 +100,7 @@ public class LICM {
                 if(flag) continue;
                 for(IRBasicBlock loopBlock : loopBlocks){
                     for (IRInstruction inst = loopBlock.getHead(); inst != null; inst = inst.getNext()){
-                        if(inst instanceof Binary && ((!flag1 && func.getIdentifier().equals("main")) || flag1)){
+                        if(inst instanceof Binary){
                             boolean canMove = true;
                             for(IROperand operand: inst.getOperands()){
                                 if(operand instanceof IRLocalRegister && operand.getDef() != null && loopBlocks.contains(operand.getDef().getInstIn())){

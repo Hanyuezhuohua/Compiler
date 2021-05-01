@@ -54,8 +54,7 @@ public class CFGSimplification implements IRVisitor {
                     }
                     block.getTail().Remove();
                     block.merge(next);
-                    //        func.getBlockContain().remove(next);
-                    if (next.equals(func.getExit())) func.setExit(block);
+                    if(next.equals(func.getExit())) func.setExit(block);
                     break;
                 }
                 else if(block.getTail() instanceof Br && ((Br) block.getTail()).getCond() != null){
