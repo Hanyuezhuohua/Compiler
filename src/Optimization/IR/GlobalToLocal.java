@@ -30,6 +30,10 @@ public class GlobalToLocal {
 
     private void collectGlobal(){
         module.getExternalFunctionMap().forEach((id, func) -> {
+            uses.put(func, new LinkedHashSet<>());
+            defs.put(func, new LinkedHashSet<>());
+        });
+     /*   module.getExternalFunctionMap().forEach((id, func) -> {
             HashSet<IRGlobalVariable> Uses = new LinkedHashSet<>();
             HashSet<IRGlobalVariable> Defs = new LinkedHashSet<>();
             func.getBlockContain().forEach(block -> {
@@ -44,6 +48,14 @@ public class GlobalToLocal {
             });
             uses.put(func, Uses);
             defs.put(func, Defs);
+        });*/
+        module.getExternalFunctionMap().forEach((id, func) -> {
+            func.getBlockContain().forEach(block -> {
+                for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) for(IROperand operand : inst.getOperands()) if(operand instanceof IRGlobalVariable) uses.get(func).add((IRGlobalVariable) operand);
+            });
+            func.getBlockContain().forEach(block -> {
+                for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) if(inst instanceof Store && ((Store) inst).getPointer() instanceof IRGlobalVariable) defs.get(func).add((IRGlobalVariable) ((Store) inst).getPointer());
+            });
         });
 
         boolean modified;
@@ -64,16 +76,13 @@ public class GlobalToLocal {
         HashSet<IRGlobalVariable> Localize = new LinkedHashSet<>(uses.get(func));
         func.getCallee().forEach(callee -> Localize.removeAll(uses.get(callee)));
         HashMap<IRGlobalVariable, IRLocalRegister> ChangeMap = new LinkedHashMap<>();
-        Localize.forEach(var -> {
-            ChangeMap.put(var, new IRLocalRegister(var.getOperandType(), "local_" + var.getIdentifier()));
-            func.addVar(ChangeMap.get(var));
-        });
+        Localize.forEach(var -> { ChangeMap.put(var, new IRLocalRegister(var.getOperandType(), "local_" + var.getIdentifier()));func.addVar(ChangeMap.get(var)); });
         func.getBlockContain().forEach(block -> {
             for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
-                HashSet<IROperand> uses = new LinkedHashSet<>(inst.getOperands());
-                uses.retainAll(Localize);
-                if(inst instanceof Load && uses.contains(((Load) inst).getPointer()))((Load) inst).setPointer(ChangeMap.get(((Load) inst).getPointer()));
-                else if(inst instanceof Store && uses.contains(((Store) inst).getPointer()))((Store) inst).setPointer(ChangeMap.get(((Store) inst).getPointer()));
+                HashSet<IROperand> copy = new LinkedHashSet<>(inst.getOperands());
+                copy.retainAll(Localize);
+                if(inst instanceof Load && copy.contains(((Load) inst).getPointer()))((Load) inst).setPointer(ChangeMap.get(((Load) inst).getPointer()));
+                if(inst instanceof Store && copy.contains(((Store) inst).getPointer()))((Store) inst).setPointer(ChangeMap.get(((Store) inst).getPointer()));
             }
         });
         for(Map.Entry<IRGlobalVariable, IRLocalRegister> data : ChangeMap.entrySet()){
@@ -98,8 +107,6 @@ public class GlobalToLocal {
         new SideEffectCollection(module).run();
         new FuncCallCollection(module).run();
         collectGlobal();
-        module.getExternalFunctionMap().forEach((id, func) -> {
-            if(func.getCallee().size() == 0) Change(func);
-        });
+        module.getExternalFunctionMap().forEach((id, func) -> { if(func.getCallee().size() == 0) Change(func);});
     }
 }

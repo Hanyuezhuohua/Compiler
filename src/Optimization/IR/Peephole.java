@@ -18,24 +18,38 @@ import java.util.Map;
 
 public class Peephole {
 
-    IRModule module;
-    public Peephole(IRModule root) {
-        this.module = root;
+    private IRModule module;
+//    private HashMap<IRGlobalVariable, IRInstruction> globalLoadStore = new HashMap<>();
+//    private HashMap <IRInstruction, Integer> available = new HashMap<>();
+//    private ArrayList<Store> protectedStore = new ArrayList<>();
+//    private boolean newLoadStoreRemove;
+    private boolean modified;
+//    private int cnt;
+
+    public Peephole(IRModule module) {
+        this.module = module;
     }
 
-    boolean modified;
+    private void init(){
+//        newLoadStoreRemove = false;
+//        globalLoadStore.clear();
+//        available.clear();
+//        protectedStore.clear();
+//        cnt = 0;
+    }
 
-    void runForBlock(IRBasicBlock block) {
-        boolean changed;
+    public void runForBlock(IRBasicBlock block) {
+        boolean newLoadStoreRemove;
         do {
-            changed = false;
+            newLoadStoreRemove = false;
             HashMap<IRGlobalVariable, IRInstruction> globalLoadStore = new HashMap<>();
             HashMap <IRInstruction, Integer> available = new HashMap<>();
             ArrayList<Store> protectedStore = new ArrayList<>();
-            int timeStamp = 0;
+//            init();
+            int cnt = 0;
             if (block.getPrev().contains(block.getIdom()) && block.getPrev().size() == 1) {
                 for (IRInstruction inst = block.getIdom().getTail().getPrev(); inst != null; inst = inst.getPrev()) {
-                    timeStamp++;
+                    cnt++;
                     if (inst instanceof Store) {
                         boolean collision = false;
                         for (Store store : protectedStore) {
@@ -45,7 +59,7 @@ public class Peephole {
                             }
                         }
                         if (collision) continue;
-                        available.put(inst, timeStamp);
+                        available.put(inst, cnt);
                         protectedStore.add((Store) inst);
                     } else if (inst instanceof Load) {
                         boolean collision = false;
@@ -56,25 +70,25 @@ public class Peephole {
                             }
                         }
                         if (collision) continue;
-                        available.put(inst, timeStamp);
+                        available.put(inst, cnt);
                     } else if (inst instanceof Call) {
                         break;
                     }
                 }
             }
             for (IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) {
-                timeStamp++;
+                cnt++;
                 if (inst instanceof Load ) {
-                    if (((Load) inst).getPointer() instanceof IRGlobalVariable && globalLoadStore.containsKey((IRGlobalVariable) ((Load) inst).getPointer())) {
+                    if (((Load) inst).getPointer() instanceof IRGlobalVariable && globalLoadStore.containsKey(((Load) inst).getPointer())) {
                         IRGlobalVariable global = (IRGlobalVariable) ((Load) inst).getPointer();
                         IRInstruction last = globalLoadStore.get(global);
                         if (last instanceof Load) {
-                            ((IRLocalRegister) ((Load) inst).getResult()).update(((Load)last).getResult());
+                            ((IRLocalRegister) inst.getResult()).update(last.getResult());
                         } else {
                             assert last instanceof Store;
-                            ((IRLocalRegister) ((Load) inst).getResult()).update(((Store)last).getValue());
+                            ((IRLocalRegister) inst.getResult()).update(((Store)last).getValue());
                         }
-                        changed = true;
+                        newLoadStoreRemove = true;
                         inst.Remove();
                     } else {
                         if (((Load) inst).getPointer() instanceof IRGlobalVariable) {
@@ -84,20 +98,20 @@ public class Peephole {
                             boolean replaced = false;
                             for (Iterator<Map.Entry<IRInstruction, Integer>> iter = available.entrySet().iterator(); iter.hasNext(); ) {
                                 Map.Entry<IRInstruction, Integer> entry = iter.next();
-                                if (entry.getValue() - timeStamp > 9999) {
+                                if (entry.getValue() - cnt > 9999) {
                                     iter.remove();
                                 } else {
                                     IRInstruction i = entry.getKey();
                                     if (i instanceof Load) {
                                         if (((Load) i).getPointer().CSEChecker(((Load) inst).getPointer())) {
-                                            ((IRLocalRegister) ((Load) inst).getResult()).update(((Load) i).getResult());
+                                            ((IRLocalRegister) inst.getResult()).update(i.getResult());
                                             inst.Remove();
                                             replaced = true;
                                             break;
                                         }
                                     } else if (i instanceof Store) {
                                         if (((Store) i).getPointer().CSEChecker(((Load) inst).getPointer())) {
-                                            ((IRLocalRegister) ((Load) inst).getResult()).update(((Store) i).getValue());
+                                            ((IRLocalRegister) inst.getResult()).update(((Store) i).getValue());
                                             inst.Remove();
                                             replaced = true;
                                             break;
@@ -106,19 +120,19 @@ public class Peephole {
                                 }
                             }
                             if (!replaced) {
-                                available.put(inst, timeStamp);
+                                available.put(inst, cnt);
                             } else {
-                                changed = true;
+                                newLoadStoreRemove = true;
                             }
                         }
                     }
                 } else if (inst instanceof Store) {
-                    if (((Store) inst).getPointer() instanceof IRGlobalVariable && globalLoadStore.containsKey((IRGlobalVariable) ((Store) inst).getPointer()) ) {
+                    if (((Store) inst).getPointer() instanceof IRGlobalVariable && globalLoadStore.containsKey(((Store) inst).getPointer()) ) {
                         IRGlobalVariable global = (IRGlobalVariable) ((Store) inst).getPointer();
                         IRInstruction last = globalLoadStore.get(global);
                         if (last instanceof Store && !protectedStore.contains(last)) {
                             last.Remove();
-                            changed = true;
+                            newLoadStoreRemove = true;
                         }
                     }
                     if (((Store) inst).getPointer() instanceof IRGlobalVariable) {
@@ -127,7 +141,7 @@ public class Peephole {
                         boolean replaced = false;
                         for (Iterator<Map.Entry<IRInstruction, Integer>> iter = available.entrySet().iterator(); iter.hasNext(); ) {
                             Map.Entry<IRInstruction, Integer> entry = iter.next();
-                            if (entry.getValue() - timeStamp > 9999) {
+                            if (entry.getValue() - cnt > 9999) {
                                 iter.remove();
                             } else {
                                 IRInstruction i = entry.getKey();
@@ -141,7 +155,7 @@ public class Peephole {
                                 }
                             }
                         }
-                        if (replaced) changed = true;
+                        if (replaced) newLoadStoreRemove = true;
                         for (Iterator<Map.Entry<IRInstruction, Integer>> iter = available.entrySet().iterator(); iter.hasNext(); ) {
                             Map.Entry<IRInstruction, Integer> entry = iter.next();
                             IRInstruction cur = entry.getKey();
@@ -155,25 +169,23 @@ public class Peephole {
                                 }
                             }
                         }
-                        available.put(inst, timeStamp);
+                        available.put(inst, cnt);
                     }
                 } else if (inst instanceof Call) {
                     globalLoadStore.clear();
                     available.clear();
                 }
             }
-            modified |= changed;
-        } while (changed);
-    }
-
-    void runForFunction(IRFunction function) {
-        function.setBlockContain(new FuncBlockCollection().BlockCollecting(function));
-        function.getBlockContain().forEach(this::runForBlock);
+            modified |= newLoadStoreRemove;
+        } while (newLoadStoreRemove);
     }
 
     public boolean run() {
         modified = false;
-        module.getExternalFunctionMap().forEach((s, function) -> runForFunction(function));
+        module.getExternalFunctionMap().forEach((s, function) -> {
+            function.setBlockContain(new FuncBlockCollection().BlockCollecting(function));
+            function.getBlockContain().forEach(this::runForBlock);
+        });
         return modified;
     }
 }
