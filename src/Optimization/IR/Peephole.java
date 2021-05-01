@@ -11,10 +11,7 @@ import IR.IRoperand.IRLocalRegister;
 import IR.IRoperand.IROperand;
 import IR.IRutility.FuncBlockCollection;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class Peephole {
 
@@ -29,8 +26,8 @@ public class Peephole {
 
     public Peephole(IRModule module) {
         this.module = module;
-        GlobalVarMap = new HashMap<>();
-        InstMap = new HashMap<>();
+        GlobalVarMap = new LinkedHashMap<>();
+        InstMap = new LinkedHashMap<>();
         StoreList = new ArrayList<>();
     }
 

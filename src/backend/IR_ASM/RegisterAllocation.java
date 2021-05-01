@@ -14,25 +14,29 @@ import java.util.*;
 
 import static java.lang.Integer.min;
 public class RegisterAllocation {
-    HashSet<RISCVRegister> preColored = new LinkedHashSet<>();
-    HashSet<RISCVRegister> initial = new LinkedHashSet<>();
-    HashSet<RISCVRegister> simplifyWorkList = new LinkedHashSet<>();
-    HashSet<RISCVRegister> freezeWorkList = new LinkedHashSet<>();
-    HashSet<RISCVRegister> spillWorkList = new LinkedHashSet<>();
-    HashSet<RISCVRegister> spilledNodes = new LinkedHashSet<>();
-    HashSet<RISCVRegister> coalescedNodes = new LinkedHashSet<>();
-    HashSet<RISCVRegister> coloredNodes = new LinkedHashSet<>();
-    HashSet<RegEdge> adjSet = new LinkedHashSet<>();
-    Stack<RISCVRegister> selectStack = new Stack<>();
-    int offset, K;
-    RISCVFunction currentFunction;
-    HashSet<RISCVMove> coalescedMoves = new LinkedHashSet<>();
-    HashSet<RISCVMove> constrainedMoves = new LinkedHashSet<>();
-    HashSet<RISCVMove> frozenMoves = new LinkedHashSet<>();
-    HashSet<RISCVMove> workListMoves = new LinkedHashSet<>();
-    HashSet<RISCVMove> activeMoves = new LinkedHashSet<>();
+    private HashSet<RISCVRegister> preColored = new LinkedHashSet<>();
+    private HashSet<RISCVRegister> initial = new LinkedHashSet<>();
+    private HashSet<RISCVRegister> simplifyWorkList = new LinkedHashSet<>();
+    private HashSet<RISCVRegister> freezeWorkList = new LinkedHashSet<>();
+    private HashSet<RISCVRegister> spillWorkList = new LinkedHashSet<>();
+    private HashSet<RISCVRegister> spilledNodes = new LinkedHashSet<>();
+    private HashSet<RISCVRegister> coalescedNodes = new LinkedHashSet<>();
+    private HashSet<RISCVRegister> coloredNodes = new LinkedHashSet<>();
+    private HashSet<RegEdge> adjSet = new LinkedHashSet<>();
+    private Stack<RISCVRegister> selectStack = new Stack<>();
+    private int offset, K;
+    private RISCVFunction currentFunction;
+    private HashSet<RISCVMove> coalescedMoves = new LinkedHashSet<>();
+    private HashSet<RISCVMove> constrainedMoves = new LinkedHashSet<>();
+    private HashSet<RISCVMove> frozenMoves = new LinkedHashSet<>();
+    private HashSet<RISCVMove> workListMoves = new LinkedHashSet<>();
+    private HashSet<RISCVMove> activeMoves = new LinkedHashSet<>();
 
-    HashSet<RISCVRegister> spillTemps = new LinkedHashSet<>();
+    private HashSet<RISCVRegister> spillTemps = new LinkedHashSet<>();
+
+    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockUses;
+    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockDefs;
+    private HashSet<RISCVBasicBlock> visited;
 
     RISCVModule root;
     public RegisterAllocation (RISCVModule root) {
@@ -40,10 +44,6 @@ public class RegisterAllocation {
         preColored.addAll(root.getPhysicalRegisters());
         K = root.getColors().size();
     }
-
-    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockUses;
-    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockDefs;
-    private HashSet<RISCVBasicBlock> visited;
 
     private void runForBlock(RISCVBasicBlock block) {
         HashSet<RISCVRegister> uses = new LinkedHashSet<>();
