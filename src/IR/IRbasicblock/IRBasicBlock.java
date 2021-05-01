@@ -321,6 +321,10 @@ public class IRBasicBlock {
         return false;
     }
 
+    public boolean DomByPrev(){
+        return getPrev().contains(getIdom()) && getPrev().size() == 1;
+    }
+
     public boolean canMerge(){
         return next.size() == 1 && next.get(0).getPrev().size() == 1 && next.get(0) != this;
     }
