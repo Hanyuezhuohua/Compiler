@@ -42,7 +42,7 @@ public class CSE implements IRVisitor {
             newCSE = false;
             ArrayList<IRInstruction> instructions = new ArrayList<>();
             for(IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()){
-                if(!inst.hasSideEffect()){
+      /*          if(!inst.hasSideEffect()){
                     boolean same = false;
                     for(IRInstruction collected: instructions){
                         if(inst.CSEChecker(collected)){
@@ -57,6 +57,13 @@ public class CSE implements IRVisitor {
                         newCSE = true;
                         flag = true;
                     }
+                }*/
+                if(CSEChecker(inst, instructions)){
+                    newCSE = true;
+                    flag = true;
+                }
+                else if(!inst.hasSideEffect()){
+                    instructions.add(inst);
                 }
             }
             block.getNext().forEach(next -> {if(next.DomBy(block)) IDomCSE(next, 0, instructions); });
@@ -65,7 +72,7 @@ public class CSE implements IRVisitor {
 
     public void IDomCSE(IRBasicBlock block, int num, ArrayList<IRInstruction> instructions){
         for(IRInstruction inst = block.getHead(); inst != null && num++ < CSELimit; inst = inst.getNext()){
-            if(!inst.hasSideEffect()){
+  /*          if(!inst.hasSideEffect()){
                 for(IRInstruction collected: instructions){
                     if(inst.CSEChecker(collected)){
                         ((IRLocalRegister) inst.getResult()).update(collected.getResult());
@@ -75,10 +82,26 @@ public class CSE implements IRVisitor {
                         break;
                     }
                 }
+            }*/
+            if(CSEChecker(inst, instructions)){
+                newCSE = true;
+                flag = true;
             }
-            else if(inst instanceof Call) num += 12;
+       //     else if(inst instanceof Call) num += 12;
         }
         if(num < CSELimit) for(IRBasicBlock next : block.getNext()) if(next.DomBy(block)) IDomCSE(next, num, instructions);
+    }
+
+    private boolean CSEChecker(IRInstruction inst, ArrayList<IRInstruction> instructions){
+        if(inst.hasSideEffect()) return false;
+        for(IRInstruction collected: instructions){
+            if(inst.CSEChecker(collected)){
+                ((IRLocalRegister) inst.getResult()).update(collected.getResult());
+                inst.Remove();
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

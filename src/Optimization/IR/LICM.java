@@ -68,11 +68,7 @@ public class LICM {
                 loopBlocks.clear();
                 if((block.getTail() instanceof Br && ((Br) block.getTail()).getCond() != null) || block.getTail() instanceof Ret) continue;
                 IRBasicBlock head = ((Br) block.getTail()).getIfTrue();
-                for(IRBasicBlock potentialTails: func.getBlockContain()){
-                    if(potentialTails != block && potentialTails.DomBy(head) && potentialTails.getTail() instanceof Br && ((Br) potentialTails.getTail()).getCond() == null && ((Br) potentialTails.getTail()).getIfTrue() == head){
-                        tails.add(potentialTails);
-                    }
-                }
+                for(IRBasicBlock potentialTails: func.getBlockContain()) if(potentialTails != block && potentialTails.DomBy(head) && potentialTails.getTail() instanceof Br && ((Br) potentialTails.getTail()).getCond() == null && ((Br) potentialTails.getTail()).getIfTrue() == head) tails.add(potentialTails);
              //   if(tails.isEmpty()) continue;
                 collectLoop(head);
                 boolean flag = false;
