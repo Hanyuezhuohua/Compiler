@@ -56,48 +56,46 @@ public class Peephole {
                     else if (inst instanceof Load && CSEChecker(inst)) available.put(inst, cnt);
                 }
             }
-            for (IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext()) {
-                cnt++;
-                if (inst instanceof Load ) {
-                    if (((Load) inst).getPointer() instanceof IRGlobalVariable && globalLoadStore.containsKey(((Load) inst).getPointer())) {
-                        IROperand value = globalLoadStore.get(((Load) inst).getPointer()) instanceof Store ? ((Store) globalLoadStore.get(((Load) inst).getPointer())).getValue() : globalLoadStore.get(inst).getResult();
+            for (IRInstruction inst = block.getHead(); inst != null; inst = inst.getNext(), cnt++) {
+                if(inst instanceof Load ) {
+                    if(((Load) inst).getPointer() instanceof IRGlobalVariable && globalLoadStore.containsKey(((Load) inst).getPointer())) {
+                        IROperand value = globalLoadStore.get(((Load) inst).getPointer()) instanceof Store ? ((Store) globalLoadStore.get(((Load) inst).getPointer())).getValue() : globalLoadStore.get(((Load) inst).getPointer()).getResult();
                         ((IRLocalRegister) inst.getResult()).update(value);
                         newLoadStoreRemove = true;
                         inst.Remove();
-                    } else {
-                        if (((Load) inst).getPointer() instanceof IRGlobalVariable) {
-                            globalLoadStore.put((IRGlobalVariable) ((Load) inst).getPointer(), inst);
-                        }
-                        else {
-                            boolean replaced = false;
-                            for (Iterator<Map.Entry<IRInstruction, Integer>> iter = available.entrySet().iterator(); iter.hasNext(); ) {
-                                Map.Entry<IRInstruction, Integer> entry = iter.next();
-                                if (entry.getValue() - cnt > 9999) {
-                                    iter.remove();
-                                } else {
-                                    IRInstruction i = entry.getKey();
-                                    if (i instanceof Load) {
-                                        if (((Load) i).getPointer().CSEChecker(((Load) inst).getPointer())) {
-                                            ((IRLocalRegister) inst.getResult()).update(i.getResult());
-                                            inst.Remove();
-                                            replaced = true;
-                                            break;
-                                        }
-                                    } else if (i instanceof Store) {
-                                        if (((Store) i).getPointer().CSEChecker(((Load) inst).getPointer())) {
-                                            ((IRLocalRegister) inst.getResult()).update(((Store) i).getValue());
-                                            inst.Remove();
-                                            replaced = true;
-                                            break;
-                                        }
+                    }
+                    else if(((Load) inst).getPointer() instanceof IRGlobalVariable){
+                        globalLoadStore.put((IRGlobalVariable) ((Load) inst).getPointer(), inst);
+                    }
+                    else{
+                        boolean replaced = false;
+                        for (Iterator<Map.Entry<IRInstruction, Integer>> iter = available.entrySet().iterator(); iter.hasNext(); ) {
+                            Map.Entry<IRInstruction, Integer> entry = iter.next();
+                            if (entry.getValue() - cnt > 9999) {
+                                iter.remove();
+                            } else {
+                                IRInstruction i = entry.getKey();
+                                if (i instanceof Load) {
+                                    if (((Load) i).getPointer().CSEChecker(((Load) inst).getPointer())) {
+                                        ((IRLocalRegister) inst.getResult()).update(i.getResult());
+                                        inst.Remove();
+                                        replaced = true;
+                                        break;
+                                    }
+                                } else if (i instanceof Store) {
+                                    if (((Store) i).getPointer().CSEChecker(((Load) inst).getPointer())) {
+                                        ((IRLocalRegister) inst.getResult()).update(((Store) i).getValue());
+                                        inst.Remove();
+                                        replaced = true;
+                                        break;
                                     }
                                 }
                             }
-                            if (!replaced) {
-                                available.put(inst, cnt);
-                            } else {
-                                newLoadStoreRemove = true;
-                            }
+                        }
+                        if (!replaced) {
+                            available.put(inst, cnt);
+                        } else {
+                            newLoadStoreRemove = true;
                         }
                     }
                 } else if (inst instanceof Store) {
