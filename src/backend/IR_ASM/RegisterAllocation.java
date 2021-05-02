@@ -57,15 +57,6 @@ public class RegisterAllocation {
     private HashSet<RISCVMove> nodeMoves(RISCVRegister reg) {
         return new LinkedHashSet<>(workListMoves) {{ addAll(activeMoves); retainAll(reg.moveList);}};
     }
-    private void enableMoves(HashSet<RISCVRegister> nodes) {
-        nodes.forEach(node -> nodeMoves(node).forEach(inst -> {
-            if (activeMoves.contains(inst)) {
-                activeMoves.remove(inst);
-                workListMoves.add(inst);
-            }
-        }));
-    }
-
     private RISCVRegister getAlias(RISCVRegister reg) {
         if (coalescedNodes.contains(reg)) {
             reg.alias = getAlias(reg.alias);
@@ -196,7 +187,6 @@ public class RegisterAllocation {
                         if (reg1.degree-- == K) {
                             HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(reg1));
                             nodes.add(reg1);
-                       //     enableMoves(nodes);
                             nodes.forEach(node -> nodeMoves(node).forEach(inst -> {
                                 if (activeMoves.contains(inst)) {
                                     activeMoves.remove(inst);
@@ -243,7 +233,6 @@ public class RegisterAllocation {
                             v.alias = u;
                             u.moveList.addAll(v.moveList);
                             HashSet<RISCVRegister> tmp = new LinkedHashSet<>() {{add(v);}};
-                            // enableMoves(tmp);
                             tmp.forEach(node -> nodeMoves(node).forEach(inst -> {
                                 if (activeMoves.contains(inst)) {
                                     activeMoves.remove(inst);
@@ -260,7 +249,6 @@ public class RegisterAllocation {
                                 if (t.degree-- == K) {
                                     HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(t));
                                     nodes.add(t);
-                                   // enableMoves(nodes);
                                     nodes.forEach(node -> nodeMoves(node).forEach(inst -> {
                                         if (activeMoves.contains(inst)) {
                                             activeMoves.remove(inst);
