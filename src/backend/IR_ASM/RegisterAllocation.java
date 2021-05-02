@@ -74,13 +74,6 @@ public class RegisterAllocation {
         else return reg;
     }
 
-    private void addWorkList(RISCVRegister reg) {
-        if (!preColored.contains(reg) && nodeMoves(reg).isEmpty() && reg.degree < K) {
-            freezeWorkList.remove(reg);
-            simplifyWorkList.add(reg);
-        }
-    }
-
     private boolean ok(RISCVRegister reg1, RISCVRegister reg2) {
         for (RISCVRegister adj : adjacent(reg2)) if (!(adj.degree < K || preColored.contains(adj) || adjSet.contains(new RegEdge(adj, reg1)))) return false;
         return true;
@@ -92,7 +85,7 @@ public class RegisterAllocation {
         return num < K;
     }
 
-    void runForFunction(RISCVFunction function) {
+    void allocate(RISCVFunction function) {
         offset = 0;
         while(true) {
             initial.clear();
@@ -203,7 +196,13 @@ public class RegisterAllocation {
                         if (reg1.degree-- == K) {
                             HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(reg1));
                             nodes.add(reg1);
-                            enableMoves(nodes);
+                       //     enableMoves(nodes);
+                            nodes.forEach(node -> nodeMoves(node).forEach(inst -> {
+                                if (activeMoves.contains(inst)) {
+                                    activeMoves.remove(inst);
+                                    workListMoves.add(inst);
+                                }
+                            }));
                             spillWorkList.remove(reg1);
                             if (!nodeMoves(reg1).isEmpty()) freezeWorkList.add(reg1);
                             else simplifyWorkList.add(reg1);
@@ -219,12 +218,21 @@ public class RegisterAllocation {
                     workListMoves.remove(move);
                     if (u == v) {
                         coalescedMoves.add(move);
-                        addWorkList(u);
+                        if (!preColored.contains(u) && nodeMoves(u).isEmpty() && u.degree < K) {
+                            freezeWorkList.remove(u);
+                            simplifyWorkList.add(u);
+                        }
                     }
                     else if (preColored.contains(v) || adjSet.contains(new RegEdge(u, v))) {
                         constrainedMoves.add(move);
-                        addWorkList(u);
-                        addWorkList(v);
+                        if (!preColored.contains(u) && nodeMoves(u).isEmpty() && u.degree < K) {
+                            freezeWorkList.remove(u);
+                            simplifyWorkList.add(u);
+                        }
+                        if (!preColored.contains(v) && nodeMoves(v).isEmpty() && v.degree < K) {
+                            freezeWorkList.remove(v);
+                            simplifyWorkList.add(v);
+                        }
                     }
                     else {
                         if ((preColored.contains(u) && ok(u, v)) || (!preColored.contains(u) && conservative(adjacent(u, v)))) {
@@ -235,7 +243,13 @@ public class RegisterAllocation {
                             v.alias = u;
                             u.moveList.addAll(v.moveList);
                             HashSet<RISCVRegister> tmp = new LinkedHashSet<>() {{add(v);}};
-                            enableMoves(tmp);
+                            // enableMoves(tmp);
+                            tmp.forEach(node -> nodeMoves(node).forEach(inst -> {
+                                if (activeMoves.contains(inst)) {
+                                    activeMoves.remove(inst);
+                                    workListMoves.add(inst);
+                                }
+                            }));
                             adjacent(v).forEach(t -> {
                                 if (t != u && !adjSet.contains(new RegEdge(t, u))) {
                                     adjSet.add(new RegEdge(t, u));
@@ -246,7 +260,13 @@ public class RegisterAllocation {
                                 if (t.degree-- == K) {
                                     HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(t));
                                     nodes.add(t);
-                                    enableMoves(nodes);
+                                   // enableMoves(nodes);
+                                    nodes.forEach(node -> nodeMoves(node).forEach(inst -> {
+                                        if (activeMoves.contains(inst)) {
+                                            activeMoves.remove(inst);
+                                            workListMoves.add(inst);
+                                        }
+                                    }));
                                     spillWorkList.remove(t);
                                     if (!nodeMoves(t).isEmpty()) freezeWorkList.add(t);
                                     else simplifyWorkList.add(t);
@@ -256,7 +276,10 @@ public class RegisterAllocation {
                                 freezeWorkList.remove(u);
                                 spillWorkList.add(u);
                             }
-                            addWorkList(u);
+                            if (!preColored.contains(u) && nodeMoves(u).isEmpty() && u.degree < K) {
+                                freezeWorkList.remove(u);
+                                simplifyWorkList.add(u);
+                            }
                         }
                         else activeMoves.add(move);
                     }
@@ -404,5 +427,5 @@ public class RegisterAllocation {
         for(RISCVBasicBlock block : function.getBlockContain()) for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) inst.updateOffset(offset);
     }
 
-    public void run() { module.getExternalFunctionSet().forEach(func -> runForFunction(func)); }
+    public void run() { module.getExternalFunctionSet().forEach(func -> allocate(func)); }
 }
