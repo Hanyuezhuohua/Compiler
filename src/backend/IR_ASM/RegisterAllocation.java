@@ -129,12 +129,12 @@ public class RegisterAllocation {
             }
         }
     }
-    private void addEdge(RISCVRegister u, RISCVRegister v) {
-        if (u != v && !adjSet.contains(new RegEdge(u, v))) {
-            adjSet.add(new RegEdge(u, v));
-            adjSet.add(new RegEdge(v, u));
-            if (!preColored.contains(u)) u.addAdj(v);
-            if (!preColored.contains(v)) v.addAdj(u);
+    private void addEdge(RISCVRegister t, RISCVRegister u) {
+        if (t != u && !adjSet.contains(new RegEdge(t, u))) {
+            adjSet.add(new RegEdge(t, u));
+            adjSet.add(new RegEdge(u, t));
+            if (!preColored.contains(t)) t.addAdj(u);
+            if (!preColored.contains(u)) u.addAdj(t);
         }
     }
     HashSet<RISCVRegister> adjacent(RISCVRegister n) {
@@ -146,9 +146,6 @@ public class RegisterAllocation {
     HashSet<RISCVMove> nodeMoves(RISCVRegister n) {
         return new LinkedHashSet<>(workListMoves) {{ addAll(activeMoves); retainAll(n.moveList);}};
     }
-    boolean moveRelated(RISCVRegister n) {
-        return !nodeMoves(n).isEmpty();
-    }
     void enableMoves(HashSet<RISCVRegister> nodes) {
         nodes.forEach(node -> nodeMoves(node).forEach(move -> {
             if (activeMoves.contains(move)) {
@@ -156,16 +153,6 @@ public class RegisterAllocation {
                 workListMoves.add(move);
             }
         }));
-    }
-    void decrementDegree(RISCVRegister t) {
-        if (t.degree-- == K) {
-            HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(t));
-            nodes.add(t);
-            enableMoves(nodes);
-            spillWorkList.remove(t);
-            if (!nodeMoves(t).isEmpty()) freezeWorkList.add(t);
-            else simplifyWorkList.add(t);
-        }
     }
     void simplify() {
         RISCVRegister reg = simplifyWorkList.iterator().next();
@@ -199,8 +186,13 @@ public class RegisterAllocation {
                 currentLive.add(root.getPhysicalRegister(0));
                 currentLive.addAll(defs);
                 for (RISCVRegister def : defs) {
-                    for (RISCVRegister reg : currentLive) {
-                        addEdge(reg, def);
+                    for(RISCVRegister reg : currentLive) {
+                        if (reg != def && !adjSet.contains(new RegEdge(reg, def))) {
+                            adjSet.add(new RegEdge(reg, def));
+                            adjSet.add(new RegEdge(def, reg));
+                            if (!preColored.contains(reg)) reg.addAdj(def);
+                            if (!preColored.contains(def)) def.addAdj(reg);
+                        }
                     }
                 }
                 currentLive.removeAll(defs);
@@ -259,7 +251,13 @@ public class RegisterAllocation {
         HashSet<RISCVRegister> tmp = new LinkedHashSet<>() {{add(v);}};
         enableMoves(tmp);
         adjacent(v).forEach(t -> {
-            addEdge(t, u);
+            //addEdge(t, u);
+            if (t != u && !adjSet.contains(new RegEdge(t, u))) {
+                adjSet.add(new RegEdge(t, u));
+                adjSet.add(new RegEdge(u, t));
+                if (!preColored.contains(t)) t.addAdj(u);
+                if (!preColored.contains(u)) u.addAdj(t);
+            }
             if (t.degree-- == K) {
                 HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(t));
                 nodes.add(t);
@@ -298,7 +296,38 @@ public class RegisterAllocation {
         } else {
             if ((preColored.contains(u) && forAllOK(u, v)) || (!preColored.contains(u) && conservative(adjacent(u, v)))) {
                 coalescedMoves.add(move);
-                combine(u, v);
+                if (freezeWorkList.contains(v)) {
+                    freezeWorkList.remove(v);
+                }
+                else {
+                    spillWorkList.remove(v);
+                }
+                coalescedNodes.add(v);
+                v.alias = u;
+                u.moveList.addAll(v.moveList);
+                HashSet<RISCVRegister> tmp = new LinkedHashSet<>() {{add(v);}};
+                enableMoves(tmp);
+                adjacent(v).forEach(t -> {
+                    //addEdge(t, u);
+                    if (t != u && !adjSet.contains(new RegEdge(t, u))) {
+                        adjSet.add(new RegEdge(t, u));
+                        adjSet.add(new RegEdge(u, t));
+                        if (!preColored.contains(t)) t.addAdj(u);
+                        if (!preColored.contains(u)) u.addAdj(t);
+                    }
+                    if (t.degree-- == K) {
+                        HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(t));
+                        nodes.add(t);
+                        enableMoves(nodes);
+                        spillWorkList.remove(t);
+                        if (!nodeMoves(t).isEmpty()) freezeWorkList.add(t);
+                        else simplifyWorkList.add(t);
+                    }
+                });
+                if (u.degree >= K && freezeWorkList.contains(u)) {
+                    freezeWorkList.remove(u);
+                    spillWorkList.add(u);
+                }
                 addWorkList(u);
             } else {
                 activeMoves.add(move);
@@ -366,7 +395,22 @@ public class RegisterAllocation {
         }
         spillWorkList.remove(m);
         simplifyWorkList.add(m);
-        freezeMoves(m);
+        for (RISCVMove mv : nodeMoves(m)) {
+            RISCVRegister x = mv.rd, y = mv.rs;
+            RISCVRegister v;
+            if (getAlias(m) == getAlias(y)) {
+                v = getAlias(x);
+            }
+            else {
+                v = getAlias(y);
+            }
+            activeMoves.remove(mv);
+            frozenMoves.add(mv);
+            if (v.degree < K && nodeMoves(v).isEmpty()) {
+                freezeWorkList.remove(v);
+                simplifyWorkList.add(v);
+            }
+        }
     }
     void assignColors() {
         while (!selectStack.isEmpty()) {
@@ -410,20 +454,161 @@ public class RegisterAllocation {
             }
             do{
                 if (!simplifyWorkList.isEmpty()) {
-                    simplify();
+                    RISCVRegister reg = simplifyWorkList.iterator().next();
+                    simplifyWorkList.remove(reg);
+                    selectStack.push(reg);
+                    for (RISCVRegister reg1 : adjacent(reg)) {
+                        if (reg1.degree-- == K) {
+                            HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(reg1));
+                            nodes.add(reg1);
+                            enableMoves(nodes);
+                            spillWorkList.remove(reg1);
+                            if (!nodeMoves(reg1).isEmpty()) freezeWorkList.add(reg1);
+                            else simplifyWorkList.add(reg1);
+                        }
+                    }
                 }
                 else if (!workListMoves.isEmpty()) {
-                    coalesce();
+                    RISCVMove move = workListMoves.iterator().next();
+                    RISCVRegister x = getAlias(move.rd);
+                    RISCVRegister y = getAlias(move.rs);
+                    RISCVRegister u, v;
+                    if (preColored.contains(y)) {
+                        u = y;
+                        v = x;
+                    }else {
+                        u = x;
+                        v = y;
+                    }
+                    workListMoves.remove(move);
+                    if (u == v) {
+                        coalescedMoves.add(move);
+                        addWorkList(u);
+                    } else if (preColored.contains(v) || adjSet.contains(new RegEdge(u, v))) {
+                        constrainedMoves.add(move);
+                        addWorkList(u);
+                        addWorkList(v);
+                    } else {
+                        if ((preColored.contains(u) && forAllOK(u, v)) || (!preColored.contains(u) && conservative(adjacent(u, v)))) {
+                            coalescedMoves.add(move);
+                            if (freezeWorkList.contains(v)) {
+                                freezeWorkList.remove(v);
+                            }
+                            else {
+                                spillWorkList.remove(v);
+                            }
+                            coalescedNodes.add(v);
+                            v.alias = u;
+                            u.moveList.addAll(v.moveList);
+                            HashSet<RISCVRegister> tmp = new LinkedHashSet<>() {{add(v);}};
+                            enableMoves(tmp);
+                            adjacent(v).forEach(t -> {
+                                //addEdge(t, u);
+                                if (t != u && !adjSet.contains(new RegEdge(t, u))) {
+                                    adjSet.add(new RegEdge(t, u));
+                                    adjSet.add(new RegEdge(u, t));
+                                    if (!preColored.contains(t)) t.addAdj(u);
+                                    if (!preColored.contains(u)) u.addAdj(t);
+                                }
+                                if (t.degree-- == K) {
+                                    HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(t));
+                                    nodes.add(t);
+                                    enableMoves(nodes);
+                                    spillWorkList.remove(t);
+                                    if (!nodeMoves(t).isEmpty()) freezeWorkList.add(t);
+                                    else simplifyWorkList.add(t);
+                                }
+                            });
+                            if (u.degree >= K && freezeWorkList.contains(u)) {
+                                freezeWorkList.remove(u);
+                                spillWorkList.add(u);
+                            }
+                            addWorkList(u);
+                        } else {
+                            activeMoves.add(move);
+                        }
+                    }
                 }
                 else if (!freezeWorkList.isEmpty()) {
-                    freeze();
+                    RISCVRegister u = freezeWorkList.iterator().next();
+                    freezeWorkList.remove(u);
+                    simplifyWorkList.add(u);
+                    for (RISCVMove mv : nodeMoves(u)) {
+                        RISCVRegister x = mv.rd, y = mv.rs;
+                        RISCVRegister v;
+                        if (getAlias(u) == getAlias(y)) {
+                            v = getAlias(x);
+                        }
+                        else {
+                            v = getAlias(y);
+                        }
+                        activeMoves.remove(mv);
+                        frozenMoves.add(mv);
+                        if (v.degree < K && nodeMoves(v).isEmpty()) {
+                            freezeWorkList.remove(v);
+                            simplifyWorkList.add(v);
+                        }
+                    }
                 }
                 else if (!spillWorkList.isEmpty()) {
-                    selectSpill();
+                    RISCVRegister m = null;
+                    double minCost = 1e9;
+                    boolean hasCandidate = false;
+                    for (RISCVRegister reg : spillWorkList) {
+                        double cost = reg.weight / reg.degree;
+                        if (reg instanceof RISCVVirtualRegister && ((RISCVVirtualRegister) reg).isConst()) {
+                            cost /= 64;
+                        }
+                        if (!spillTemps.contains(reg)) {
+                            hasCandidate = true;
+                            if (cost < minCost) {
+                                minCost = cost;
+                                m = reg;
+                            }
+                        } else if (!hasCandidate) {
+                            m = reg;
+                        }
+                    }
+                    spillWorkList.remove(m);
+                    simplifyWorkList.add(m);
+                    for (RISCVMove mv : nodeMoves(m)) {
+                        RISCVRegister x = mv.rd, y = mv.rs;
+                        RISCVRegister v;
+                        if (getAlias(m) == getAlias(y)) {
+                            v = getAlias(x);
+                        }
+                        else {
+                            v = getAlias(y);
+                        }
+                        activeMoves.remove(mv);
+                        frozenMoves.add(mv);
+                        if (v.degree < K && nodeMoves(v).isEmpty()) {
+                            freezeWorkList.remove(v);
+                            simplifyWorkList.add(v);
+                        }
+                    }
                 }
             }
             while (!(freezeWorkList.isEmpty() && simplifyWorkList.isEmpty() && spillWorkList.isEmpty() && workListMoves.isEmpty()));
-            assignColors();
+            while (!selectStack.isEmpty()) {
+                RISCVRegister n = selectStack.pop();
+                ArrayList<RISCVPhysicalRegister> okColors = new ArrayList<>(root.getColors());
+                HashSet<RISCVRegister> colored = new LinkedHashSet<>(coloredNodes);
+                colored.addAll(preColored);
+                for (RISCVRegister w : n.adjList) {
+                    if (colored.contains(getAlias(w))) {
+                        okColors.remove(getAlias(w).color);
+                    }
+                }
+                if (okColors.isEmpty()) {
+                    spilledNodes.add(n);
+                }
+                else {
+                    coloredNodes.add(n);
+                    n.color = okColors.get(0);
+                }
+            }
+            coalescedNodes.forEach(n -> n.color = getAlias(n).color);
             if (spilledNodes.isEmpty()) {
                 break;
             }

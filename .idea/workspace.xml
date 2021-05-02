@@ -118,7 +118,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/backend/IR_ASM/RegisterAllocation.java</url>
-          <line>153</line>
+          <line>150</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
