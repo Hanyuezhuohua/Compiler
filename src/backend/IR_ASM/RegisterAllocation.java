@@ -34,8 +34,8 @@ public class RegisterAllocation {
 
     private HashSet<RISCVRegister> spillTemps = new LinkedHashSet<>();
 
-    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> Uses;
-    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> Defs;
+    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockUses;
+    private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> blockDefs;
     private HashSet<RISCVBasicBlock> visited;
 
     RISCVModule root;
@@ -43,47 +43,55 @@ public class RegisterAllocation {
         this.root = root;
         preColored.addAll(root.getPhysicalRegisters());
         K = root.getColors().size();
-        Uses = new LinkedHashMap<>();
-        Defs = new LinkedHashMap<>();
-        visited = new LinkedHashSet<>();
     }
 
-    private void LiveAnalysis(RISCVFunction function) {
-        Uses.clear();
-        Defs.clear();
-        visited.clear();
-        function.getBlockContain().forEach(block -> {
-            Uses.put(block, new LinkedHashSet<>());
-            Defs.put(block, new LinkedHashSet<>());
-            block.setLiveIn(new LinkedHashSet<>());
-            block.setLiveOut(new LinkedHashSet<>());
-        });
-        function.getBlockContain().forEach(block -> {
-            for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
-                inst.Uses().removeAll(Defs.get(block));
-                Uses.get(block).addAll(inst.Uses());
-                Defs.get(block).addAll(inst.Defs());
-            }
-        });
+    private void runForBlock(RISCVBasicBlock block) {
+        HashSet<RISCVRegister> uses = new LinkedHashSet<>();
+        HashSet<RISCVRegister> defs = new LinkedHashSet<>();
+        for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
+            HashSet<RISCVRegister> instUses = inst.Uses();
+            instUses.removeAll(defs);
+            uses.addAll(instUses);
+            defs.addAll(inst.Defs());
+        }
+        blockUses.put(block, uses);
+        blockDefs.put(block, defs);
+        block.setLiveIn(new LinkedHashSet<>());
+        block.setLiveOut(new LinkedHashSet<>());
+    }
+
+    private void runBackward(RISCVBasicBlock block){
         Stack<RISCVBasicBlock> S = new Stack<>();
-        S.push(function.getExit());
+        S.push(block);
         while(!S.empty()){
             RISCVBasicBlock now = S.pop();
-            if(visited.contains(now)) continue;
+            if (visited.contains(now)) continue;
             visited.add(now);
             HashSet<RISCVRegister> liveOut = new HashSet<>();
-            for(RISCVBasicBlock next : now.getNext()) liveOut.addAll(next.getLiveIn());
+            for (RISCVBasicBlock successor : now.getNext()) {
+                liveOut.addAll(successor.getLiveIn());
+            }
             HashSet<RISCVRegister> liveIn = new HashSet<>(liveOut);
-            liveIn.removeAll(Defs.get(now));
-            liveIn.addAll(Uses.get(now));
+            liveIn.removeAll(blockDefs.get(now));
+            liveIn.addAll(blockUses.get(now));
             now.addLiveOut(liveOut);
             liveIn.removeAll(now.getLiveIn());
             if (!liveIn.isEmpty()) {
                 now.addLiveIn(liveIn);
                 visited.removeAll(now.getPrev());
             }
-            for (RISCVBasicBlock prev : now.getPrev()) S.push(prev);
+            for (RISCVBasicBlock precursor : now.getPrev()) {
+                S.push(precursor);
+            }
         }
+    }
+
+    private void LiveAnalysis(RISCVFunction function) {
+        blockUses = new LinkedHashMap<>();
+        blockDefs = new LinkedHashMap<>();
+        visited = new LinkedHashSet<>();
+        function.getBlockContain().forEach(this::runForBlock);
+        runBackward(function.getExit());
     }
 
     void init() {
@@ -117,9 +125,7 @@ public class RegisterAllocation {
             double weight = Math.pow(10, min(block.getNext().size(), block.getPrev().size()));
             for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
                 inst.Uses().forEach(reg -> reg.weight += weight);
-                if (inst.Defs().size() > 0) {
-                    inst.Defs().iterator().next().weight += weight;
-                }
+                if (inst.Defs().size() > 0) inst.Defs().iterator().next().weight += weight;
             }
         }
     }
@@ -127,12 +133,8 @@ public class RegisterAllocation {
         if (u != v && !adjSet.contains(new RegEdge(u, v))) {
             adjSet.add(new RegEdge(u, v));
             adjSet.add(new RegEdge(v, u));
-            if (!preColored.contains(u)) {
-                u.addAdj(v);
-            }
-            if (!preColored.contains(v)) {
-                v.addAdj(u);
-            }
+            if (!preColored.contains(u)) u.addAdj(v);
+            if (!preColored.contains(v)) v.addAdj(u);
         }
     }
     HashSet<RISCVRegister> adjacent(RISCVRegister n) {
@@ -155,14 +157,14 @@ public class RegisterAllocation {
             }
         }));
     }
-    void decrementDegree(RISCVRegister reg) {
-        if (reg.degree-- == K) {
-            HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(reg));
-            nodes.add(reg);
+    void decrementDegree(RISCVRegister t) {
+        if (t.degree-- == K) {
+            HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(t));
+            nodes.add(t);
             enableMoves(nodes);
-            spillWorkList.remove(reg);
-            if (moveRelated(reg)) freezeWorkList.add(reg);
-            else simplifyWorkList.add(reg);
+            spillWorkList.remove(t);
+            if (!nodeMoves(t).isEmpty()) freezeWorkList.add(t);
+            else simplifyWorkList.add(t);
         }
     }
     void simplify() {
@@ -170,7 +172,14 @@ public class RegisterAllocation {
         simplifyWorkList.remove(reg);
         selectStack.push(reg);
         for (RISCVRegister reg1 : adjacent(reg)) {
-            decrementDegree(reg1);
+            if (reg1.degree-- == K) {
+                HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(reg1));
+                nodes.add(reg1);
+                enableMoves(nodes);
+                spillWorkList.remove(reg1);
+                if (!nodeMoves(reg1).isEmpty()) freezeWorkList.add(reg1);
+                else simplifyWorkList.add(reg1);
+            }
         }
     }
     void build() {
@@ -210,7 +219,7 @@ public class RegisterAllocation {
     }
 
     void addWorkList(RISCVRegister node) {
-        if (!preColored.contains(node) && !moveRelated(node) && node.degree < K) {
+        if (!preColored.contains(node) && nodeMoves(node).isEmpty() && node.degree < K) {
             freezeWorkList.remove(node);
             simplifyWorkList.add(node);
         }
@@ -251,7 +260,14 @@ public class RegisterAllocation {
         enableMoves(tmp);
         adjacent(v).forEach(t -> {
             addEdge(t, u);
-            decrementDegree(t);
+            if (t.degree-- == K) {
+                HashSet<RISCVRegister> nodes = new LinkedHashSet<>(adjacent(t));
+                nodes.add(t);
+                enableMoves(nodes);
+                spillWorkList.remove(t);
+                if (!nodeMoves(t).isEmpty()) freezeWorkList.add(t);
+                else simplifyWorkList.add(t);
+            }
         });
         if (u.degree >= K && freezeWorkList.contains(u)) {
             freezeWorkList.remove(u);
@@ -293,13 +309,28 @@ public class RegisterAllocation {
         RISCVRegister u = freezeWorkList.iterator().next();
         freezeWorkList.remove(u);
         simplifyWorkList.add(u);
-        freezeMoves(u);
-    }
-    void freezeMoves(RISCVRegister u) {
         for (RISCVMove mv : nodeMoves(u)) {
             RISCVRegister x = mv.rd, y = mv.rs;
             RISCVRegister v;
             if (getAlias(u) == getAlias(y)) {
+                v = getAlias(x);
+            }
+            else {
+                v = getAlias(y);
+            }
+            activeMoves.remove(mv);
+            frozenMoves.add(mv);
+            if (v.degree < K && nodeMoves(v).isEmpty()) {
+                freezeWorkList.remove(v);
+                simplifyWorkList.add(v);
+            }
+        }
+    }
+    void freezeMoves(RISCVRegister m) {
+        for (RISCVMove mv : nodeMoves(m)) {
+            RISCVRegister x = mv.rd, y = mv.rs;
+            RISCVRegister v;
+            if (getAlias(m) == getAlias(y)) {
                 v = getAlias(x);
             }
             else {
@@ -370,7 +401,7 @@ public class RegisterAllocation {
                 if (node.degree >= K) {
                     spillWorkList.add(node);
                 }
-                else if (moveRelated(node)) {
+                else if (!nodeMoves(node).isEmpty()) {
                     freezeWorkList.add(node);
                 }
                 else {
