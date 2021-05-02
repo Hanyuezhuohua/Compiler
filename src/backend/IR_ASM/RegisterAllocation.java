@@ -18,7 +18,6 @@ public class RegisterAllocation {
     private HashSet<RegEdge> adjSet;
     private Stack<RISCVRegister> selectStack;
     private int offset;
-    private RISCVFunction currentFunction;
     private HashSet<RISCVMove> workListMoves, activeMoves, coalescedMoves, constrainedMoves, frozenMoves;
     private int K;
 
@@ -26,9 +25,9 @@ public class RegisterAllocation {
     private HashMap<RISCVBasicBlock, HashSet<RISCVRegister>> RegDef;
     private HashSet<RISCVBasicBlock> visited;
 
-    RISCVModule root;
-    public RegisterAllocation (RISCVModule root) {
-        this.root = root;
+    RISCVModule module;
+    public RegisterAllocation (RISCVModule module) {
+        this.module = module;
         preColored = new LinkedHashSet<>();
         initial = new LinkedHashSet<>();
         simplifyWorkList = new LinkedHashSet<>();
@@ -45,61 +44,56 @@ public class RegisterAllocation {
         constrainedMoves = new LinkedHashSet<>();
         frozenMoves = new LinkedHashSet<>();
         selectStack = new Stack<>();
-        preColored.addAll(root.getPhysicalRegisters());
-        K = root.getColors().size();
+        preColored.addAll(module.getPhysicalRegisters());
+        K = module.getColors().size();
     }
 
-    HashSet<RISCVRegister> adjacent(RISCVRegister n) {
-        return new LinkedHashSet<>(n.adjList) {{removeAll(selectStack); removeAll(coalescedNodes);}};
+    private HashSet<RISCVRegister> adjacent(RISCVRegister reg) {
+        return new LinkedHashSet<>(reg.adjList) {{removeAll(selectStack); removeAll(coalescedNodes);}};
     }
-    HashSet<RISCVRegister> adjacent(RISCVRegister u, RISCVRegister v) {
-        return new HashSet<>(adjacent(u)) {{addAll(adjacent(v));}};
+    private HashSet<RISCVRegister> adjacent(RISCVRegister reg1, RISCVRegister reg2) {
+        return new HashSet<>(adjacent(reg1)) {{addAll(adjacent(reg2));}};
     }
-    HashSet<RISCVMove> nodeMoves(RISCVRegister n) {
-        return new LinkedHashSet<>(workListMoves) {{ addAll(activeMoves); retainAll(n.moveList);}};
+    private HashSet<RISCVMove> nodeMoves(RISCVRegister reg) {
+        return new LinkedHashSet<>(workListMoves) {{ addAll(activeMoves); retainAll(reg.moveList);}};
     }
-    void enableMoves(HashSet<RISCVRegister> nodes) {
-        nodes.forEach(node -> nodeMoves(node).forEach(move -> {
-            if (activeMoves.contains(move)) {
-                activeMoves.remove(move);
-                workListMoves.add(move);
+    private void enableMoves(HashSet<RISCVRegister> nodes) {
+        nodes.forEach(node -> nodeMoves(node).forEach(inst -> {
+            if (activeMoves.contains(inst)) {
+                activeMoves.remove(inst);
+                workListMoves.add(inst);
             }
         }));
     }
 
-    RISCVRegister getAlias(RISCVRegister n) {
-        if (coalescedNodes.contains(n)) {
-            n.alias = getAlias(n.alias);
-            return n.alias;
+    private RISCVRegister getAlias(RISCVRegister reg) {
+        if (coalescedNodes.contains(reg)) {
+            reg.alias = getAlias(reg.alias);
+            return reg.alias;
         }
-        else return n;
+        else return reg;
     }
 
-    void addWorkList(RISCVRegister u) {
-        if (!preColored.contains(u) && nodeMoves(u).isEmpty() && u.degree < K) {
-            freezeWorkList.remove(u);
-            simplifyWorkList.add(u);
+    private void addWorkList(RISCVRegister reg) {
+        if (!preColored.contains(reg) && nodeMoves(reg).isEmpty() && reg.degree < K) {
+            freezeWorkList.remove(reg);
+            simplifyWorkList.add(reg);
         }
     }
 
-    boolean OK(RISCVRegister t, RISCVRegister r) {
-        return t.degree < K || preColored.contains(t) || adjSet.contains(new RegEdge(t, r));
-    }
-
-    boolean forAllOK(RISCVRegister u, RISCVRegister v) {
-        for (RISCVRegister w : adjacent(v)) if (!OK(w, u)) return false;
+    private boolean ok(RISCVRegister reg1, RISCVRegister reg2) {
+        for (RISCVRegister adj : adjacent(reg2)) if (!(adj.degree < K || preColored.contains(adj) || adjSet.contains(new RegEdge(adj, reg1)))) return false;
         return true;
     }
 
-    boolean conservative(HashSet<RISCVRegister> nodes) {
-        int count = 0;
-        for (RISCVRegister node : nodes) if (node.degree >= K) ++count;
-        return count < K;
+    private boolean conservative(HashSet<RISCVRegister> regs) {
+        int num = 0;
+        for (RISCVRegister node : regs) if (node.degree >= K) ++num;
+        return num < K;
     }
 
     void runForFunction(RISCVFunction function) {
         offset = 0;
-        currentFunction = function;
         while(true) {
             initial.clear();
             simplifyWorkList.clear();
@@ -115,7 +109,7 @@ public class RegisterAllocation {
             activeMoves.clear();
             workListMoves.clear();
             adjSet.clear();
-            currentFunction.getBlockContain().forEach(block -> {
+            function.getBlockContain().forEach(block -> {
                 for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next){
                     initial.addAll(inst.Defs());
                     initial.addAll(inst.Uses());
@@ -125,7 +119,7 @@ public class RegisterAllocation {
             initial.forEach(RISCVRegister::clear);
             preColored.forEach(RISCVRegister::init);
 
-            for (RISCVBasicBlock block : currentFunction.getBlockContain()) {
+            for (RISCVBasicBlock block : function.getBlockContain()) {
                 double weight = Math.pow(10, min(block.getNext().size(), block.getPrev().size()));
                 for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
                     inst.Uses().forEach(reg -> reg.weight += weight);
@@ -166,23 +160,23 @@ public class RegisterAllocation {
                     now.addLiveIn(liveIn);
                     visited.removeAll(now.getPrev());
                 }
-                for (RISCVBasicBlock precursor : now.getPrev()) S.push(precursor);
+                for (RISCVBasicBlock prev : now.getPrev()) S.push(prev);
             }
-            for (RISCVBasicBlock block : currentFunction.getBlockContain()) {
-                HashSet<RISCVRegister> currentLive = new LinkedHashSet<>(block.getLiveOut());
+            for (RISCVBasicBlock block : function.getBlockContain()) {
+                HashSet<RISCVRegister> LiveRegs = new LinkedHashSet<>(block.getLiveOut());
                 for (RISCVInstruction inst = block.getTail(); inst != null; inst = inst.prev) {
                     if (inst instanceof RISCVMove) {
-                        currentLive.removeAll(inst.Uses());
+                        LiveRegs.removeAll(inst.Uses());
                         HashSet<RISCVRegister> mvAbout = inst.Uses();
                         mvAbout.addAll(inst.Defs());
                         for (RISCVRegister reg : mvAbout) reg.moveList.add((RISCVMove) inst);
                         workListMoves.add((RISCVMove) inst);
                     }
                     HashSet<RISCVRegister> defs = inst.Defs();
-                    currentLive.add(root.getPhysicalRegister(0));
-                    currentLive.addAll(defs);
+                    LiveRegs.add(module.getPhysicalRegister(0));
+                    LiveRegs.addAll(defs);
                     for (RISCVRegister def : defs) {
-                        for(RISCVRegister reg : currentLive) {
+                        for(RISCVRegister reg : LiveRegs) {
                             if (reg != def && !adjSet.contains(new RegEdge(reg, def))) {
                                 adjSet.add(new RegEdge(reg, def));
                                 adjSet.add(new RegEdge(def, reg));
@@ -191,8 +185,8 @@ public class RegisterAllocation {
                             }
                         }
                     }
-                    currentLive.removeAll(defs);
-                    currentLive.addAll(inst.Uses());
+                    LiveRegs.removeAll(defs);
+                    LiveRegs.addAll(inst.Uses());
                 }
             }
             for (RISCVRegister node : initial) {
@@ -233,7 +227,7 @@ public class RegisterAllocation {
                         addWorkList(v);
                     }
                     else {
-                        if ((preColored.contains(u) && forAllOK(u, v)) || (!preColored.contains(u) && conservative(adjacent(u, v)))) {
+                        if ((preColored.contains(u) && ok(u, v)) || (!preColored.contains(u) && conservative(adjacent(u, v)))) {
                             coalescedMoves.add(move);
                             if (freezeWorkList.contains(v)) freezeWorkList.remove(v);
                             else spillWorkList.remove(v);
@@ -286,15 +280,15 @@ public class RegisterAllocation {
                 }
                 else if (!spillWorkList.isEmpty()) {
                     RISCVRegister m = null;
-                    double minCost = 1e9;
+                    double min = Double.POSITIVE_INFINITY;
                     boolean hasCandidate = false;
                     for (RISCVRegister reg : spillWorkList) {
                         double cost = reg.weight / reg.degree;
                         if (reg instanceof RISCVVirtualRegister && ((RISCVVirtualRegister) reg).isConst()) cost /= 64;
                         if (!canNotSpillNodes.contains(reg)) {
                             hasCandidate = true;
-                            if (cost < minCost) {
-                                minCost = cost;
+                            if (cost < min) {
+                                min = cost;
                                 m = reg;
                             }
                         }
@@ -319,24 +313,24 @@ public class RegisterAllocation {
             while (!(freezeWorkList.isEmpty() && simplifyWorkList.isEmpty() && spillWorkList.isEmpty() && workListMoves.isEmpty()));
             while (!selectStack.isEmpty()) {
                 RISCVRegister n = selectStack.pop();
-                ArrayList<RISCVPhysicalRegister> okColors = new ArrayList<>(root.getColors());
+                ArrayList<RISCVPhysicalRegister> freeColors = new ArrayList<>(module.getColors());
                 HashSet<RISCVRegister> colored = new LinkedHashSet<>(coloredNodes);
                 colored.addAll(preColored);
-                for (RISCVRegister w : n.adjList) if (colored.contains(getAlias(w))) okColors.remove(getAlias(w).color);
-                if (okColors.isEmpty()) spilledNodes.add(n);
+                for (RISCVRegister w : n.adjList) if (colored.contains(getAlias(w))) freeColors.remove(getAlias(w).color);
+                if (freeColors.isEmpty()) spilledNodes.add(n);
                 else{
                     coloredNodes.add(n);
-                    n.color = okColors.get(0);
+                    n.color = freeColors.get(0);
                 }
             }
             coalescedNodes.forEach(n -> n.color = getAlias(n).color);
             if(spilledNodes.isEmpty()) break;
-            HashSet<RISCVRegister> newTemps = new LinkedHashSet<>();
-            spilledNodes.forEach(v -> {
-                v.offset = new RISCVStackOffset(-offset - 4, false);
+            HashSet<RISCVRegister> regs = new LinkedHashSet<>();
+            spilledNodes.forEach(node -> {
+                node.offset = new RISCVStackOffset(-offset - 4, false);
                 offset += 4;
             });
-            for (RISCVBasicBlock block : currentFunction.getBlockContain()) {
+            for (RISCVBasicBlock block : function.getBlockContain()) {
                 for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
                     if (inst.Defs().size() == 1) {
                         RISCVRegister dest = inst.Defs().iterator().next();
@@ -344,8 +338,8 @@ public class RegisterAllocation {
                     }
                 }
             }
-            RISCVPhysicalRegister sp = root.getPhysicalRegister("sp");
-            for (RISCVBasicBlock block : currentFunction.getBlockContain()) {
+            RISCVPhysicalRegister sp = module.getPhysicalRegister("sp");
+            for (RISCVBasicBlock block : function.getBlockContain()) {
                 for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) {
                     for (RISCVRegister reg : inst.Uses()) {
                         if (reg.offset != null) {
@@ -355,22 +349,22 @@ public class RegisterAllocation {
                                 inst.appendBack(new RISCVStore(sp, reg.offset, tmp, tmp.getWidth(), block));
                                 inst.UpdateUse(reg, tmp);
                                 inst.UpdateDef(reg, tmp);
-                                newTemps.add(tmp);
+                                regs.add(tmp);
                             }
                             else {
                                 if (inst instanceof RISCVMove && ((RISCVMove)inst).rs == reg && ((RISCVMove)inst).rd.offset == null) {
-                                    RISCVInstruction replace;
-                                    if (reg instanceof RISCVVirtualRegister && ((RISCVVirtualRegister) reg).isConst()) replace = new RISCVLi(((RISCVVirtualRegister) reg).getConstValue(), ((RISCVMove) inst).rd, block);
-                                    else replace = new RISCVLoad(sp, reg.offset, ((RISCVMove) inst).rd, ((RISCVVirtualRegister) reg).getWidth(), block);
-                                    inst.update(replace);
-                                    inst = replace;
+                                    RISCVInstruction newInst;
+                                    if (reg instanceof RISCVVirtualRegister && ((RISCVVirtualRegister) reg).isConst()) newInst = new RISCVLi(((RISCVVirtualRegister) reg).getConstValue(), ((RISCVMove) inst).rd, block);
+                                    else newInst = new RISCVLoad(sp, reg.offset, ((RISCVMove) inst).rd, ((RISCVVirtualRegister) reg).getWidth(), block);
+                                    inst.update(newInst);
+                                    inst = newInst;
                                 }
                                 else {
-                                    RISCVVirtualRegister tmp = new RISCVVirtualRegister( 4);
-                                    if (reg instanceof RISCVVirtualRegister && ((RISCVVirtualRegister) reg).isConst()) inst.appendFront(new RISCVLi(((RISCVVirtualRegister) reg).getConstValue(), tmp, block));
-                                    else inst.appendFront(new RISCVLoad(sp, reg.offset, tmp, tmp.getWidth(), block));
-                                    inst.UpdateUse(reg, tmp);
-                                    newTemps.add(tmp);
+                                    RISCVVirtualRegister newReg = new RISCVVirtualRegister( 4);
+                                    if (reg instanceof RISCVVirtualRegister && ((RISCVVirtualRegister) reg).isConst()) inst.appendFront(new RISCVLi(((RISCVVirtualRegister) reg).getConstValue(), newReg, block));
+                                    else inst.appendFront(new RISCVLoad(sp, reg.offset, newReg, newReg.getWidth(), block));
+                                    inst.UpdateUse(reg, newReg);
+                                    regs.add(newReg);
                                 }
                             }
                         }
@@ -379,19 +373,20 @@ public class RegisterAllocation {
                         if (def.offset != null) {
                             if (!inst.Uses().contains(def)) {
                                 if (def instanceof RISCVVirtualRegister && ((RISCVVirtualRegister) def).isConst()) {
-                                    RISCVInstruction replace = new RISCVMove(root.getPhysicalRegister(0), root.getPhysicalRegister(0), block);
-                                    inst.update(replace);
-                                    inst = replace;
-                                } else if (inst instanceof RISCVMove && ((RISCVMove) inst).rs.offset == null){
-                                    RISCVInstruction replace = new RISCVStore(sp, def.offset, ((RISCVMove) inst).rs,  ((RISCVVirtualRegister)def).getWidth(), block);
-                                    inst.update(replace);
-                                    inst = replace;
+                                    RISCVInstruction newInst = new RISCVMove(module.getPhysicalRegister(0), module.getPhysicalRegister(0), block);
+                                    inst.update(newInst);
+                                    inst = newInst;
+                                }
+                                else if (inst instanceof RISCVMove && ((RISCVMove) inst).rs.offset == null){
+                                    RISCVInstruction newInst = new RISCVStore(sp, def.offset, ((RISCVMove) inst).rs,  ((RISCVVirtualRegister)def).getWidth(), block);
+                                    inst.update(newInst);
+                                    inst = newInst;
                                 }
                                 else {
-                                    RISCVVirtualRegister tmp = new RISCVVirtualRegister(4);
-                                    inst.UpdateDef(def, tmp);
-                                    inst.appendBack(new RISCVStore(sp, def.offset, tmp, ((RISCVVirtualRegister)def).getWidth(), block));
-                                    newTemps.add(tmp);
+                                    RISCVVirtualRegister newReg = new RISCVVirtualRegister(4);
+                                    inst.UpdateDef(def, newReg);
+                                    inst.appendBack(new RISCVStore(sp, def.offset, newReg, ((RISCVVirtualRegister)def).getWidth(), block));
+                                    regs.add(newReg);
                                 }
                             }
                         }
@@ -399,15 +394,15 @@ public class RegisterAllocation {
                 }
             }
 
-            canNotSpillNodes.addAll(newTemps);
+            canNotSpillNodes.addAll(regs);
             initial.addAll(coloredNodes);
             initial.addAll(coalescedNodes);
-            initial.addAll(newTemps);
+            initial.addAll(regs);
         }
         offset += function.getOffset();
         offset = (offset + 15) / 16 * 16;
-        for(RISCVBasicBlock block : currentFunction.getBlockContain()) for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) inst.updateOffset(offset);
+        for(RISCVBasicBlock block : function.getBlockContain()) for (RISCVInstruction inst = block.getHead(); inst != null; inst = inst.next) inst.updateOffset(offset);
     }
 
-    public void run() { root.getExternalFunctionSet().forEach(func -> runForFunction(func)); }
+    public void run() { module.getExternalFunctionSet().forEach(func -> runForFunction(func)); }
 }
